@@ -8,7 +8,7 @@ package cmsc350.project3;
  * Requires: J2SE 7+
  */
 
-
+// ND provided test class
 public class Contact implements Comparable<Contact> {
 	private String firstName, lastName, phone;
 
