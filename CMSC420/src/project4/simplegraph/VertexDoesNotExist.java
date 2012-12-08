@@ -8,7 +8,7 @@
  *                           Eclipse 3.6 / Java 1.6.0_22
  */
 
-package simplegraph;
+package project4.simplegraph;
 
 /**
  * @author jsmith

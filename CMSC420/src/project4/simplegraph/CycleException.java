@@ -7,7 +7,7 @@
  * Development Environment:  Apple Mac OS X 10.6.5
  *                           Eclipse 3.6 / Java 1.6.0_22
  */
-package simplegraph;
+package project4.simplegraph;
 
 @SuppressWarnings("serial")
 public class CycleException extends Exception {

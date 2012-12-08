@@ -8,7 +8,7 @@
  *                           Eclipse 3.6 / Java 1.6.0_20
  */
 
-package expressiontree;
+package project4.expressiontree;
 
 public interface OperationsInterface {
   int precedence();

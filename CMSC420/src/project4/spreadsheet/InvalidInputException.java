@@ -8,7 +8,7 @@
  *                           Eclipse 3.6 / Java 1.6.0_22
  */
 
-package spreadsheet;
+package project4.spreadsheet;
 
 
 @SuppressWarnings("serial")

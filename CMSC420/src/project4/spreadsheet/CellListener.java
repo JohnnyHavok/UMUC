@@ -8,7 +8,7 @@
  *                           Eclipse 3.6 / Java 1.6.0_22
  */
 
-package spreadsheet;
+package project4.spreadsheet;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,8 +19,8 @@ import java.util.Queue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import expressiontree.*;
-import simplegraph.*;
+import project4.expressiontree.*;
+import project4.simplegraph.*;
 
 public class CellListener implements ActionListener, 
                                      FocusListener    {

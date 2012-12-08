@@ -7,7 +7,7 @@
  * Development Environment:  Apple Mac OS X 10.6.4
  *                           Eclipse 3.6 / Java 1.6.0_20
  */
-package expressiontree;
+package project4.expressiontree;
 
 import java.util.HashMap;
 import java.util.Map;

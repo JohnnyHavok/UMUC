@@ -8,7 +8,7 @@
  *                           Eclipse 3.6 / Java 1.6.0_22
  */
 
-package expressiontree;
+package project4.expressiontree;
 
 @SuppressWarnings("serial")
 public class ExpressionException extends Exception {
