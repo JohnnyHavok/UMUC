@@ -1,0 +1,13 @@
+(2 + 2); Value= 4
+(2/x), x = 0; Error: Attempted to divide by zero
+(x/y), x = 0; Error: Uninitialized variable
+(2/3), x = 0; Value= 0.666667
+(x $ 2), x = 2; Error: Syntax Error
+(x + 2) x = 2; Error: Syntax Error
+(x + 2), x 2; Error: Syntax Error
+(x + 2), x = 2 Value= 4
+(x + 2), x = 2, x = 10; Value= 12
+(x + 2)), x = 2; Error: Syntax Error
+((x + 2), x = 2; Error: Syntax Error
+
+Execution complete: Press any key to exit
