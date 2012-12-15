@@ -1,4 +1,4 @@
-package cmsc350.project4.ndsource;
+package cmsc350.project4;
 
 import cmsc350.project4.ndsource.BinarySearchTreeND;
 
