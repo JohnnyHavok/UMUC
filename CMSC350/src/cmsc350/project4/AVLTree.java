@@ -14,3 +14,16 @@ import cmsc350.project4.ndsource.BinarySearchTreeND;
 public class AVLTree<T extends Comparable<? super T>> extends BinarySearchTreeND<T> {
 
 }
+
+enum TreeTraversalOrder {
+	INORDER(1),
+	PREORDER(2),
+	POSTORDER(3),
+	LEVELORDER(4),
+	DELTADEPTH(5);
+
+	private int id;
+
+	TreeTraversalOrder(int id) {this.id = id;}
+	public int getId() {return id;}
+}

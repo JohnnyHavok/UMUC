@@ -51,8 +51,8 @@ public enum Operator implements AlgebraicSymbology {
 	 * Bloch's example required the string name to access the object and I require the character
 	 * of the symbol to get the correct enumeration.
 	 */
-	private static final Map<String, Operator> symbolToEnum = new HashMap<String, Operator>();
-	static {  // Compile time function.
+	private static final Map<String, Operator> symbolToEnum = new HashMap<>();
+	static {
 		for(Operator op: values())
 			symbolToEnum.put(op.symbol, op);
 	}

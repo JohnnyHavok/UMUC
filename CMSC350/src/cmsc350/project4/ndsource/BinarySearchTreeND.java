@@ -247,7 +247,7 @@ package cmsc350.project4.ndsource;
          return st.toString();
       } // end to LevelOrderString
          
-      private String toString (int order, BSTNodeND n) {
+      protected String toString (int order, BSTNodeND n) {
          String st = null;
          switch (order) {
             case INORDER:    st = toInOrderString   (n); 
