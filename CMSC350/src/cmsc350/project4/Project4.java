@@ -13,6 +13,13 @@ import java.util.ArrayList;
 import cmsc350.project4.ndsource.*;
 
 public class Project4 implements  MyTreeIF {
+	AVLTree<String> avlt = new AVLTree<>();
+
+	avlt.insert("Test");
+
+	BinarySearchTreeND<String> bt = new BinarySearchTreeND<>();
+	bt.insert("Test");
+
 	List <MyTreeIF> nodes = new ArrayList <> ();
 	Object data;
 
