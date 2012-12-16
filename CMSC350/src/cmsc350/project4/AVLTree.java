@@ -1,7 +1,5 @@
 package cmsc350.project4;
 
-import java.util.ArrayDeque;
-
 /**
  * Name: Justin Smith
  * CMSC 350
@@ -11,117 +9,196 @@ import java.util.ArrayDeque;
  */
 
 public class AVLTree<T extends Comparable<? super T>> extends BinarySearchTreeND<T> {
-	private BSTNodeND<T> root = null;
+	private BSTNodeND<T> root; // Starting node
+
+	private int opCount; // Counts number of operations between inserts
+	private int insertCount; // Counts total number of inserts
+	private int size; // Size of the tree
+
+	public AVLTree() {
+		root = null;
+		insertCount = 0;
+		size = 0;
+	}
 
 	@Override
 	public void insert(T t) {
-		if(root == null) {root = new AVLNode<>(t);}
-		else root = insert(t, root);
+		++insertCount;
+		++size;
+		opCount = 0;
+		System.out.print("+-("+insertCount+") Insert: ["+t+"] into > ");
+		if(root == null) {
+			root = new AVLNode<>(t);
+			System.out.println("Empty Tree");
+		} else {
+			System.out.println(toString(TreeTraversalOrder.LEVELORDER));
+			root = insert(new AVLNode<>(t), root);
+		}
+		System.out.println("\nNew Tree:");
+		System.out.println(toString());
 	}
 
-	private BSTNodeND<T> insert(T t, BSTNodeND<T> r) {
-		System.out.println("Insert > " + t);
+	private BSTNodeND<T> insert(BSTNodeND<T> n, BSTNodeND<T> r) {
+		++opCount;
+		int balanceFactor;
 
-
-		if(r == null) {
-			return new AVLNode<>(t);
+		if(r == null) { // Found empty space at the bottom of the tree
+			System.out.println("|--("+opCount+") Placed ["+n.data+"] -child of- "+"["+n.parent.data+"]");
+			return n;
 		}
 
-		if(t.compareTo(r.data) < 0) { // If element belongs on the left of 'r'
-			r.left = insert(t, r.left); // Recursively locate the bottom of the tree
-			if(height(r.left) - height(r.right) == 2)
-				if(t.compareTo(r.left.data) < 0)
-					r = lRotation(r);
-				else
-					r = rlRotate(r);
-		} else if(t.compareTo(r.data) > 0) { // If element belongs on the right of 'r'
-			System.out.println(t.compareTo(r.data));
-			r.right = insert(t, r.right); // Recursively locate the bottom of tree
-			if(height(r.right) - height(r.left) == 2)
-				if(t.compareTo(r.right.data) > 0)
+		if(n.data.compareTo(r.data) < 0) { // If element belongs on the left of 'r'
+			System.out.println("|--("+opCount+") Insert ["+n.data+"] -left of- "+"["+r.data+"]");
+			n.parent = r; // Keep updating n on it's new parent until bottom is found
+			r.left = insert(n, r.left); // Recursively locate the bottom of the tree
+			balanceFactor = height(r.left) - height(r.right);
+			System.out.println("|---("+ ++opCount +") Checking balance factor of ["+r.data+"] is "+balanceFactor);
+			if(balanceFactor == 2) {
+				System.out.print("|----("+ ++opCount +") Balance factor of ["+r.data+"] is off");
+				if(n.data.compareTo(r.left.data) < 0) {
+					System.out.println("due to an imbalance in the left subtree of the left child of ["+r.data+"]");
 					r = rRotation(r);
-				else
+				} else {
+					System.out.println("due to an imbalance in the right subtree of the left child of ["+r.data+"]");
 					r = lrRotate(r);
+					System.out.println("|-----("+ ++opCount +") <END> Left-Right rotation around ["+r.left.data+"]");
+				}
+			}
+		} else if(n.data.compareTo(r.data) > 0) { // If element belongs on the right of 'r'
+			System.out.println("|--("+opCount+") Insert ["+n.data+"] -right of- "+"["+r.data+"]");
+			n.parent = r; // Keep updating n on it's new parent until bottom is found
+			r.right = insert(n, r.right); // Recursively locate the bottom of tree
+			balanceFactor = height(r.right) - height(r.left);
+			System.out.println("|---("+ ++opCount +") Checking balance factor of ["+r.data+"] is "+balanceFactor);
+			if(balanceFactor == 2) {
+				System.out.print("|----("+ ++opCount +") Balance factor of ["+r.data+"] is off ");
+				if(n.data.compareTo(r.right.data) > 0) {
+					System.out.println("due to an imbalance in the right subtree of the right child of ["+r.data+"]");
+					r = lRotation(r);
+				} else {
+					System.out.println("due to an imbalance in the left subtree of the right child of ["+r.data+"]");
+					r = rlRotate(r);
+					System.out.println("|-----("+ ++opCount +") <END> Right-Left rotation around ["+r.left.data+"]");
+				}
+			}
 		} else { // If elements are equal
 			// TODO: Figure out what to do with duplicates.
 		}
 
+		System.out.print("|---(" + ++opCount + ") Updating height on [" + r.data + "] from " + ((AVLNode<T>) r).height);
 		((AVLNode<T>)r).height = Math.max(height(r.left), height(r.right)) + 1; // Continuously update the heights as we through tree
+		System.out.println(" to "+((AVLNode<T>)r).height);
 		return r; // Return root, which may have changed through rotations.
 	}
 
-	private int height(BSTNodeND<T> r) { // Fancy null-pointer check when calculating height
-		if(r == null)
-			return -1;
-		return ((AVLNode<T>)r).height;
-	}
-
-	private AVLNode<T> lRotation(BSTNodeND<T> r) { // Right Rotation
+	/**
+	 * Performs Right Rotation around the given root and the root's right child.  Fixes imbalances in the left subtree
+	 * of the left child of a given root.
+	 * @param r : root AVLNode to right-rotate around.
+	 * @return : New root AVLNode
+	 */
+	private AVLNode<T> rRotation(BSTNodeND<T> r) { // Right Rotation
+		System.out.println("|-----("+ ++opCount +") <START> Right rotation around ["+r.data+"]");
 		AVLNode<T> n = (AVLNode<T>) r.left; // (1) Copy reference old-root->left = new-root
+		System.out.println("|-----("+ ++opCount +") New root will be ["+n.data+"]");
+		n.parent = r.parent; // Update parent pointer
 		r.left = n.right; // (2) Move right tree of new-root to left tree of old-root
+		if(r.left != null) r.left.parent = r; // Change parent pointer of new left node
 		n.right = r; // (3) Make old-root the right child of the new-root
+		r.parent = n; // Change parent pointer of old-root to new-root
 		((AVLNode<T>)r).height = Math.max(height(r.left), height(r.right)) + 1; // Update old-root height
+		System.out.println("|-----("+ ++opCount +") Old root ["+r.data+"] now has height "+((AVLNode<T>)r).height);
 		n.height = Math.max(height(n.left), height(n.right)) + 1; // Update new-root height
+		System.out.println("|-----("+ ++opCount +") New root ["+n.data+"] now has height "+n.height);
+		System.out.println("|-----("+ ++opCount +") <END> Right rotation around ["+r.data+"]");
 		return n;
 	}
 
-	private AVLNode<T> rRotation(BSTNodeND<T> r) { // Left Rotation
+	/**
+	 * Performs Left Rotation around the given root and root's left child.  Fixes imbalances in the right subtree
+	 * of the right child of given root.
+	 * @param r : root AVLNode to left-rotate around.
+	 * @return : New root AVLNode
+	 */
+	private AVLNode<T> lRotation(BSTNodeND<T> r) { // Left Rotation
+		System.out.println("|-----("+ ++opCount +") <START> Left rotation around ["+r.data+"]");
 		AVLNode<T> n = (AVLNode<T>) r.right; // (1) Copy reference old-root->right = new-root
+		System.out.println("|-----("+ ++opCount +") New root will be ["+n.data+"]");
+		n.parent = r.parent; // Update parent pointer
 		r.right = n.left; // (2) Move left tree of new-root to right tree of old-root
+		if(r.right != null) r.right.parent = r; // Change parent pointer of new left node
 		n.left = r; // (3) Make old-root the left child of the new-root
+		r.parent = n; // Change parent pointer of old-root to new-root
 		((AVLNode<T>)r).height = Math.max(height(r.left), height(r.right)) + 1; // Update old-root height
+		System.out.println("|-----("+ ++opCount +") Old root ["+r.data+"] now has height "+((AVLNode<T>)r).height);
 		n.height = Math.max(height(n.left), height(r.right)) + 1; // Update new-root height
+		System.out.println("|-----("+ ++opCount +") New root ["+n.data+"] now has height "+n.height);
+		System.out.println("|-----("+ ++opCount +") <END> Left rotation around ["+r.data+"]");
 		return n;
 	}
 
+	/**
+	 * Performs Right-Left Rotation around the given root and the root's right child.  Fixes imbalances in the left
+	 * subtree of the right child.
+	 * @param r : AVLNode to rotate subtree around
+	 * @return : New root AVLNode
+	 */
 	private AVLNode<T> rlRotate(BSTNodeND<T> r) { // Right-Left Rotation
-		r.left = rRotation(r.left);
+		System.out.println("|-----("+ ++opCount +") <START> Right-Left rotation around ["+r.data+"]");
+		r.right = rRotation(r.right);
 		return lRotation(r);
 	}
 
+	/**
+	 * Performs Left-Right Rotation around the given root and the root's left child.  Fixes imbalances in the right
+	 * subtree of the left child.
+	 * @param r : AVLNode to rotate subtree around
+	 * @return : New root AVLNode
+	 */
 	private AVLNode<T> lrRotate(BSTNodeND<T> r) { // Left-Right Rotation
-		r.right = lRotation(r.right);
+		System.out.println("|-----("+ ++opCount +") <START> Left-Right rotation around ["+r.data+"]");
+		r.left = lRotation(r.left);
 		return rRotation(r);
 	}
 
-//	@Override
-//	public String toString() {
-//		if(root == null) return null;
-//
-//		StringBuilder sb = new StringBuilder();
-//		AVLNode<T> current;
-//
-//		java.util.ArrayDeque<AVLNode<T>> queue = new ArrayDeque<>();
-//
-//		queue.add(root);
-//
-//		while(queue.size() > 0) {
-//			current = queue.remove();
-//			sb.append("[").append(current.data).append("] ");
-//			if(current.left != null) queue.add(current.left);
-//			if(current.right != null) queue.add(current.right);
-//		}
-//
-//		return sb.toString();
-//	}
+	/**
+	 * Returns the height of a given node if it exist.  Else returns sentinel value of -1
+	 * @param n : AVLNode you need the height of
+	 * @return : Height of node or -1 if null reference
+	 */
+	private int height(BSTNodeND<T> n) { // Fancy null-pointer check when calculating height
+		if(n == null)
+			return -1;
+		return ((AVLNode<T>)n).height;
+	}
 
+	@Override
+	public int getSize() { return size; }
+
+	/**
+	 * Required to so that toTreeString in BinarySearchTreeND will use AVLTree root and not it's own.
+	 * @return : String representing this AVLTree
+	 */
 	@Override
 	public String toString() {
 		if(root == null) return null;
-		return toString(root);
+		return super.toString(root);
 	}
 
+	/**
+	 * Wrapped toString(int ord) in BinarySearchTreeND to use enum constants instead of integer pattern.
+	 * @param type : enum from TreeTraversalOrder
+	 * @return : String representing tree after a given traversal
+	 */
 	public String toString(TreeTraversalOrder type) {
 		return super.toString(type.getMap(), root);
 	}
 
-	public
-
-
-
+	/**
+	 * Node class for AVLTree, extends BSTNodeND and adds an integer for height storage.
+	 * @param <T> : Any comparable items
+	 */
 	class AVLNode<T extends Comparable<? super T>> extends BSTNodeND<T> {
-//		private T data;
-//		private AVLNode<T> left = null, right = null, parent = null;
 		private int height;
 
 		AVLNode(T t) {
@@ -131,6 +208,9 @@ public class AVLTree<T extends Comparable<? super T>> extends BinarySearchTreeND
 	} // end inner AVLNode class
 } // end AVLTree class
 
+/**
+ * Enum constants to wrap BinarySearchTreeND use of integer pattern constants.
+ */
 enum TreeTraversalOrder {
 	INORDER(1),
 	PREORDER(2),
