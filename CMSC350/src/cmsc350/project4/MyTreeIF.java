@@ -1,4 +1,4 @@
-package cmsc350.project4.ndsource;// File: MyTreeIF.java
+package cmsc350.project4;// File: MyTreeIF.java
 // Author: Nicholas Duchon
 // Date: Nov 1, 2012
 // Purpose: interface to support the MyDrawTreeFrame class

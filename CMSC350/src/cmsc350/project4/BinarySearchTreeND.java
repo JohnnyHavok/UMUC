@@ -1,8 +1,9 @@
-package cmsc350.project4.ndsource;
+package cmsc350.project4;
+/** - Added for code folding
 // File  : BinarySearchTreeND.java
 // Author: Nicholas Duchon
 // Date  : July 31, 2008
-// updates: 
+// updates:
 //        Nov 16, 2008
 //        Nov 22, 2008
 //        Apr 17, 2009 - fixed toTreeString
@@ -50,6 +51,7 @@ package cmsc350.project4.ndsource;
 //       < L >, NSTNodeND - links to parent also, for tree display
 //
 //    import java.util.ArrayDeque;
+*/
 
    public class BinarySearchTreeND 
       < K extends Comparable < ? super K > > 
@@ -62,42 +64,42 @@ package cmsc350.project4.ndsource;
       static final int LEVELORDER = 4; // select toString (int)
       static final int DEPTHDELTA = 5; // used to create a text tree display
    
-//      public static void main (String args []) {
-//         BinarySearchTreeND < Integer > x = new BinarySearchTreeND < Integer > ();
-////          int arr [] = {40, 20, 60, 10, 30, 50, 70, 5, 15, 25, 35, 45, 55, 65, 75};
-////          int rem [] = {60, 45, 50, 40, 55};
-//         int arr [] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
-//         int rem [] = {};
-//         for (int y: arr) x.insert (y);
-//
-//         System.out.println ("X:\n" + x);
-//         System.out.println ("X in-order:\n   "    + x.toString(INORDER));
-//         System.out.println ("X pre-order:\n   "   + x.toString(PREORDER));
-//         System.out.println ("X post-order:\n   "  + x.toString(POSTORDER));
-//         System.out.println ("X level-order:\n   " + x.toString(LEVELORDER));
-//
-//         Integer t = x.find(10);
-//         System.out.println ("find: " + t);
-//         System.out.println ("find: " + x.find(20));
-//         System.out.println ("Size: " + x.getSize());
-//         System.out.println ("MAX: " + x.max());
-//         for (int y: rem) {
-//            System.out.println ("Removing: " + y);
-//            x.remove (y);
-//            System.out.println ("result:\n" + x);
-//         }
-//         System.out.println ("X:\n"  + x);
-//
-//         // The following is an example using a user-defined class, see below
-//         // notice the use of the generic parameter Example
-//         String [] sa = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"};
-//         BinarySearchTreeND < Example > ex = new BinarySearchTreeND < Example > ();
-//         for (String s: sa) ex.insert (new Example (s));
-//         System.out.println ("Example: \n" + ex);
-//
-//      } // end main
-   
-      private BSTNodeND < K > root = null;
+      public static void main (String args []) {
+         BinarySearchTreeND < Integer > x = new BinarySearchTreeND < Integer > ();
+//          int arr [] = {40, 20, 60, 10, 30, 50, 70, 5, 15, 25, 35, 45, 55, 65, 75};
+//          int rem [] = {60, 45, 50, 40, 55};
+         int arr [] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+         int rem [] = {};
+         for (int y: arr) x.insert (y);
+
+         System.out.println ("X:\n" + x);
+         System.out.println ("X in-order:\n   "    + x.toString(INORDER));
+         System.out.println ("X pre-order:\n   "   + x.toString(PREORDER));
+         System.out.println ("X post-order:\n   "  + x.toString(POSTORDER));
+         System.out.println ("X level-order:\n   " + x.toString(LEVELORDER));
+
+         Integer t = x.find(10);
+         System.out.println ("find: " + t);
+         System.out.println ("find: " + x.find(20));
+         System.out.println ("Size: " + x.getSize());
+         System.out.println ("MAX: " + x.max());
+         for (int y: rem) {
+            System.out.println ("Removing: " + y);
+            x.remove (y);
+            System.out.println ("result:\n" + x);
+         }
+         System.out.println ("X:\n"  + x);
+
+         // The following is an example using a user-defined class, see below
+         // notice the use of the generic parameter Example
+         String [] sa = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"};
+         BinarySearchTreeND < Example > ex = new BinarySearchTreeND < Example > ();
+         for (String s: sa) ex.insert (new Example (s));
+         System.out.println ("Example: \n" + ex);
+
+      } // end main
+
+	  private BSTNodeND < K > root = null;
    
       public void insert (K d) {
          if (root == null) root = new BSTNodeND < K > (d);
@@ -191,9 +193,10 @@ package cmsc350.project4.ndsource;
                t = removeRoot (t);
          return t;
       } // end remove data, tree
-   
-      private String toString (BSTNodeND n) {
-         return toTreeString (5, n); 
+
+	   // Changed to protected for my subclass - JS
+      protected String toString (BSTNodeND n) {
+         return toTreeString (5, n);
       } // end toString
          
       private String toTreeString (int depth, BSTNodeND n) { // depth = 0 is bad
@@ -246,7 +249,7 @@ package cmsc350.project4.ndsource;
          } // end queue processing
          return st.toString();
       } // end to LevelOrderString
-         
+
       protected String toString (int order, BSTNodeND n) {
          String st = null;
          switch (order) {
@@ -264,22 +267,22 @@ package cmsc350.project4.ndsource;
       
    } // end class BinarySearchTreeND
 
-   class BSTNodeND 
-         < L extends Comparable< ? super L > > 
+   class BSTNodeND
+         < L extends Comparable< ? super L > >
    {
       L data;
       BSTNodeND < L > left = null, right = null, parent = null;
-      
+
       BSTNodeND (L d) {
          data = d;}
-         
+
       BSTNodeND (L d, BSTNodeND p) {
          data = d;
          parent = p;
       } // end data + parent
-      
+
    } // end class BSTNodeND
-   
+
 // A class that can be used with the BinarySearchTreeND data structure
 // Notice the use of the generic parameter Example
    class Example implements Comparable < Example > {
