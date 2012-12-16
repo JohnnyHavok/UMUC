@@ -1,5 +1,5 @@
 package cmsc350.project4;
-/** - Added for code folding
+
 //File: MyDrawTreeFrame.java
 //Author: Nicholas  Duchon
 //Date:   4/9/03, updated Nov 1, 2012
@@ -52,7 +52,6 @@ package cmsc350.project4;
 //              - toString ()                     // help debugging print statements
 //         > ImageSelection implements Transferable // copied code, see comments below
 //         > MySVG                                // based on Apache example, see below
-*/
 
    import javax.swing.JFrame;
    import javax.swing.JPanel;

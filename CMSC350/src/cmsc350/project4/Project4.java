@@ -1,5 +1,11 @@
 package cmsc350.project4;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Name: Justin Smith
  * CMSC 350
@@ -8,83 +14,101 @@ package cmsc350.project4;
  * Requires: J2SE 7+
  */
 
-import java.util.List;
-import java.util.ArrayList;
+public class Project4 {
+	public static void main (String[] args) { new Project4(); }
 
-public class Project4 implements  MyTreeIF {
-	List <MyTreeIF> nodes = new ArrayList <> ();
-	Object data;
+	Integer[][] bookTestCases = { 	{5, 3, 10, 13, 7, 15},		// - Make left rotation
+									{13, 7, 15, 5, 10, 3},		// - Make right rotation
+									{13, 5, 15, 3, 7, 10},		// - Make left-right rotation
+									{5, 3, 13, 10, 15, 7} };	// - Make right-left rotation
 
-	public static void main (String[] args) {
-//		AVLTree<String> avlt = new AVLTree<>();
-//		String[] a = {"M", "N", "P", "O", "Q"};
+	BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+	List<MyDrawTreeFrame> windowList;
 
-//		for(String s : a) {
-//			avlt.insert(s);
-//			System.out.println(avlt.toString(TreeTraversalOrder.LEVELORDER));
-//			System.out.println(avlt);
-//		}
+	private Project4() {
+		windowList = new ArrayList<>();
+		System.out.println("AVLTree algorithm builder");
 
+		boolean quit = false;
+		int input;
 
-//		Integer[] a = {5, 3, 10, 13, 7, 15}; // - Make left rotation
-//		Integer[] a = {13, 7, 15, 5, 10, 3}; // - Make right rotation
-//		Integer[] a = {13, 5, 15, 3, 7, 10}; // - Make left-right rotation
-		Integer[] a = {5, 3, 13, 10, 15, 7}; // - Make right-left rotation
-//		for(Integer i : a) {
-//			avlt.insert(i);
-//		}
+		while(!quit) {
+			System.out.println("\nSelect Option:\n" +
+					"\t(1) Use prebuilt left rotation simulator\n" +
+					"\t(2) Use prebuilt right rotation simulator\n" +
+					"\t(3) Use prebuilt left-right rotation simulator\n" +
+					"\t(4) Use prebuilt right-left rotation simulator\n" +
+					"\t(5) Free text input\n" +
+					"\t(0) Quit");
+			System.out.print("Choose > ");
+			input = getNextInt();
 
-		AVLTree<Integer> avlt = new AVLTree<>(a);
+			switch(input) {
+				case 1 :
+					runBookArray(0);
+					break;
+				case 2 :
+					runBookArray(1);
+					break;
+				case 3 :
+					runBookArray(2);
+					break;
+				case 4 :
+					runBookArray(3);
+					break;
+				case 5 :
+					runFreeText();
+					break;
+				case 0 :
+					quit = true;
+					break;
+				default :
+					System.out.println("Invalid option, try again");
+			}
+		}
 
-
-		Project4 p = new Project4();
-		p.setValuesA();
-		System.out.print("P's Nodes> ");
-		System.out.println(p.nodes.toString());
-
-		MyDrawTreeFrame mdtf1 = new MyDrawTreeFrame (p, "close this frame to exit");
+		for(MyDrawTreeFrame f: windowList)
+			f.dispose();
 	}
 
-	Project4 () {
-
+	private void runBookArray(int flag) {
+		windowList.add(new MyDrawTreeFrame(new AVLTree<>(bookTestCases[flag]), "Final Tree", false));
 	}
 
-	Project4 (Object n) {
-		data = n;
-	} // end int constructor
+	private void runFreeText() {
+		List<String> input = new ArrayList<>();
+		System.out.println("Free text mode selected.  Enter one string per line");
+		boolean read = true;
+		while(read) {
+			String s = getNextString();
+			if(s == null) read = false;
+			else input.add(s);
+		}
+		windowList.add(new MyDrawTreeFrame(new AVLTree<>(input), "Final Tree", false));
+	}
 
-	void setValuesA () {
-		data = "A";
-		Project4 a, b, c, d, e, f, g, h, i, j, k, r = this;
-		r.nodes.add (a = new Project4 ("B"));
-		a.nodes.add (b = new Project4 ("C"));
-		a.nodes.add (b = new Project4 ("D"));
-		a.nodes.add (b = new Project4 ("E"));
-		r.nodes.add (a = new Project4 ("F"));
-		r.nodes.add (a = new Project4 ("G"));
-		r.nodes.add (a = new Project4 ("H"));
-		a.nodes.add (b = new Project4 ("I"));
-		b.nodes.add (c = new Project4 ("I"));
-		c.nodes.add (d = new Project4 ("K"));
-		d.nodes.add (e = new Project4 ("L"));
-		e.nodes.add (f = new Project4 ("M"));
-		f.nodes.add (g = new Project4 ("N"));
-		g.nodes.add (h = new Project4 ("O"));
-		h.nodes.add (i = new Project4 ("P"));
-		i.nodes.add (j = new Project4 ("Q"));
-		j.nodes.add (k = new Project4 ("R"));
-	} // end setValuesA
+	private int getNextInt() {
+		do {
+			try {
+				return Integer.parseInt(in.readLine());
+			} catch (IOException e) {
+				System.out.println("Error thrown from getNextInt input");
+				e.printStackTrace();
+			} catch (NumberFormatException e) {
+				System.out.print("Enter numbers only, please try again > ");
+			}
+		} while(true);
+	}
 
-	/**
-	 * TODO - Fix this to return a list of nodes from the AVLTree.
-	 */
-	public List <MyTreeIF> getChildren() {
-		return nodes;
-	} // end method getChildren;
-
-//	/**
-//	 * TODO - Fix this or remove this if not needed to print from the AVLTree.
-//	 * @return
-//	 */
-	public String toString () {return data.toString();}
+	private String getNextString() {
+		String s = null;
+		try {
+			s = in.readLine();
+			if(s.length() == 0) return null;
+		} catch (IOException e) {
+			System.out.println("Thrown from getNextString() on user input");
+			e.printStackTrace();
+		}
+		return s;
+	}
 }

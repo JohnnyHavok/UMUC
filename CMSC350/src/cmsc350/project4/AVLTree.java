@@ -1,5 +1,7 @@
 package cmsc350.project4;
 
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -10,12 +12,15 @@ import java.util.Collection;
  * Requires: J2SE 7+
  */
 
-public class AVLTree<T extends Comparable<? super T>> extends BinarySearchTreeND<T> {
+public class AVLTree<T extends Comparable<? super T>> extends BinarySearchTreeND<T> implements MyTreeIF {
 	private BSTNodeND<T> root; // Starting node
 
 	private int opCount; // Counts number of operations between inserts
 	private int insertCount; // Counts total number of inserts
 	private int size; // Size of the tree
+	private List<T> objectTraverseList; // Traverse list that holds contents of tree for getPreOrderList()
+	List<MyTreeIF> nodes; // List of nodes generated when getChildren() is called.
+
 
 	// Default constructor
 	public AVLTree() {
@@ -40,6 +45,14 @@ public class AVLTree<T extends Comparable<? super T>> extends BinarySearchTreeND
 		for(T t: a) this.insert(t);
 	}
 
+	// Private constructors for building node list through getChildren()
+	private AVLTree(BSTNodeND<T> t) { this.root = t; }
+	private AVLTree(String s) { root = new AVLNode<>((T) s); } // Not safe, never use in a tree! List only!
+
+	/**
+	 * Insert object into AVLTree
+	 * @param t : Comparable type object to store
+	 */
 	@Override
 	public void insert(T t) {
 		++insertCount;
@@ -54,9 +67,25 @@ public class AVLTree<T extends Comparable<? super T>> extends BinarySearchTreeND
 			root = insert(new AVLNode<>(t), root);
 		}
 		System.out.println("\nNew Tree:");
-		System.out.println(toString());
+		System.out.println(this.toTreeString());
 	}
 
+	/**
+	 * Recursive insert algorithm learned from CMSC 420 but (A) Fully complete and (B) Keeps track of parent pointers
+	 * Step (1) : Recursively find a place for your object to go that satisfies the BST-ADT, this will create a trail
+	 * of visited nodes on the execution stack.
+	 * Step (2) : As the execution stack decompresses update a balance factor that is the difference in children
+	 * heights.
+	 * Step (3) : If there is a balance factor that is equal to 2 down the path we took last we know that the newly
+	 * inserted node has caused an unbalanced tree.
+	 * Step (4) : Determine if the corrective rotation is a single or double rotation based on the path the node took
+	 * to reach it's final spot.
+	 * Step (5) : Return this executions root node to the previous caller on the stack so they know if they need to
+	 * update their children (left,right) links
+	 * @param n : New node to insert
+	 * @param r : Root node of this tree (subtree)
+	 * @return : Root node of this current execution branch.
+	 */
 	private BSTNodeND<T> insert(BSTNodeND<T> n, BSTNodeND<T> r) {
 		++opCount;
 		int balanceFactor;
@@ -195,11 +224,38 @@ public class AVLTree<T extends Comparable<? super T>> extends BinarySearchTreeND
 	public int getSize() { return size; }
 
 	/**
-	 * Required to so that toTreeString in BinarySearchTreeND will use AVLTree root and not it's own.
-	 * @return : String representing this AVLTree
+	 * Returns a pre-ordered list of the tree's objects.
+	 * @return : pre-ordered list of tree objects
+	 */
+	public List<T> getPreOrderList() {
+		objectTraverseList = new ArrayList<>();
+		this.preOrderList(root);
+		return objectTraverseList;
+	}
+
+	// Called by getPreOrderList().
+	private void preOrderList(BSTNodeND<T> r) {
+		objectTraverseList.add(r.data);
+		if(r.left != null) preOrderList(r.left);
+		else objectTraverseList.add(null);
+		if(r.right != null) preOrderList(r.right);
+		else objectTraverseList.add(null);
+	}
+
+	/**
+	 * Returns this nodes data's toString() to user of AVLTree.  Useful for things like MyDrawTreeFrame
+	 * @return : String representing this nodes data after calling data.toString();
 	 */
 	@Override
 	public String toString() {
+		return root.data.toString();
+	}
+
+	/**
+	 * Public wrapper for BinarySearchTreeND toString() that prints a text tree to console.
+	 * @return : Text based representation of the AVL tree.
+	 */
+	public String toTreeString() {
 		if(root == null) return null;
 		return super.toString(root);
 	}
@@ -211,6 +267,29 @@ public class AVLTree<T extends Comparable<? super T>> extends BinarySearchTreeND
 	 */
 	public String toString(TreeTraversalOrder type) {
 		return super.toString(type.getMap(), root);
+	}
+
+	/**
+	 * MyTreeIf implemented method for using this tree with MyDrawTreeFrame
+	 * @return : List of subtree children objects of type AVLTree<T>
+	 */
+	@Override
+	public List<MyTreeIF> getChildren() {
+		nodes = new ArrayList<>();
+
+		if(root.left == null && root.right == null) return nodes;
+
+		if(root.left != null)
+			nodes.add(new AVLTree<>(root.left));
+		else
+			nodes.add(new AVLTree<String>("empty"));
+
+		if(root.right != null)
+			nodes.add(new AVLTree<>(root.right));
+		else
+			nodes.add(new AVLTree<String>("empty"));
+
+		return nodes;
 	}
 
 	/**
