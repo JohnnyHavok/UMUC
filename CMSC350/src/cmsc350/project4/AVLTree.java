@@ -1,5 +1,7 @@
 package cmsc350.project4;
 
+import java.util.Collection;
+
 /**
  * Name: Justin Smith
  * CMSC 350
@@ -15,10 +17,27 @@ public class AVLTree<T extends Comparable<? super T>> extends BinarySearchTreeND
 	private int insertCount; // Counts total number of inserts
 	private int size; // Size of the tree
 
+	// Default constructor
 	public AVLTree() {
 		root = null;
 		insertCount = 0;
 		size = 0;
+	}
+
+	// Convenience constructor that takes an iterable collection of T
+	public AVLTree(Collection<T> c) {
+		root = null;
+		insertCount = 0;
+		size = 0;
+		for(T t: c) this.insert(t);
+	}
+
+	// Convenience constructor that takes an array of T
+	public AVLTree(T[] a) {
+		root = null;
+		insertCount = 0;
+		size = 0;
+		for(T t: a) this.insert(t);
 	}
 
 	@Override

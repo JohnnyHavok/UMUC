@@ -8,8 +8,6 @@ package cmsc350.project4;
  * Requires: J2SE 7+
  */
 
-import javafx.beans.property.IntegerProperty;
-
 import java.util.List;
 import java.util.ArrayList;
 
@@ -27,37 +25,24 @@ public class Project4 implements  MyTreeIF {
 //			System.out.println(avlt);
 //		}
 
-		AVLTree<Integer> avlt = new AVLTree<>();
 
 //		Integer[] a = {5, 3, 10, 13, 7, 15}; // - Make left rotation
 //		Integer[] a = {13, 7, 15, 5, 10, 3}; // - Make right rotation
 //		Integer[] a = {13, 5, 15, 3, 7, 10}; // - Make left-right rotation
 		Integer[] a = {5, 3, 13, 10, 15, 7}; // - Make right-left rotation
-		for(Integer i : a) {
-			avlt.insert(i);
-		}
+//		for(Integer i : a) {
+//			avlt.insert(i);
+//		}
 
-		avlt.remove(5);
-		System.out.println(avlt.toString(TreeTraversalOrder.LEVELORDER));
-		System.out.println(avlt.toString());
+		AVLTree<Integer> avlt = new AVLTree<>(a);
 
-//		System.out.println(avlt);
 
-//		BinarySearchTreeND<String> bs = new BinarySearchTreeND<>();
-//		bs.insert("N");
-//		bs.insert("M");
-//		bs.insert("P");
-//		bs.insert("O");
-//		bs.insert("Q");
-//		System.out.println(bs.toString(4));
-//		System.out.println(bs);
-//
-//		Project4 p = new Project4();
-//		p.setValuesA();
-//		System.out.print("P's Nodes> ");
-//		System.out.println(p.nodes.toString());
-//
-//		MyDrawTreeFrame mdtf1 = new MyDrawTreeFrame (p, "close this frame to exit");
+		Project4 p = new Project4();
+		p.setValuesA();
+		System.out.print("P's Nodes> ");
+		System.out.println(p.nodes.toString());
+
+		MyDrawTreeFrame mdtf1 = new MyDrawTreeFrame (p, "close this frame to exit");
 	}
 
 	Project4 () {
