@@ -53,8 +53,8 @@ package cmsc350.project4;
 //    import java.util.ArrayDeque;
 */
 
-   public class BinarySearchTreeND 
-      < K extends Comparable < ? super K > > 
+   public class BinarySearchTreeND
+      < K extends Comparable < ? super K > >
       // ANY class that extends the base comparable type (K)
       // of this data structure instance may be inserted
    {
@@ -63,7 +63,7 @@ package cmsc350.project4;
       static final int POSTORDER  = 3; // select toString (int)
       static final int LEVELORDER = 4; // select toString (int)
       static final int DEPTHDELTA = 5; // used to create a text tree display
-   
+
       public static void main (String args []) {
          BinarySearchTreeND < Integer > x = new BinarySearchTreeND < Integer > ();
 //          int arr [] = {40, 20, 60, 10, 30, 50, 70, 5, 15, 25, 35, 45, 55, 65, 75};
@@ -99,75 +99,75 @@ package cmsc350.project4;
 
       } // end main
 
-	  private BSTNodeND < K > root = null;
-   
+      private BSTNodeND < K > root = null;
+
       public void insert (K d) {
          if (root == null) root = new BSTNodeND < K > (d);
          else insertValue (d, root);
       } // end insert, public version
-   
+
       public K find (K d) {
-         if (root == null) 
+         if (root == null)
             return null;
          BSTNodeND < K > t = findValue (d, root);
          return (t==null)?null:t.data;
       } // end find method
-      
+
       public K max () {
-         if (root == null) 
+         if (root == null)
             return null;
          return findMax(root).data;
       } // end max method
-   
+
       public int getSize () {
          return getSize (root);}
-   
+
       public void remove (K d) {
          root = remove (d, root);
       } // end remove data
-   
+
       public String toString () {
-         if (root == null) 
+         if (root == null)
             return null;
          return toString(root);}
-         
+
       public String toString (int ord) {
-         if (root == null) 
+         if (root == null)
             return null;
          return toString(ord, root);}
-   
+
       private void insertValue (K d, BSTNodeND < K > n) {
-         if (d.compareTo (n.data)  > 0) 
+         if (d.compareTo (n.data)  > 0)
             if (n.right == null) n.right = new BSTNodeND < K > (d, n);
             else insertValue (d, n.right);
-         else 
+         else
             if (n.left == null) n.left = new BSTNodeND < K > (d, n);
             else insertValue (d, n.left);
       } // end method insertValue
-      
+
       private BSTNodeND < K > findValue (K d, BSTNodeND < K > n) {
-         if (n.data.compareTo(d) == 0) 
+         if (n.data.compareTo(d) == 0)
             return n;
-         if (n.data.compareTo (d) > 0) 
+         if (n.data.compareTo (d) > 0)
             return (n.left==null)?null:findValue (d, n.left);
          return (n.right == null)?null:findValue(d, n.right);
       } // end findValue
-      
+
       private BSTNodeND < K > findMax (BSTNodeND < K > n) {
-         if (n.right == null) 
+         if (n.right == null)
             return n;
          return findMax(n.right);
       } // end findValue
-      
+
       private int getSize (BSTNodeND < K > t) {
-         if (t == null) 
+         if (t == null)
             return 0;
          return getSize (t.left) + getSize (t.right) + 1;
       } // end getSize node
-      
+
       private BSTNodeND < K > removeRoot (BSTNodeND < K > t) {
          if (t.left  == null) {
-            if (t.right != null) 
+            if (t.right != null)
                t.right.parent = t.parent;
             return t.right;
          }
@@ -180,25 +180,25 @@ package cmsc350.project4;
          t.data = newTop.data;    // just replace the data at the internal node
          return t;
       } // end remove data, tree
-   
+
       private BSTNodeND < K > remove (K d, BSTNodeND < K > t) {
-         if (t == null) 
+         if (t == null)
             return null;
-         if (d.compareTo (t.data) < 0) 
+         if (d.compareTo (t.data) < 0)
             t.left  = remove (d, t.left );
-         else 
-            if (d.compareTo (t.data)> 0) 
+         else
+            if (d.compareTo (t.data)> 0)
                t.right = remove (d, t.right);
             else // d equals t.data
                t = removeRoot (t);
          return t;
       } // end remove data, tree
 
-	   // Changed to protected for my subclass - JS
+       // Changed to protected for my subclass - JS
       protected String toString (BSTNodeND n) {
          return toTreeString (5, n);
       } // end toString
-         
+
       private String toTreeString (int depth, BSTNodeND n) { // depth = 0 is bad
          StringBuffer st = new StringBuffer ();
          char d = '\\';                         // default = this is right child
@@ -209,7 +209,7 @@ package cmsc350.project4;
          st.append ((n.right == null)?"":toTreeString (depth + DEPTHDELTA, n.right));
          return st.toString();
       } // end method toTreeString
-         
+
       private String toInOrderString (BSTNodeND n) {
          StringBuffer st = new StringBuffer ();
          st.append ((n.left  == null)?"":toInOrderString(n.left));
@@ -217,7 +217,7 @@ package cmsc350.project4;
          st.append ((n.right == null)?"":toInOrderString(n.right));
          return st.toString();
       } // end toInOrderString
-         
+
       private String toPreOrderString (BSTNodeND n) {
          StringBuffer st = new StringBuffer ();
          st.append (n.data + " " );
@@ -225,7 +225,7 @@ package cmsc350.project4;
          st.append ((n.right == null)?"":toPreOrderString(n.right));
          return st.toString();
       } // end toPreOrderString
-         
+
       private String toPostOrderString (BSTNodeND n) {
          StringBuffer st = new StringBuffer ();
          st.append ((n.left  == null)?"":toPostOrderString(n.left));
@@ -233,15 +233,15 @@ package cmsc350.project4;
          st.append (n.data + " ");
          return st.toString();
       } // end to PostOrderString
-         
+
          // See: http://en.wikipedia.org/wiki/Tree_traversal
       private String toLevelOrderString (BSTNodeND n) {
          StringBuffer st = new StringBuffer ();
          BSTNodeND node;
-         java.util.ArrayDeque < BSTNodeND > q 
+         java.util.ArrayDeque < BSTNodeND > q
                = new java.util.ArrayDeque < BSTNodeND > ();
          q.add (n);          // start queue by adding this (root?) to queue
-         while (q.size() > 0) { 
+         while (q.size() > 0) {
             node = q.remove();                          // remove the head of queue
             st.append (node.data + " ");                // process head data to String
             if (node.left != null) q.add (node.left);   // insert left child at end of queue
@@ -253,18 +253,18 @@ package cmsc350.project4;
       protected String toString (int order, BSTNodeND n) {
          String st = null;
          switch (order) {
-            case INORDER:    st = toInOrderString   (n); 
+            case INORDER:    st = toInOrderString   (n);
                break;
-            case PREORDER:   st = toPreOrderString  (n); 
+            case PREORDER:   st = toPreOrderString  (n);
                break;
-            case POSTORDER:  st = toPostOrderString (n); 
+            case POSTORDER:  st = toPostOrderString (n);
                break;
-            case LEVELORDER: st = toLevelOrderString(n); 
+            case LEVELORDER: st = toLevelOrderString(n);
                break;
          }
          return st;
       } // end toString int
-      
+
    } // end class BinarySearchTreeND
 
    class BSTNodeND
@@ -287,17 +287,17 @@ package cmsc350.project4;
 // Notice the use of the generic parameter Example
    class Example implements Comparable < Example > {
       String data;
-    
+
       public Example (String d) {
          data = d;}
-    
+
    // you, of course, will want a more interesting compareTo method
       public int compareTo (Example e) {
          return data.compareTo (e.data);
       } // end compareTo method
-      
+
       public String toString () {
          return data;
       } // end toString
-   
+
    } // end class Example

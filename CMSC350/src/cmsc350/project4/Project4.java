@@ -16,121 +16,121 @@ import java.util.Random;
  */
 
 public class Project4 {
-	public static void main (String[] args) { new Project4(); }
+    public static void main (String[] args) { new Project4(); }
 
-	Integer[][] bookTestCases = { 	{5, 3, 10, 13, 7, 15},		// - Make left rotation
-									{13, 7, 15, 5, 10, 3},		// - Make right rotation
-									{13, 5, 15, 3, 7, 10},		// - Make left-right rotation
-									{5, 3, 13, 10, 15, 7} };	// - Make right-left rotation
+    Integer[][] bookTestCases = { 	{5, 3, 10, 13, 7, 15},		// - Make left rotation
+                                    {13, 7, 15, 5, 10, 3},		// - Make right rotation
+                                    {13, 5, 15, 3, 7, 10},		// - Make left-right rotation
+                                    {5, 3, 13, 10, 15, 7} };	// - Make right-left rotation
 
-	BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-	List<MyDrawTreeFrame> windowList;
+    BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+    List<MyDrawTreeFrame> windowList;
 
-	private Project4() {
-		windowList = new ArrayList<>();
-		System.out.println("AVLTree algorithm builder");
+    private Project4() {
+        windowList = new ArrayList<>();
+        System.out.println("AVLTree algorithm builder");
 
-		boolean quit = false;
-		int input;
+        boolean quit = false;
+        int input;
 
-		while(!quit) {
-			System.out.println("\nSelect Option:\n" +
-					"\t(1) Use prebuilt left rotation simulator\n" +
-					"\t(2) Use prebuilt right rotation simulator\n" +
-					"\t(3) Use prebuilt left-right rotation simulator\n" +
-					"\t(4) Use prebuilt right-left rotation simulator\n" +
-					"\t(5) Free text input\n" +
-					"\t(6) Create large random integer array\n" +
-					"\t(0) Quit");
-			System.out.print("Choose > ");
-			input = getNextInt();
+        while(!quit) {
+            System.out.println("\nSelect Option:\n" +
+                    "\t(1) Use prebuilt left rotation simulator\n" +
+                    "\t(2) Use prebuilt right rotation simulator\n" +
+                    "\t(3) Use prebuilt left-right rotation simulator\n" +
+                    "\t(4) Use prebuilt right-left rotation simulator\n" +
+                    "\t(5) Free text input\n" +
+                    "\t(6) Create large random integer array\n" +
+                    "\t(0) Quit");
+            System.out.print("Choose > ");
+            input = getNextInt();
 
-			switch(input) {
-				case 1 :
-					runBookArray(0);
-					break;
-				case 2 :
-					runBookArray(1);
-					break;
-				case 3 :
-					runBookArray(2);
-					break;
-				case 4 :
-					runBookArray(3);
-					break;
-				case 5 :
-					runFreeText();
-					break;
-				case 6 :
-					System.out.print("Enter size of array > ");
-					runLargeArray(getNextInt());
-					break;
-				case 0 :
-					quit = true;
-					break;
-				default :
-					System.out.println("Invalid option, try again");
-			}
-		}
+            switch(input) {
+                case 1 :
+                    runBookArray(0);
+                    break;
+                case 2 :
+                    runBookArray(1);
+                    break;
+                case 3 :
+                    runBookArray(2);
+                    break;
+                case 4 :
+                    runBookArray(3);
+                    break;
+                case 5 :
+                    runFreeText();
+                    break;
+                case 6 :
+                    System.out.print("Enter size of array > ");
+                    runLargeArray(getNextInt());
+                    break;
+                case 0 :
+                    quit = true;
+                    break;
+                default :
+                    System.out.println("Invalid option, try again");
+            }
+        }
 
-		System.out.println("Finished - Cleaning up before exiting.");
-		for(MyDrawTreeFrame f: windowList)
-			f.dispose();
-	}
+        System.out.println("Finished - Cleaning up before exiting.");
+        for(MyDrawTreeFrame f: windowList)
+            f.dispose();
+    }
 
-	private void runBookArray(int flag) {
-		AVLTree<Integer> avlt = new AVLTree<>(bookTestCases[flag]);
-		avlt.printTreeStats();
-		windowList.add(new MyDrawTreeFrame(avlt, "Final Tree", false));
-	}
+    private void runBookArray(int flag) {
+        AVLTree<Integer> avlt = new AVLTree<>(bookTestCases[flag]);
+        avlt.printTreeStats();
+        windowList.add(new MyDrawTreeFrame(avlt, "Final Tree", false));
+    }
 
-	private void runFreeText() {
-		List<String> input = new ArrayList<>();
-		System.out.println("Free text mode selected.  Enter one string per line.  When finished enter a blank line");
-		boolean read = true;
-		while(read) {
-			String s = getNextString();
-			if(s == null) read = false;
-			else input.add(s);
-		}
-		AVLTree<String> avlt = new AVLTree<>(input);
-		avlt.printTreeStats();
-		windowList.add(new MyDrawTreeFrame(avlt, "Final Tree", false));
-	}
+    private void runFreeText() {
+        List<String> input = new ArrayList<>();
+        System.out.println("Free text mode selected.  Enter one string per line.  When finished enter a blank line");
+        boolean read = true;
+        while(read) {
+            String s = getNextString();
+            if(s == null) read = false;
+            else input.add(s);
+        }
+        AVLTree<String> avlt = new AVLTree<>(input);
+        avlt.printTreeStats();
+        windowList.add(new MyDrawTreeFrame(avlt, "Final Tree", false));
+    }
 
-	private void runLargeArray(int size) {
-		Integer[] a = new Integer[size];
-		Random ran = new Random();
-		System.out.println("Creating Random Array");
-		for(int i = 0; i < size; i++)
-			a[i] = ran.nextInt();
-		AVLTree<Integer> avlt = new AVLTree<>(a);
-		avlt.printTreeStats();
-		windowList.add(new MyDrawTreeFrame(avlt, "Final Tree", false));
-	}
+    private void runLargeArray(int size) {
+        Integer[] a = new Integer[size];
+        Random ran = new Random();
+        System.out.println("Creating Random Array");
+        for(int i = 0; i < size; i++)
+            a[i] = ran.nextInt();
+        AVLTree<Integer> avlt = new AVLTree<>(a);
+        avlt.printTreeStats();
+        windowList.add(new MyDrawTreeFrame(avlt, "Final Tree", false));
+    }
 
-	private int getNextInt() {
-		do {
-			try {
-				return Integer.parseInt(in.readLine());
-			} catch (IOException e) {
-				System.out.println("Error thrown from getNextInt input");
-				e.printStackTrace();
-			} catch (NumberFormatException e) {
-				System.out.print("Enter numbers only, please try again > ");
-			}
-		} while(true);
-	}
+    private int getNextInt() {
+        do {
+            try {
+                return Integer.parseInt(in.readLine());
+            } catch (IOException e) {
+                System.out.println("Error thrown from getNextInt input");
+                e.printStackTrace();
+            } catch (NumberFormatException e) {
+                System.out.print("Enter numbers only, please try again > ");
+            }
+        } while(true);
+    }
 
-	private String getNextString() {
-		String s = null;
-		try {
-			s = in.readLine();
-			if(s.length() == 0) return null;
-		} catch (IOException e) {
-			System.out.println("Thrown from getNextString() on user input");
-			e.printStackTrace();
-		}
-		return s;
-	}
+    private String getNextString() {
+        String s = null;
+        try {
+            s = in.readLine();
+            if(s.length() == 0) return null;
+        } catch (IOException e) {
+            System.out.println("Thrown from getNextString() on user input");
+            e.printStackTrace();
+        }
+        return s;
+    }
 }

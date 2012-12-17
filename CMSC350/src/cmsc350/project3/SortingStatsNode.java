@@ -10,37 +10,37 @@ package cmsc350.project3;
 
 
 public class SortingStatsNode implements Comparable<SortingStatsNode> {
-	private String name;
-	private int recursiveCalls;
-	private long comparisons, swaps;
-	private double runTime;
+    private String name;
+    private int recursiveCalls;
+    private long comparisons, swaps;
+    private double runTime;
 
-	public SortingStatsNode(String name) {
-		this.name = name;
-		recursiveCalls = 0;
-		comparisons = swaps = 0;
-	}
+    public SortingStatsNode(String name) {
+        this.name = name;
+        recursiveCalls = 0;
+        comparisons = swaps = 0;
+    }
 
-	public String getName() { return name; }
+    public String getName() { return name; }
 
-	public double getRunTime() { return runTime; }
-	public void setRunTime(double runTime) { this.runTime = runTime; }
+    public double getRunTime() { return runTime; }
+    public void setRunTime(double runTime) { this.runTime = runTime; }
 
-	public long getComparisons() { return comparisons; }
-	public void setComparisons(long comparisons) { this.comparisons = comparisons; }
+    public long getComparisons() { return comparisons; }
+    public void setComparisons(long comparisons) { this.comparisons = comparisons; }
 
-	public int getRecursiveCalls() { return recursiveCalls; }
-	public void setRecursiveCalls(int recursiveCalls) { this.recursiveCalls = recursiveCalls; }
+    public int getRecursiveCalls() { return recursiveCalls; }
+    public void setRecursiveCalls(int recursiveCalls) { this.recursiveCalls = recursiveCalls; }
 
-	public long getSwaps() { return swaps; }
-	public void setSwaps(long swaps) { this.swaps = swaps; }
+    public long getSwaps() { return swaps; }
+    public void setSwaps(long swaps) { this.swaps = swaps; }
 
-	@Override
-	public int compareTo(SortingStatsNode o) {
-		if(this.runTime < o.getRunTime())
-			return -1;
-		if(this.runTime > o.getRunTime())
-			return 1;
-		return 0;
-	}
+    @Override
+    public int compareTo(SortingStatsNode o) {
+        if(this.runTime < o.getRunTime())
+            return -1;
+        if(this.runTime > o.getRunTime())
+            return 1;
+        return 0;
+    }
 }
