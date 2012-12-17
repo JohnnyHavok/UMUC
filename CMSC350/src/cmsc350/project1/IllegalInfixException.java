@@ -8,6 +8,6 @@ package cmsc350.project1;
 
 @SuppressWarnings("serial")
 public class IllegalInfixException extends Exception {
-	public IllegalInfixException() { super(); }
-	public IllegalInfixException(String s) { super(s); }
+    public IllegalInfixException() { super(); }
+    public IllegalInfixException(String s) { super(s); }
 }

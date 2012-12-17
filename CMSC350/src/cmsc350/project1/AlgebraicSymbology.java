@@ -11,13 +11,13 @@ package cmsc350.project1;
  *
  */
 public interface AlgebraicSymbology {
-	/**
-	 * @return Algebraic Precedence Order Value
-	 */
-	int getPrecedence();
-	
-	/**
-	 * @return Standard human recognizable symbology for given non-number algebraic token 
-	 */
-	String toString();
+    /**
+     * @return Algebraic Precedence Order Value
+     */
+    int getPrecedence();
+
+    /**
+     * @return Standard human recognizable symbology for given non-number algebraic token
+     */
+    String toString();
 }
