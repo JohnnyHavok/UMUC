@@ -18,10 +18,10 @@ import java.util.Random;
 public class Project4 {
     public static void main (String[] args) { new Project4(); }
 
-    Integer[][] bookTestCases = { 	{5, 3, 10, 13, 7, 15},		// - Make left rotation
-                                    {13, 7, 15, 5, 10, 3},		// - Make right rotation
-                                    {13, 5, 15, 3, 7, 10},		// - Make left-right rotation
-                                    {5, 3, 13, 10, 15, 7} };	// - Make right-left rotation
+    Integer[][] bookTestCases = {{5, 3, 10, 13, 7, 15},     // - Make left rotation
+                                 {13, 7, 15, 5, 10, 3},     // - Make right rotation
+                                 {13, 5, 15, 3, 7, 10},     // - Make left-right rotation
+                                 {5, 3, 13, 10, 15, 7}};    // - Make right-left rotation
 
     BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
     List<MyDrawTreeFrame> windowList;
