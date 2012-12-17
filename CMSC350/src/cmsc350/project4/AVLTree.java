@@ -21,12 +21,15 @@ public class AVLTree<T extends Comparable<? super T>> extends BinarySearchTreeND
 	private List<T> objectTraverseList; // Traverse list that holds contents of tree for getPreOrderList()
 	List<MyTreeIF> nodes; // List of nodes generated when getChildren() is called.
 
+	private int rotateCount; // Counts number of times a rotation occurred on this tree.
+
 
 	// Default constructor
 	public AVLTree() {
 		root = null;
 		insertCount = 0;
 		size = 0;
+		rotateCount = 0;
 	}
 
 	// Convenience constructor that takes an iterable collection of T
@@ -34,6 +37,7 @@ public class AVLTree<T extends Comparable<? super T>> extends BinarySearchTreeND
 		root = null;
 		insertCount = 0;
 		size = 0;
+		rotateCount = 0;
 		for(T t: c) this.insert(t);
 	}
 
@@ -42,6 +46,7 @@ public class AVLTree<T extends Comparable<? super T>> extends BinarySearchTreeND
 		root = null;
 		insertCount = 0;
 		size = 0;
+		rotateCount = 0;
 		for(T t: a) this.insert(t);
 	}
 
@@ -76,7 +81,7 @@ public class AVLTree<T extends Comparable<? super T>> extends BinarySearchTreeND
 	 * of visited nodes on the execution stack.
 	 * Step (2) : As the execution stack decompresses update a balance factor that is the difference in children
 	 * heights.
-	 * Step (3) : If there is a balance factor that is equal to 2 down the path we took last we know that the newly
+	 * Step (3) : If there is a balance factor that is +/- 2 down the path we took last we know that the newly
 	 * inserted node has caused an unbalanced tree.
 	 * Step (4) : Determine if the corrective rotation is a single or double rotation based on the path the node took
 	 * to reach it's final spot.
@@ -116,9 +121,9 @@ public class AVLTree<T extends Comparable<? super T>> extends BinarySearchTreeND
 			System.out.println("|--("+opCount+") Insert ["+n.data+"] -right of- "+"["+r.data+"]");
 			n.parent = r; // Keep updating n on it's new parent until bottom is found
 			r.right = insert(n, r.right); // Recursively locate the bottom of tree
-			balanceFactor = height(r.right) - height(r.left);
+			balanceFactor = height(r.left) - height(r.right);
 			System.out.println("|---("+ ++opCount +") Checking balance factor of ["+r.data+"] is "+balanceFactor);
-			if(balanceFactor == 2) {
+			if(balanceFactor == -2) {
 				System.out.print("|----("+ ++opCount +") Balance factor of ["+r.data+"] is off ");
 				if(n.data.compareTo(r.right.data) > 0) {
 					System.out.println("due to an imbalance in the right subtree of the right child of ["+r.data+"]");
@@ -146,6 +151,7 @@ public class AVLTree<T extends Comparable<? super T>> extends BinarySearchTreeND
 	 * @return : New root AVLNode
 	 */
 	private AVLNode<T> rRotation(BSTNodeND<T> r) { // Right Rotation
+		++rotateCount;
 		System.out.println("|-----("+ ++opCount +") <START> Right rotation around ["+r.data+"]");
 		AVLNode<T> n = (AVLNode<T>) r.left; // (1) Copy reference old-root->left = new-root
 		System.out.println("|-----("+ ++opCount +") New root will be ["+n.data+"]");
@@ -169,6 +175,7 @@ public class AVLTree<T extends Comparable<? super T>> extends BinarySearchTreeND
 	 * @return : New root AVLNode
 	 */
 	private AVLNode<T> lRotation(BSTNodeND<T> r) { // Left Rotation
+		++rotateCount;
 		System.out.println("|-----("+ ++opCount +") <START> Left rotation around ["+r.data+"]");
 		AVLNode<T> n = (AVLNode<T>) r.right; // (1) Copy reference old-root->right = new-root
 		System.out.println("|-----("+ ++opCount +") New root will be ["+n.data+"]");
@@ -290,6 +297,13 @@ public class AVLTree<T extends Comparable<? super T>> extends BinarySearchTreeND
 			nodes.add(new AVLTree<String>("empty"));
 
 		return nodes;
+	}
+
+	public void printTreeStats() {
+		System.out.println("\nAVL Tree Stats:");
+		System.out.println("This tree contains "+size+" elements");
+		System.out.println("This tree has had "+insertCount+" inserts");
+		System.out.println("This tree has undergone "+rotateCount+" rotations\n");
 	}
 
 	/**

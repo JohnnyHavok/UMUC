@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Name: Justin Smith
@@ -39,6 +40,7 @@ public class Project4 {
 					"\t(3) Use prebuilt left-right rotation simulator\n" +
 					"\t(4) Use prebuilt right-left rotation simulator\n" +
 					"\t(5) Free text input\n" +
+					"\t(6) Create large random integer array\n" +
 					"\t(0) Quit");
 			System.out.print("Choose > ");
 			input = getNextInt();
@@ -59,6 +61,10 @@ public class Project4 {
 				case 5 :
 					runFreeText();
 					break;
+				case 6 :
+					System.out.print("Enter size of array > ");
+					runLargeArray(getNextInt());
+					break;
 				case 0 :
 					quit = true;
 					break;
@@ -67,24 +73,40 @@ public class Project4 {
 			}
 		}
 
+		System.out.println("Finished - Cleaning up before exiting.");
 		for(MyDrawTreeFrame f: windowList)
 			f.dispose();
 	}
 
 	private void runBookArray(int flag) {
-		windowList.add(new MyDrawTreeFrame(new AVLTree<>(bookTestCases[flag]), "Final Tree", false));
+		AVLTree<Integer> avlt = new AVLTree<>(bookTestCases[flag]);
+		avlt.printTreeStats();
+		windowList.add(new MyDrawTreeFrame(avlt, "Final Tree", false));
 	}
 
 	private void runFreeText() {
 		List<String> input = new ArrayList<>();
-		System.out.println("Free text mode selected.  Enter one string per line");
+		System.out.println("Free text mode selected.  Enter one string per line.  When finished enter a blank line");
 		boolean read = true;
 		while(read) {
 			String s = getNextString();
 			if(s == null) read = false;
 			else input.add(s);
 		}
-		windowList.add(new MyDrawTreeFrame(new AVLTree<>(input), "Final Tree", false));
+		AVLTree<String> avlt = new AVLTree<>(input);
+		avlt.printTreeStats();
+		windowList.add(new MyDrawTreeFrame(avlt, "Final Tree", false));
+	}
+
+	private void runLargeArray(int size) {
+		Integer[] a = new Integer[size];
+		Random ran = new Random();
+		System.out.println("Creating Random Array");
+		for(int i = 0; i < size; i++)
+			a[i] = ran.nextInt();
+		AVLTree<Integer> avlt = new AVLTree<>(a);
+		avlt.printTreeStats();
+		windowList.add(new MyDrawTreeFrame(avlt, "Final Tree", false));
 	}
 
 	private int getNextInt() {
