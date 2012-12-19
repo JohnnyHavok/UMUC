@@ -18,11 +18,9 @@ public class AVLTree<T extends Comparable<? super T>> extends BinarySearchTreeND
     private int opCount; // Counts number of operations between inserts
     private int insertCount; // Counts total number of inserts
     private int size; // Size of the tree
-    private List<T> objectTraverseList; // Traverse list that holds contents of tree for getPreOrderList()
-    List<MyTreeIF> nodes; // List of nodes generated when getChildren() is called.
-
     private int rotateCount; // Counts number of times a rotation occurred on this tree.
 
+    private List<T> objectTraverseList; // Traverse list that holds contents of tree for getPreOrderList()
 
     // Default constructor
     public AVLTree() {
@@ -52,6 +50,7 @@ public class AVLTree<T extends Comparable<? super T>> extends BinarySearchTreeND
 
     // Private constructors for building node list through getChildren()
     private AVLTree(BSTNodeND<T> t) { this.root = t; }
+    @SuppressWarnings("Unchecked")
     private AVLTree(String s) { root = new AVLNode<>((T) s); } // Not safe, never use in a tree! List only!
 
     /**
@@ -107,7 +106,7 @@ public class AVLTree<T extends Comparable<? super T>> extends BinarySearchTreeND
             balanceFactor = height(r.left) - height(r.right);
             System.out.println("|---("+ ++opCount +") Checking balance factor of ["+r.data+"] is "+balanceFactor);
             if(balanceFactor == 2) {
-                System.out.print("|----("+ ++opCount +") Balance factor of ["+r.data+"] is off");
+                System.out.print("|----("+ ++opCount +") Balance factor of ["+r.data+"] is off ");
                 if(n.data.compareTo(r.left.data) < 0) {
                     System.out.println("due to an imbalance in the left subtree of the left child of ["+r.data+"]");
                     r = rRotation(r);
@@ -280,9 +279,8 @@ public class AVLTree<T extends Comparable<? super T>> extends BinarySearchTreeND
      * MyTreeIf implemented method for using this tree with MyDrawTreeFrame
      * @return : List of subtree children objects of type AVLTree<T>
      */
-    @Override
     public List<MyTreeIF> getChildren() {
-        nodes = new ArrayList<>();
+        List<MyTreeIF> nodes = new ArrayList<>();
 
         if(root.left == null && root.right == null) return nodes;
 
