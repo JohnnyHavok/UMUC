@@ -8,6 +8,7 @@
 
 
 public class HeapSort implements SortInterface {
+    public HeapSort() {}
 
     public static void main(String[] args) {
         HeapSort sorter = new HeapSort();
@@ -25,49 +26,71 @@ public class HeapSort implements SortInterface {
         System.out.println();
     }
 
-    public HeapSort() {}
-
+    /**
+     * Sourced from: http://en.wikibooks.org/wiki/Algorithm_implementation/Sorting/Heapsort#Java_2
+     * Precondition: A complete array of integers, no null elements
+     * Postcondition: A sorted (in place) array of integers
+     * @param array The array to be sorted
+     * @throws UnsortedException Indicates that the array was not successfully
+     * sorted by this algorithm.
+     */
     @Override
-    public void iterativeSort(int[] list) throws UnsortedException {
-        for(int i = list.length; i > 1; i--)
-            iterativeSort(list, i - 1);
-    }
-
-    private static void iterativeSort(int[] a, int n) {
-        int i, o;
-        int lChild, rChild, mChild, root, temp;
-        root = (n - 1)/2;
-
-        for(o = root; o >= 0; o--) {
-            for(i = root; i >= 0; i--) {
-                lChild = 2 * i + 1;
-                rChild = 2 * i + 2;
-
-                if((lChild <= n) && (rChild <= n)) {
-                    if(a[rChild] >= a[lChild])
-                        mChild = rChild;
-                    else mChild = lChild;
-                } else {
-                    if(rChild > n)
-                        mChild = lChild;
-                    else
-                        mChild = rChild;
+    public void iterativeSort(int[] array) throws UnsortedException {
+    /* Insertion onto heap */
+        for (int heapsize=0; heapsize<array.length; heapsize++) {
+        /* Step one in adding an element to the heap in the
+         * place that element at the end of the heap array-
+         * in this case, the element is already there. */
+            int n = heapsize; // the index of the inserted int
+            while (n > 0) { // until we reach the root of the heap
+                int p = (n-1)/2; // the index of the parent of n
+                if (array[n] > array[p]) { // child is larger than parent
+                    arraySwap(array, n, p); // swap child with parent
+                    n = p; // check parent
                 }
+                else // parent is larger than child
+                    break; // all is good in the heap
+            }
+        }
 
-                if(a[i] < a[mChild]) {
-                    temp = a[i];
-                    a[i] = a[mChild];
-                    a[mChild] = temp;
+    /* Removal from heap */
+        for (int heapsize=array.length; heapsize>0;) {
+            arraySwap(array, 0, --heapsize); // swap root with the last heap element
+            int n = 0; // index of the element being moved down the tree
+            while (true) {
+                int left = (n*2)+1;
+                if (left >= heapsize) // node has no left child
+                    break; // reached the bottom; heap is heapified
+                int right = left+1;
+                if (right >= heapsize) { // node has a left child, but no right child
+                    if (array[left] > array[n]) // if left child is greater than node
+                        arraySwap(array, left, n); // swap left child with node
+                    break; // heap is heapified
+                }
+                if (array[left] > array[n]) { // (left > n)
+                    if (array[left] > array[right]) { // (left > right) & (left > n)
+                        arraySwap(array, left, n);
+                        n = left; continue; // continue recursion on left child
+                    } else { // (right > left > n)
+                        arraySwap(array, right, n);
+                        n = right; continue; // continue recursion on right child
+                    }
+                } else { // (n > left)
+                    if (array[right] > array[n]) { // (right > n > left)
+                        arraySwap(array, right, n);
+                        n = right; continue; // continue recursion on right child
+                    } else { // (n > left) & (n > right)
+                        break; // node is greater than both children, so it's heapified
+                    }
                 }
             }
         }
-        temp = a[0];
-        a[0] = a[n];
-        a[n] = temp;
     }
+
 
     @Override
     public void recursiveSort(int[] list) throws UnsortedException {
+
     }
 
     @Override
@@ -78,5 +101,17 @@ public class HeapSort implements SortInterface {
     @Override
     public long getTime() {
         return 0;
+    }
+
+    /**
+     * Swaps integer at array position at i with array position j.
+     * @param a Array to perform swap on
+     * @param i Index of an element to swap
+     * @param j Index of an element to swap
+     */
+    private static void arraySwap(int[] a, int i, int j) {
+        int temp = a[i];
+        a[i] = a[j];
+        a[j] = temp;
     }
 }
