@@ -12,18 +12,37 @@ public class HeapSort implements SortInterface {
 
     public static void main(String[] args) {
         HeapSort sorter = new HeapSort();
-        int[] test = {1, 3, 4, 5, 2, 5, 7, 6, 0, 13};
+        int[] base = {1, 3, 4, 5, 2, 5, 7, 6, 0, 13};
+        int[] itTest = new int[base.length];
+        int[] recTest = new int[base.length];
+
+        System.arraycopy(base, 0, itTest, 0, base.length);
 
         System.out.println("Running iterative heap sort");
         try {
-            sorter.iterativeSort(test);
+            sorter.iterativeSort(itTest);
         } catch (UnsortedException e) {
             e.printStackTrace();
         }
-        for(int i = 0; i < test.length; i++)
-            System.out.print(" " + test[i]);
+        for(int i = 0; i < itTest.length; i++)
+            System.out.print(" " + itTest[i]);
 
         System.out.println();
+
+        System.arraycopy(base, 0, recTest, 0, base.length);
+
+        System.out.println("Running recursive heap sort");
+        try {
+            sorter.recursiveSort(recTest);
+        } catch (UnsortedException e) {
+            e.printStackTrace();
+        }
+
+        for(int i = 0; i < recTest.length; i++)
+            System.out.print(" " + recTest[i]);
+
+        System.out.println();
+
     }
 
     /**
@@ -99,21 +118,77 @@ public class HeapSort implements SortInterface {
         System.out.println("Checking to see the iterative HeapSort method " +
                 "correctly sorted the array....");
 
-        for(int k = 0; k < array.length - 1; k++)
-            if(array[k] > array[k + 1])
-                throw new UnsortedException("The array was not sorted " +
-                    "correctly: \n" +
-                    array[k] + " > " + array[k+1] + " at indices " + k +
-                    " and " + k+1 + " respectively.");
+        try {
+            checkArray(array);
+        } catch (UnsortedException e) {
+            throw new UnsortedException(e.getMessage());
+        }
 
-        System.out.println("The array was correctly sorted by iterative the " +
+        System.out.println("The array was correctly sorted by the iterative " +
             "HeapSort method.");
     }
 
-
+    /**
+     * Source Attribution:
+     * Java implementation of Heap Sort Algorithm
+     * Introduction to Algorithms 3rd Edition (2009), Thomas H. Cormen (et al.)
+     *
+     * Precondition: A complete array of integers, no null elements
+     * Postcondition: A sorted (in place) array of integers
+     * @param array The array to be sorted
+     * @throws UnsortedException Indicates that the array was not successfully
+     * sorted by this algorithm.
+     */
     @Override
-    public void recursiveSort(int[] list) throws UnsortedException {
+    public void recursiveSort(int[] array) throws UnsortedException {
+    /* Turn array into a Max-Heap (in place) */
+        buildMaxHeap(array, array.length - 1);
 
+        for(int i = array.length - 1; i >= 1; i --) {
+            arraySwap(array, 0, i);
+            maxHeapify(array, 0, i - 1);
+        }
+
+
+    /* Check that array is sorted */
+        System.out.println("Checking to see the iterative HeapSort method " +
+                "correctly sorted the array....");
+
+        try {
+            checkArray(array);
+        } catch (UnsortedException e) {
+            throw new UnsortedException(e.getMessage());
+        }
+
+        System.out.println("The array was correctly sorted by the recursive " +
+                "HeapSort method.");
+    }
+
+    private static void buildMaxHeap(int[] a, int heapArea) {
+        for(int i = (int) Math.floor(heapArea/2); i >= 0; i --) {
+            maxHeapify(a, i, heapArea);
+        }
+    }
+
+    private static void maxHeapify(int[] a, int root, int heapArea) {
+        int left = root + 1; // Left child of root
+        int right = root + 2; // Right child of root
+        int max;
+
+        if(left <= heapArea && a[left] > a[root]) {
+            max = left;
+        } else {
+            max = root;
+        }
+
+        if(right <= heapArea && a[right] > a[max]) {
+            max = right;
+        }
+
+        if(max != root) {
+            arraySwap(a, root, max);
+            maxHeapify(a, max, heapArea);
+        }
     }
 
     @Override
@@ -136,5 +211,15 @@ public class HeapSort implements SortInterface {
         int temp = a[i];
         a[i] = a[j];
         a[j] = temp;
+    }
+
+    private static void checkArray(int[] a) throws UnsortedException {
+        for (int i = 0; i < a.length - 1; i++)
+            if(a[i] > a[i + 1]) {
+                throw new UnsortedException("The array was not sorted " +
+                        "correctly: \n" +
+                        a[i] + " > " + a[i+1] + " at indices " + i +
+                        " and " + (i+1) + " respectively.\n");
+            }
     }
 }
