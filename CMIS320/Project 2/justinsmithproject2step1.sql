@@ -69,7 +69,7 @@ CREATE TABLE Inventory_T (
 CONSTRAINT Inventory_PK PRIMARY KEY (InventoryID),
 CONSTRAINT Inventory_FK1 FOREIGN KEY (MovieID) REFERENCES Movies_T(MovieID),
 CONSTRAINT Inventory_FK2 FOREIGN KEY (DistributorID) REFERENCES Distributors_T(DistributorID),
-CONSTRAINT Inventory_FK3 FOREIGN KEY (SerialNumber) REFERENCES Catalogs_T(SerialNumber) );,
+CONSTRAINT Inventory_FK3 FOREIGN KEY (SerialNumber) REFERENCES Catalogs_T(SerialNumber) );
 -- TODO: Rethink this: CONSTRAINT Inventory_FK4 FOREIGN KEY (Format) REFERENCES Catalogs_T(Format) );
 -- End Inventory_T
 
