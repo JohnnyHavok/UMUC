@@ -1,0 +1,3 @@
+-- Project 2 SQL Step 4
+-- Justin Smith
+-- CMIS 320
