@@ -49,7 +49,7 @@ CONSTRAINT Distributors_PK PRIMARY KEY (DistributorID) );
 -- Begin Catalogs_T
 CREATE TABLE Catalogs_T (
     DistributorID   VARCHAR2(10)    NOT NULL,
-    SerialNumber    VARCHAR2(10)    NOT NULL,
+    SerialNumber    VARCHAR2(10)    UNIQUE NOT NULL,
     Format          CHAR(3)         NOT NULL,
     WholesaleCost   NUMBER(10,2)    NOT NULL,
 
@@ -59,12 +59,12 @@ CONSTRAINT Catalogs_FK FOREIGN KEY (DistributorID) REFERENCES Distributors_T(Dis
 
 -- Begin Inventory_T
 CREATE TABLE Inventory_T (
-    InventoryID     NUMBER(*,0)     NOT NULL,
-    Format          CHAR(3)         NOT NULL,
-    DateAdded       DATE DEFAULT (SYSDATE) NOT NULL,
-    MovieID         VARCHAR2(10)    NOT NULL,
-    DistributorID   VARCHAR2(10)    NOT NULL,
-    SerialNumber    VARCHAR2(10)    NOT NULL,
+    InventoryID     NUMBER(*,0)             NOT NULL,
+    Format          CHAR(3)                 NOT NULL,
+    DateAdded       DATE DEFAULT (SYSDATE)  NOT NULL,
+    MovieID         VARCHAR2(10)            NOT NULL,
+    DistributorID   VARCHAR2(10)            NOT NULL,
+    SerialNumber    VARCHAR2(10)            NOT NULL,
 
 CONSTRAINT Inventory_PK PRIMARY KEY (InventoryID),
 CONSTRAINT Inventory_FK1 FOREIGN KEY (MovieID) REFERENCES Movies_T(MovieID),
