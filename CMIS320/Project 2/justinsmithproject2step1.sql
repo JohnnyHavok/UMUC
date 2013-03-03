@@ -27,11 +27,11 @@ CONSTRAINT Customer_PK PRIMARY KEY (CustomerID) );
 
 -- Begin Movies_T
 CREATE TABLE Movies_T (
-    MovieID            VARCHAR2(10)    NOT NULL,
-    Title              VARCHAR2(20)    NOT NULL,
-    Genre              VARCHAR2(10)    NOT NULL,
+    MovieID            VARCHAR2(20)    NOT NULL,
+    Title              VARCHAR2(50)    NOT NULL,
+    Genre              VARCHAR2(15)    NOT NULL,
     Rating             VARCHAR2(6),
-    YearRelease        DATE            NOT NULL,
+    YearRelease        NUMBER(4,0)     NOT NULL,
 
 CONSTRAINT Movies_PK PRIMARY KEY (MovieID) );
 -- End Movies_T
@@ -41,7 +41,7 @@ CREATE TABLE Distributors_T (
     DistributorID   VARCHAR2(10)    NOT NULL,
     DistributorName VARCHAR2(15)    NOT NULL,
     AccountNumber   NUMBER(10, 0)   NOT NULL,
-    DiscountRate    NUMBER(3,2)     NOT NULL,
+    DiscountRate    NUMBER(4,2)     NOT NULL,
 
 CONSTRAINT Distributors_PK PRIMARY KEY (DistributorID) );
 -- End Distributors_T
