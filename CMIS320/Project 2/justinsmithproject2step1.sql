@@ -121,7 +121,53 @@ CONSTRAINT Fees_FK2 FOREIGN KEY (RentalOrderID) REFERENCES Rentals_T(RentalOrder
 CONSTRAINT Fees_FK3 FOREIGN KEY (InventoryID) REFERENCES Inventory_T(InventoryID) );
 -- End Fees_T
 
+-- Begin Awards_T
+CREATE TABLE Awards_T (
+    AwardName   VARCHAR2(10)    NOT NULL,
 
+CONSTRAINT Awards_PK PRIMARY KEY (AwardName) );
+-- End Awards_T
 
+-- Being Actors_T
+CREATE TABLE Actors_T (
+    ActorName   VARCHAR2(35)    NOT NULL,
 
+CONSTRAINT Actors_PK PRIMARY KEY (ActorName) );
+-- End Actors_T
 
+-- Begin Directors_T
+CREATE TABLE Directors_T (
+    DirectorName    VARCHAR2(35)    NOT NULL,
+
+CONSTRAINT Directors_PK PRIMARY KEY (DirectorName) );
+-- End Directors_T
+
+-- Begin AwardsGiven_T
+CREATE TABLE AwardsGiven_T (
+    MovieID     VARCHAR2(10)    NOT NULL,
+    AwardName   VARCHAR2(10)    NOT NULL,
+
+CONSTRAINT AwardsGiven_PK PRIMARY KEY (MovieID, AwardName),
+CONSTRAINT AwardsGiven_FK1 FOREIGN KEY (MovieID) REFERENCES Movies_T(MovieID),
+CONSTRAINT AwardsGiven_FK2 FOREIGN KEY (AwardName) REFERENCES Awards_T(AwardName) );
+-- End AwardsGiven_T
+
+-- Begin ActorsFeatured_T
+CREATE TABLE ActorsFeatured_T (
+    MovieID     VARCHAR2(10)    NOT NULL,
+    ActorName   VARCHAR2(35)    NOT NULL,
+
+CONSTRAINT ActorsFeatured_PK PRIMARY KEY (MovieID, ActorName),
+CONSTRAINT ActorsFeatured_FK1 FOREIGN KEY (MovieID) REFERENCES Movies_T(MovieID),
+CONSTRAINT ActorsFeatured_FK2 FOREIGN KEY (ActorName) REFERENCES Actors_T(ActorName) );
+-- End ActorsFeatured_T
+
+-- Begin DirectedBy_T
+CREATE TABLE DirectedBy_T (
+    MovieID     VARCHAR2(10)    NOT NULL,
+    DirectorName VARCHAR2(35)   NOT NULL,
+
+CONSTRAINT DirectedBy_PK    PRIMARY KEY (MovieID, DirectorName),
+CONSTRAINT DirectedBy_FK1   FOREIGN KEY (MovieID) REFERENCES Movies_T(MovieID),
+CONSTRAINT DirectedBy_FK2   FOREIGN KEY (DirectorName) REFERENCES Directors_T(DirectorName) );
+-- ENd DirectedBy_T
