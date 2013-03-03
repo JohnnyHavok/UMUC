@@ -29,7 +29,7 @@ public class HeapSort implements SortInterface {
     @Override
     public void iterativeSort(int[] array) throws UnsortedException {
         System.out.println("\nBeginning iterative HeapSort");
-        count = 0; // Counts calls to arraySwap.
+        count = 0; // Counts calls to arraySwap. All other options seem trivial..
         long start = System.nanoTime();
 
     /* Build max-heap */

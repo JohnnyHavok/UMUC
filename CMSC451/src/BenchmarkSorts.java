@@ -39,7 +39,7 @@ public class BenchmarkSorts {
 
                     // Currently recursiveSort does not work as intended
                     // it will randomly pass or fail the sort.  The larger the
-                    // the more change it has of failing.
+                    // array the more chance it has of failing.
 //                    System.arraycopy(test, 0, recTest, 0, test.length);
 //                    sorter.recursiveSort(recTest);
 //                    counts[i][1][j] = sorter.getCount();
