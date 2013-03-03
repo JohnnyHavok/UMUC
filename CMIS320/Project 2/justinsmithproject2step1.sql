@@ -13,7 +13,7 @@ CREATE SEQUENCE SeqRentalOrderID START WITH 10000 INCREMENT BY 7;
 -- Create tables with no foreign keys first
 -- Begin Customer_T
 CREATE TABLE Customer_T (
-    CustomerID         NUMBER(*,0)     NOT NULL,
+    CustomerID         NUMBER(*,0)     CHECK(CustomerID >= 1000),
     CustomerLName      VARCHAR2(20)    NOT NULL,
     CustomerFName      VARCHAR2(20)    NOT NULL,
     CustomerSAddress   VARCHAR2(30)    NOT NULL,
@@ -84,7 +84,7 @@ CONSTRAINT Discounts_FK FOREIGN KEY (InventoryID) REFERENCES Inventory_T(Invento
 
 -- Begin Rentals_T
 CREATE TABLE Rentals_T (
-    RentalOrderID      NUMBER(*,0)              NOT NULL,
+    RentalOrderID      NUMBER(*,0)              CHECK(RentalOrderID > 10000),
     CustomerID         NUMBER(*,0)              NOT NULL,
     RentalDate         DATE DEFAULT (SYSDATE)   NOT NULL,
     Taxes              NUMBER(*,2)              NOT NULL,
