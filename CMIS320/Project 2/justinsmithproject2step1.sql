@@ -2,6 +2,9 @@
 -- Justin Smith
 -- CMIS 320
 
+/** Ideally I would like to use sequences for certain IDs but in this
+ ** project that would complicate providing a working example.
+
 -- Create CustomerID Sequence
 -- To use SeqCustomerID.nextval
 CREATE SEQUENCE SeqCustomerID START WITH 1000 INCREMENT BY 3;
@@ -9,6 +12,8 @@ CREATE SEQUENCE SeqCustomerID START WITH 1000 INCREMENT BY 3;
 -- Create RentalOrderID Sequence
 -- To use SeqRentalOrderID.nextval
 CREATE SEQUENCE SeqRentalOrderID START WITH 10000 INCREMENT BY 7;
+
+**/
 
 -- Create tables with no foreign keys first
 -- Begin Customer_T
@@ -85,7 +90,7 @@ CONSTRAINT Discounts_FK FOREIGN KEY (InventoryID) REFERENCES Inventory_T(Invento
 
 -- Begin Rentals_T
 CREATE TABLE Rentals_T (
-    RentalOrderID      NUMBER(*,0)              CHECK(RentalOrderID > 10000),
+    RentalOrderID      NUMBER(*,0)              CHECK(RentalOrderID >= 10000),
     CustomerID         NUMBER(*,0)              NOT NULL,
     RentalDate         DATE DEFAULT (SYSDATE)   NOT NULL,
     Taxes              NUMBER(*,2)              NOT NULL,
@@ -99,7 +104,7 @@ CREATE TABLE RentalLine_T (
     RentalOrderID      NUMBER(*,0)              NOT NULL,
     InventoryID        NUMBER(*,0)              NOT NULL,
     ReturnDate         DATE DEFAULT (SYSDATE)   NOT NULL,
-    DateReturned       DATE DEFAULT (SYSDATE),
+    DateReturned       DATE,
 
 CONSTRAINT RentalLine_PK PRIMARY KEY (RentalOrderID, InventoryID),
 CONSTRAINT OrderLine_FK1 FOREIGN KEY (RentalOrderID) REFERENCES Rentals_T(RentalOrderID),
