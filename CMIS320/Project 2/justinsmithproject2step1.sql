@@ -91,12 +91,12 @@ CONSTRAINT Discounts_FK FOREIGN KEY (InventoryID) REFERENCES Inventory_T(Invento
 -- Begin Rentals_T
 CREATE TABLE Rentals_T (
     RentalOrderID      NUMBER(*,0)              CHECK(RentalOrderID >= 10000),
-    CustomerID         NUMBER(*,0)              NOT NULL,
+    CustomerID         NUMBER(*,0),
     RentalDate         DATE DEFAULT (SYSDATE)   NOT NULL,
     Taxes              NUMBER(*,2)              NOT NULL,
 
 CONSTRAINT Rentals_PK PRIMARY KEY (RentalOrderID),
-CONSTRAINT Rentals_FK FOREIGN KEY (CustomerID) REFERENCES Customer_T(CustomerID) );
+CONSTRAINT Rentals_FK FOREIGN KEY (CustomerID) REFERENCES Customer_T(CustomerID) ON DELETE SET NULL );
 -- End Rentals_T
 
 -- Begin RentalLine_T
@@ -113,7 +113,7 @@ CONSTRAINT OrderLine_FK2 FOREIGN KEY (InventoryID) REFERENCES Inventory_T(Invent
 
 -- Begin Fees_T
 CREATE TABLE Fees_T (
-    CustomerID      NUMBER(*,0)     NOT NULL,
+    CustomerID      NUMBER(*,0),
     RentalOrderID   NUMBER(*,0)     NOT NULL,
     InventoryID     NUMBER(*,0)     NOT NULL,
     LateFee         NUMBER(10,2),
@@ -122,7 +122,7 @@ CREATE TABLE Fees_T (
     ReplacementFee  NUMBER(10,2),
 
 CONSTRAINT Fees_PK  PRIMARY KEY (CustomerID, RentalOrderID, InventoryID),
-CONSTRAINT Fees_FK1 FOREIGN KEY (CustomerID) REFERENCES Customer_T(CustomerID),
+CONSTRAINT Fees_FK1 FOREIGN KEY (CustomerID) REFERENCES Customer_T(CustomerID) ON DELETE SET NULL,
 CONSTRAINT Fees_FK2 FOREIGN KEY (RentalOrderID) REFERENCES Rentals_T(RentalOrderID),
 CONSTRAINT Fees_FK3 FOREIGN KEY (InventoryID) REFERENCES Inventory_T(InventoryID) );
 -- End Fees_T
