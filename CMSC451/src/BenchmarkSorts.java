@@ -33,17 +33,13 @@ public class BenchmarkSorts {
         for(int i = 0; i < testSizes.length; i++) {
             for(int j = 0; j < runsPerArray; j++) {
                 int[] test = generateIntegerArray(testSizes[i]);
-                int[] recTest = new int[testSizes[i]];
+                int[] recTest = new int[testSizes[i] + 1];
                 int[] itTest = new int[testSizes[i]];
                 try {
-
-                    // Currently recursiveSort does not work as intended
-                    // it will randomly pass or fail the sort.  The larger the
-                    // array the more chance it has of failing.
-//                    System.arraycopy(test, 0, recTest, 0, test.length);
-//                    sorter.recursiveSort(recTest);
-//                    counts[i][1][j] = sorter.getCount();
-//                    times[i][1][j] = sorter.getTime();
+                    System.arraycopy(test, 0, recTest, 1, test.length);
+                    sorter.recursiveSort(recTest);
+                    counts[i][1][j] = sorter.getCount();
+                    times[i][1][j] = sorter.getTime();
 
                     System.arraycopy(test, 0, itTest, 0, test.length);
                     sorter.iterativeSort(itTest);

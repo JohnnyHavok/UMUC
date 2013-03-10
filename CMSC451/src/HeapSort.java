@@ -102,7 +102,7 @@ public class HeapSort implements SortInterface {
                 "correctly sorted the array....");
 
         try {
-            checkArray(array);
+            itrCheckArray(array);
         } catch (UnsortedException e) {
             throw new UnsortedException(e.getMessage());
         }
@@ -116,7 +116,8 @@ public class HeapSort implements SortInterface {
      * Java implementation of Heap Sort Algorithm
      * Introduction to Algorithms 3rd Edition (2009), Thomas H. Cormen (et al.)
      *
-     * TODO: Randomly passes or fails sort, fix this!
+     * Fix: 10MAR13 - Changed arrays from 0 based starting position to 1 base
+     * Recursive heap sort now correctly works
      *
      * Precondition: A complete array of integers, no null elements
      * Postcondition: A sorted (in place) array of integers
@@ -141,8 +142,8 @@ public class HeapSort implements SortInterface {
      * protected the sorted part of the array (the back end).
      */
         for(int i = array.length - 1; i >= 1; i--) {
-            arraySwap(array, 0, i);
-            maxHeapify(array, 0, i - 1);
+            arraySwap(array, 1, i);
+            maxHeapify(array, 1, i - 1);
         }
 
      /* Array has been sorted - stop the clock */
@@ -153,7 +154,7 @@ public class HeapSort implements SortInterface {
                 "correctly sorted the array....");
 
         try {
-            checkArray(array);
+            recCheckArray(array);
         } catch (UnsortedException e) {
             throw new UnsortedException(e.getMessage());
         }
@@ -171,7 +172,7 @@ public class HeapSort implements SortInterface {
     /* We take the array divided by 2 so that we work backwards through all
      * the leaves of the binary-tree and run maxHeapify on them.
      */
-        for(int i = (int) Math.floor((a.length - 1) / 2); i >= 0; i --) {
+        for(int i = (int) Math.floor((a.length - 1) / 2.0); i >= 0; i --) {
             maxHeapify(a, i, a.length - 1);
         }
     }
@@ -185,8 +186,8 @@ public class HeapSort implements SortInterface {
      */
     private void maxHeapify(int[] a, int root, int heapArea) {
         count+=1;
-        int left = root + 1; // Left child of root
-        int right = root + 2; // Right child of root
+        int left = 2 * root; // Left child of root
+        int right = 2 * root + 1; // Right child of root
         int max;
 
         if(left <= heapArea && a[left] > a[root]) {
@@ -223,8 +224,20 @@ public class HeapSort implements SortInterface {
         a[j] = temp;
     }
 
-    private static void checkArray(int[] a) throws UnsortedException {
+    private static void itrCheckArray(int[] a) throws UnsortedException {
         for (int i = 0; i < a.length - 1; i++)
+            if(a[i] > a[i + 1]) {
+                for(int j = 0; j < a.length -1; j++)
+                    System.out.print(" "  + a[j]);
+                throw new UnsortedException("The array was not sorted " +
+                        "correctly: \n" +
+                        a[i] + " > " + a[i+1] + " at indices " + i +
+                        " and " + (i+1) + " respectively.\n");
+            }
+    }
+
+    private static void recCheckArray(int[] a) throws UnsortedException {
+        for (int i = 1; i < a.length - 1; i++)
             if(a[i] > a[i + 1]) {
                 for(int j = 0; j < a.length -1; j++)
                     System.out.print(" "  + a[j]);
@@ -240,7 +253,7 @@ public class HeapSort implements SortInterface {
         HeapSort sorter = new HeapSort();
         int[] base = new int[20];
         int[] itTest = new int[base.length];
-        int[] recTest = new int[base.length];
+        int[] recTest = new int[base.length + 1];
 
         for(int k = 0; k < base.length; k++)
             base[k] = (int) (Math.random() * 10);
@@ -258,10 +271,10 @@ public class HeapSort implements SortInterface {
 
         System.out.println();
 
-        System.arraycopy(base, 0, recTest, 0, base.length);
+        System.arraycopy(base, 0, recTest, 1, base.length);
 
-        for(int j = 0; j < 500; j++) {
-            System.arraycopy(base, 0, recTest, 0, base.length);
+        for(int j = 0; j < 100; j++) {
+            System.arraycopy(base, 0, recTest, 1, base.length);
             try {
                 sorter.recursiveSort(recTest);
             } catch (UnsortedException e) {
@@ -270,7 +283,7 @@ public class HeapSort implements SortInterface {
             }
         }
 
-        for(int i = 0; i < recTest.length; i++)
+        for(int i = 1; i < recTest.length; i++)
             System.out.print(" " + recTest[i]);
 
         System.out.println();
