@@ -1,6 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ *   Document   : Homework1.java
+ *   Created on : Mar 24, 2013, 6:17:34 PM
+ *   Author     : Justin Smith
+ *   Course     : CMIS 440
+ *   Project    : Homework 1
  */
 package HW1;
 
@@ -41,7 +44,10 @@ public class Homework1 extends HttpServlet {
             out.println("<title>Servlet Homework1</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet Homework1 at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Homework 1 ThreeParams Results</h1>");
+            out.println("<p><label>Parameter 1:</label><b>" + request.getParameter("Param1") + "</b></p>");
+            out.println("<p><label>Parameter 2:</label><b>" + request.getParameter("Param2") + "</b></p>");
+            out.println("<p><label>Parameter 3:</label><b>" + request.getParameter("Param3") + "</b></p>");
             out.println("</body>");
             out.println("</html>");
         } finally {            
