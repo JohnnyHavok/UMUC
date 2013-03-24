@@ -45,9 +45,11 @@ public class Homework1 extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Homework 1 ThreeParams Results</h1>");
-            out.println("<p><label>Parameter 1:</label><b>" + request.getParameter("Param1") + "</b></p>");
-            out.println("<p><label>Parameter 2:</label><b>" + request.getParameter("Param2") + "</b></p>");
-            out.println("<p><label>Parameter 3:</label><b>" + request.getParameter("Param3") + "</b></p>");
+            out.println("<table border=1>");
+            out.println("<tr><td>Parameter 1</td><td>" + request.getParameter("Param1") + "</td></tr>");
+            out.println("<tr><td>Parameter 2</td><td>" + request.getParameter("Param2") + "</td></tr>");
+            out.println("<tr><td>Parameter 3</td><td>" + request.getParameter("Param3") + "</td></tr>");
+            out.println("</table>");
             out.println("</body>");
             out.println("</html>");
         } finally {            
