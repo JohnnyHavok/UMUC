@@ -12,6 +12,12 @@
   String param3 = request.getParameter("Param3");
 %>
 
+<jsp:useBean id    = "counter" 
+             scope = "session" 
+             class = "HW2.CountBean" />
+
+<% counter.incrementCount(); %>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -25,7 +31,14 @@
             <tr><td>Parameter 1</td><td><%= param1 %></td></tr>
             <tr><td>Parameter 2</td><td><%= param2 %></td></tr>
             <tr><td>Parameter 3</td><td><%= param3 %></td></tr>
-                    
         </table>
+        
+        <h1>Session Counter</h1>
+        <p>Runs this session: <%= counter.getCount() %> </p>
+        <p>Session ID: <%= session.getId() %> </p>
+        
+
+ 
+        
     </body>
 </html>

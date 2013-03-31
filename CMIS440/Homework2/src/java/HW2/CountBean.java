@@ -7,14 +7,11 @@
  */
 package HW2;
 
-import java.beans.*;
-import java.io.Serializable;
-
 /**
- *
+ * Basic bare bones java bean.
  * @author Justin Smith
  */
-public class CountBean implements Serializable {
+public class CountBean {
     private int count;
 
     // Default constructor public constructor with no arguments
