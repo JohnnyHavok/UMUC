@@ -6,17 +6,18 @@
     Project    : Homework 2
 --%>
 
-<%
-  String param1 = request.getParameter("Param1");
-  String param2 = request.getParameter("Param2");
-  String param3 = request.getParameter("Param3");
-%>
-
 <jsp:useBean id    = "counter" 
              scope = "session" 
              class = "HW2.CountBean" />
 
-<% counter.incrementCount(); %>
+<%
+  String param1 = request.getParameter("Param1");
+  String param2 = request.getParameter("Param2");
+  String param3 = request.getParameter("Param3");
+  
+  counter.incrementCount();
+  int count = counter.getCount();
+%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -32,13 +33,8 @@
             <tr><td>Parameter 2</td><td><%= param2 %></td></tr>
             <tr><td>Parameter 3</td><td><%= param3 %></td></tr>
         </table>
-        
         <h1>Session Counter</h1>
-        <p>Runs this session: <%= counter.getCount() %> </p>
+        <p>Runs this session: <%= count %> </p>
         <p>Session ID: <%= session.getId() %> </p>
-        
-
- 
-        
     </body>
 </html>
