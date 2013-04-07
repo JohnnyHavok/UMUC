@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!-- 
+    Document   : index
+    Created on : Apr 7, 2013, 2:17:34 PM
+    Author     : Justin Smith
+    Course     : CMIS 440
+    Project    : Project 1
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Project 1 JavaServer Faces</title>
+    </h:head>
+    <h:body>
+        <h1>Project 1</h1>
+        <h2>Please Register</h2>
+        <h:form>
+            <h:panelGrid columns="2">
+                <h:outputLabel value="Salutation:" />
+                <h:selectOneMenu id="salutation">
+                    <f:selectItem itemValue="Mr" />
+                    <f:selectItem itemValue="Ms" />
+                    <f:selectItem itemValue="Mrs" />
+                    <f:selectItem itemValue="Dr" />
+                </h:selectOneMenu>
+                <h:outputLabel value="First Name:" />
+                <h:inputText id="fname" />
+                <h:outputLabel value="Last Name:" />
+                <h:inputText id="lname" />
+                <h:outputLabel value="Age:" />
+                <h:inputText id="age" />
+                <h:outputLabel value="Email Address:" />
+                <h:inputText id="email" />
+                <h:commandButton value="Register" />
+            </h:panelGrid>
+        </h:form>
+        
+    </h:body>
+</html>
+
