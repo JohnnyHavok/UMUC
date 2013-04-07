@@ -21,13 +21,16 @@
         <h:form>
             <h:panelGrid columns="3">
                 <h:outputLabel value="Salutation:" />
-                <h:selectOneMenu id="salutation">
+                <h:selectOneMenu id="salutation"
+                                 required="true"
+                                 requiredMessage="Please select a salutation" >
+                    <f:selectItem itemValue="" />
                     <f:selectItem itemValue="Mr" />
                     <f:selectItem itemValue="Ms" />
                     <f:selectItem itemValue="Mrs" />
                     <f:selectItem itemValue="Dr" />
                 </h:selectOneMenu>
-                <h:outputLabel />
+                <h:message for="salutation" style="color:red" />
                 
                 <h:outputLabel value="First Name:" />
                 <h:inputText id="fname" 
@@ -69,8 +72,7 @@
                 
                 <h:commandButton value="Register" />
             </h:panelGrid>
-        </h:form>
-        
+        </h:form>      
     </h:body>
 </html>
 
