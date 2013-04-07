@@ -18,32 +18,23 @@ package project1;
  * @author Justin Smith
  */
 public class Person {
+    private String salutation;
     private String fname;
     private String lname;
     private int age;
     private String email;
     
-    public Person(String fname, String lname, int age, String email) {
+    public Person(String salutation, String fname, String lname, int age, String email) {
+        this.salutation = salutation;
         this.fname = fname;
         this.lname = lname;
         this.age = age;
         this.email = email;
     }
     
+    public String getSalutation() { return salutation; }
     public String getFName() { return fname; }
     public String getLName() { return lname; }
     public int getAge() { return age; }
     public String getEmail() { return email; }
-}
-
-enum Salutation {
-    MR("Mr"),
-    MS("Ms"),
-    MRS("Mrs"),
-    DR("Dr");
-    
-    private String salutation;
-    
-    Salutation(String s) {salutation = s;}
-    public String getSalutation() {return salutation;}
 }
