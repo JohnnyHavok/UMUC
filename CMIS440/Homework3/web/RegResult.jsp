@@ -36,7 +36,7 @@
             <tr><td align="right">Age:</td><td><%= age %></td></tr>
             <tr><td align="right">Email Address:</td><td><%= email %></td></tr>
         </table>
-        <a href="index.xhtml">Back to Registration Page</a> 
+        <a href="RegisterPerson.xhtml">Back to Registration Page</a> 
         
     </body>
 </html>
