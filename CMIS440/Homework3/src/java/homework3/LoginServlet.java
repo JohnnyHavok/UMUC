@@ -42,23 +42,25 @@ public class LoginServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-//        response.setContentType("text/html;charset=UTF-8");
-//        PrintWriter out = response.getWriter();
-        
+    throws ServletException, IOException {        
         RequestDispatcher view = null;
         
-        try {
-            if(request.getParameter("username").equals(username) &&
-               request.getParameter("password").equals(password) ) {
-                System.out.println("Successful Login");
-                
-                
-            } else {
-                System.out.println("Failed Login Attempt");
-            }
-        } finally { 
-//            out.close();
+        if(request.getParameter("username").equals(username) &&
+           request.getParameter("password").equals(password) ) {
+
+            System.out.println("Successful Login");
+
+//                response.sendRedirect("/Homework3/faces/registerJSF.xhtml");
+
+            view = request.getRequestDispatcher("/faces/registerJSF.xhtml");
+            view.forward(request, response);
+
+
+        } else {
+            System.out.println("Failed Login Attempt");
+
+            view = request.getRequestDispatcher("LoginError.jsp");
+            view.forward(request, response);
         }
     }
     
