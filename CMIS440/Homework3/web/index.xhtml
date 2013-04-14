@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!-- 
+    Document   : index
+    Created on : Apr 7, 2013, 2:17:34 PM
+    Author     : Justin Smith
+    Course     : CMIS 440
+    Project    : Project 1
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Project 1 JavaServer Faces</title>
+    </h:head>
+    <h:body>
+        <h1>Homework 3 (Project 1 Files)</h1>
+        <h2>Please Register</h2>
+        <h:form>
+            <h:panelGrid columns="3">
+                <h:outputLabel value="Salutation:" />
+                <h:selectOneMenu id="salutation"
+                                 value="#{person.salutation}"
+                                 required="true"
+                                 requiredMessage="Please select a salutation" >
+                    <f:selectItem itemValue="" />
+                    <f:selectItem itemValue="Mr" />
+                    <f:selectItem itemValue="Ms" />
+                    <f:selectItem itemValue="Mrs" />
+                    <f:selectItem itemValue="Dr" />
+                </h:selectOneMenu>
+                <h:message for="salutation" style="color:red" />
+                
+                <h:outputLabel value="First Name:" />
+                <h:inputText id="fname" 
+                             value="#{person.fname}"
+                             required="true"
+                             requiredMessage="First name is required"
+                             validatorMessage="First Name must have at least 1 character">
+                    <f:validateLength minimum="1" />
+                </h:inputText>
+                <h:message for="fname" style="color:red" />
+             
+                
+                <h:outputLabel value="Last Name:" />
+                <h:inputText id="lname" 
+                             value="#{person.lname}"
+                             required="true"
+                             requiredMessage="Last name is required"
+                             validatorMessage="Last name must have at least 1 character">
+                    <f:validateLength minimum="1" />                   
+                </h:inputText>
+                <h:message for="lname" style="color:red" />
+                
+                <h:outputLabel value="Age:" />
+                <h:inputText id="age"
+                             value="#{person.age}"
+                             required="true"
+                             requiredMessage="Age is required"
+                             validatorMessage="Age must be between 1 and 100">
+                    <f:validateLongRange minimum="1" maximum="100" /> 
+                </h:inputText>
+                <h:message for="age" style="color:red" />
+                
+                <h:outputLabel value="Email Address:" />
+                <h:inputText id="email" 
+                             value="#{person.email}"
+                             required="true"
+                             requiredMessage="Must provide email address"
+                             validatorMessage="Invalid Email">
+                    <!-- Regex found from Google Search -->
+                    <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+                </h:inputText>
+                <h:message for="email" style="color:red" />
+                
+                <h:commandButton value="Register" action="#{person.register()}"/>
+                
+                
+            </h:panelGrid>
+        </h:form>      
+    </h:body>
+</html>
+
