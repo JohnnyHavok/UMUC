@@ -28,6 +28,11 @@
             </p>
             
             <input type="submit" value="Submit" />
+            
+            <p>
+                Hint: Username = user / Password = pass
+            </p>
+                
         </form>
     </body>
 </html>
