@@ -6,11 +6,6 @@
  *   Project    : Homework 3
  */
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package homework3;
 
 import java.io.IOException;
@@ -31,8 +26,7 @@ public class LoginServlet extends HttpServlet {
     // Precoded username and password per project specs.
     private String username = "user";
     private String password = "pass";
-    
-    
+
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -50,8 +44,6 @@ public class LoginServlet extends HttpServlet {
 
             System.out.println("Successful Login");
 
-//                response.sendRedirect("/Homework3/faces/registerJSF.xhtml");
-
             view = request.getRequestDispatcher("/faces/registerJSF.xhtml");
             view.forward(request, response);
 
@@ -63,9 +55,6 @@ public class LoginServlet extends HttpServlet {
             view.forward(request, response);
         }
     }
-    
-    public String getUserResponseUsername() { return username; }
-    public String getUserResponsePassword() { return password; }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 
