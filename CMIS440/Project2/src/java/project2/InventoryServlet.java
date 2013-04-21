@@ -1,9 +1,9 @@
 /**
- *   Document   : InventoryControlServlet
- *   Created on : Apr 21, 2013, 4:54:58 PM
+ *   Document   : InventoryServlet
+ *   Created on : Apr 21, 2013, 5:57:50 PM
  *   Author     : Justin Smith
  *   Course     : CMIS 440
- *   Project    : Project 2
+ *   Project    : 
  */
 
 /*
@@ -16,7 +16,6 @@ package project2;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,8 +24,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Justin Smith
  */
-@WebServlet(name="InventoryCatalogServlet", urlPatterns={"/catalog"})
-public class InventoryControlServlet extends HttpServlet {
+public class InventoryServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.

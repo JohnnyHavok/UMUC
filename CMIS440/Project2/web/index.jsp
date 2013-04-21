@@ -15,7 +15,7 @@
     </head>
     <body>
         <h1>Project 2 - Welcome</h1>
-        <a href='catalog/'>Proceed to Catalog</a>
+        <a href='InventoryServlet/'>Proceed to Catalog</a>
         
     </body>
 </html>
