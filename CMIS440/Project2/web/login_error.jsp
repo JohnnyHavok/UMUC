@@ -1,6 +1,6 @@
 <%-- 
-    Document   : index
-    Created on : Apr 21, 2013, 2:44:32 PM
+    Document   : login_error
+    Created on : Apr 21, 2013, 3:04:09 PM
     Author     : Justin Smith
     Course     : CMIS 440
     Project    : Project 2
@@ -11,11 +11,10 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Login Error!</title>
     </head>
     <body>
-        <h1>Project 2 - Welcome</h1>
-        <a href='catalog/catalog.jsp'>Proceed to Catalog</a>
-        
+        <h1>Invalid username and/or password!</h1>
+        <a href='<%= response.encodeURL("login.jsp") %> '>Please Try Again</a>
     </body>
 </html>
