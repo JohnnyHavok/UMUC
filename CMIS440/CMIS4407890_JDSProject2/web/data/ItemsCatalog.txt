@@ -1,0 +1,4 @@
+1001:M5 Bolt:M5 sized machine bolt:0.75:500
+1002:Washer:Flat Washer:0.10:5000
+1003:Wood Screw:5" Wood Screws:0.24:1000
+1004:Socket Set:10 Piece Socket Set:30.00:5
