@@ -1,6 +1,6 @@
 <%-- 
-    Document   : catalog
-    Created on : Apr 21, 2013, 3:14:01 PM
+    Document   : logout
+    Created on : Apr 21, 2013, 4:12:48 PM
     Author     : Justin Smith
     Course     : CMIS 440
     Project    : Project 2
@@ -11,13 +11,12 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Catalog Page</title>
+        <title>Logging Out</title>
     </head>
     <body>
-        <form action='../logout.jsp' method='post'>
-            <input type='submit' value='Log Off' name='logoff'/>
-            
-        </form>
+        <% session.invalidate(); %>
+        <h1>'<%= request.getRemoteUser() %>' has been logged out</h1>
+        <a href='index.jsp'>Click here to log back in</a>
         
     </body>
 </html>
