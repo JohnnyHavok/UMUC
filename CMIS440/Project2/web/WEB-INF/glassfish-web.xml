@@ -5,13 +5,11 @@
     <role-name>admin</role-name>
     <principal-name>admin</principal-name>
   </security-role-mapping>
-  
   <security-role-mapping>
     <role-name>user</role-name>
     <principal-name>user</principal-name>
     <principal-name>admin</principal-name>
   </security-role-mapping>
-  
   <class-loader delegate="true"/>
   <jsp-config>
     <property name="keepgenerated" value="true">

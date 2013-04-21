@@ -6,12 +6,16 @@
     Project    : Project 2
 --%>
 
+<jsp:useBean id = "inventory"
+             scope = "session"
+             class = "project2.Inventory" />
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Catalog Page</title>
+        <title>Parts Inventory Catalog</title>
     </head>
     <body>
         <form action='../logout.jsp' method='post'>
