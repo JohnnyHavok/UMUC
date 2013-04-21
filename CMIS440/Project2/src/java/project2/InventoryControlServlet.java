@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Justin Smith
  */
-@WebServlet(name="InventoryServlet", urlPatterns={"/InventoryServlet"})
+@WebServlet(name="InventoryCatalogServlet", urlPatterns={"/catalog"})
 public class InventoryControlServlet extends HttpServlet {
    
     /** 
