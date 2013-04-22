@@ -9,9 +9,9 @@
              scope="session"
              class="project2.Inventory" />
              
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -24,8 +24,8 @@
         </title>
     </head>
     <body>
-        <c:forEach items="${inventory.getInventory()}" var="item">
-            <c:out value="${item.id}" /><p>
+        <c:forEach items="${inventory.inventory}" var="item">
+            <c:out value="${item.getId}" /><p>
         </c:forEach>
         
         <hr/>
