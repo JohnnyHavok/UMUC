@@ -8,8 +8,6 @@
 
 package project2;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.util.ArrayList;
 
 /**
@@ -17,9 +15,18 @@ import java.util.ArrayList;
  * @author Justin Smith
  */
 public class Inventory {
-    ArrayList<InventoryItem> inventory;
-    String iFile = "ItemsCatalog.txt";
+    public ArrayList<InventoryItem> inventory;
     
-    public Inventory() { }
+    public Inventory() { inventory = new ArrayList<InventoryItem>(); }
+    
+    public void clearInventory() {
+        inventory = new ArrayList<InventoryItem>();
+    }
+    
+    public void insertInventory(InventoryItem item) {
+        inventory.add(item);
+    }
+    
+    public ArrayList getInventory() { return inventory; }
 
 }

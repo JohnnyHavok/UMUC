@@ -9,12 +9,9 @@
 package project2;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -37,10 +34,10 @@ public class InventoryServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        Inventory inventory = new Inventory();
         RequestDispatcher rd;
         
         try {
-            ArrayList<InventoryItem> inventory = new ArrayList<InventoryItem>();
             String inputLine;
             
             System.out.println(new java.io.File("").getAbsolutePath());
@@ -56,9 +53,17 @@ public class InventoryServlet extends HttpServlet {
                 String t[] = inputLine.split(":");
                 InventoryItem item = new InventoryItem(t[0], t[1], t[2], 
                         Double.parseDouble(t[3]), Integer.parseInt(t[4]));
-                inventory.add(item);
+                inventory.insertInventory(item);
+                
                 System.out.println(t[0]+":"+t[1]+":"+t[2]+":"+t[3]+":"+t[4]);
             }
+            
+            // Include Catalog view.
+            rd = request.getRequestDispatcher("catalogview.jsp");
+            rd.forward(request, response);
+            
+            
+            
         } catch (Exception e) {
             System.err.println(e);
         }
