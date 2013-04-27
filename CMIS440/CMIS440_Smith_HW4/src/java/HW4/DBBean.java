@@ -6,40 +6,55 @@
  *   Project    : Homework 4
  */
 
-
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package HW4;
 
-import java.beans.*;
-import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.annotation.ManagedBean;
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
 
 /**
  *
  * @author Justin Smith
  */
-public class DBBean implements Serializable {
-
-    public static final String PROP_SAMPLE_PROPERTY = "sampleProperty";
-
-    private String sampleProperty;
-
-    private PropertyChangeSupport propertySupport;
-
-    public DBBean() {
-        propertySupport = new PropertyChangeSupport(this);
+@ManagedBean
+public class DBBean {
+    public DBBean() { }
+    
+    public ResultSet getCatalog() {
+        Connection c = getConnection();
+        ResultSet rset = null;
+        try {
+            PreparedStatement ps = c.prepareStatement("SELECT * FROM Catalog_T");
+            rset = ps.executeQuery();
+        } catch (Exception e) {
+            System.err.println("Exception thrown from DBBean/getCatalog()");
+            System.err.println("e.getMessage()");
+        } finally {
+            try {
+                if(!c.isClosed())
+                    c.close();
+            } catch (Exception e) {
+                System.err.println("Exception thrown from DBBean/getCatalog()");
+                System.err.println("e.getMessage()");
+            }
+        }       
+        return rset;
     }
-
-    public String getSampleProperty() {
-        return sampleProperty;
-    }
-
-    public void setSampleProperty(String value) {
-        String oldValue = sampleProperty;
-        sampleProperty = value;
-        propertySupport.firePropertyChange(PROP_SAMPLE_PROPERTY, oldValue, sampleProperty);
+    
+    private Connection getConnection() {
+        Connection c = null;
+        try {
+            InitialContext ic = new InitialContext();
+            DataSource ds = (DataSource) ic.lookup("jdbc/novaDB");
+            c = ds.getConnection();
+        } catch (Exception e) {
+            System.err.println("Exception thrown from DBBean/getConnection()");
+            System.err.println(e.getMessage());
+        }
+        
+        return c;
     }
 }
