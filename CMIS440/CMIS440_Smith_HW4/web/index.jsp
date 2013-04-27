@@ -6,55 +6,36 @@
     Project    : Homework 4
 --%>
 
-<%@page import="java.sql.*"%>
-<%@page import="oracle.jdbc.pool.OracleDataSource"%>
-
-<% 
-    Connection conn=null;
-    Statement stmt=null;
-    ResultSet rset=null;
-%>
-    
-
-
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Test Oracle DB connection</title>
+        <title>Homework 4</title>
     </head>
+    
     <body>
-        <%
-        try {
-            OracleDataSource ds = new OracleDataSource();
-            ds.setURL("jdbc:oracle:thin:@nova.umuc.edu:1521:acad");
-            conn = ds.getConnection("cm440b17", "_NEED_PASSWORD_");
-            stmt = conn.createStatement();
-            rset = stmt.executeQuery("SELECT * FROM Catalog_T");
-        %>
-        
-        <table>
-            <tr><th>ID</th><th>Name</th><th>Description</th><th>Price</th><th>Quantity</th></tr>
-            <% while(rset.next()) { %>
-                <tr>
-                    <td><%= rset.getString("ID") %></td>
-                    <td><%= rset.getString("Name") %></td>
-                    <td><%= rset.getString("Description") %></td>
-                    <td><%= rset.getString("Price") %></td>
-                    <td><%= rset.getString("QuantityInStock") %></td>
-                </tr>
-            <% } %>
-        </table>
-        
-        <% } catch(SQLException e) {
-            System.err.println("SQL Exception thrown: " + e.getMessage());
-        } finally {
-            if(rset != null) rset.close();
-            if(stmt != null) stmt.close();
-            if(conn != null) conn.close();
-        }
-        %>  
+        <h1>Homework 4</h1>
+        <h2>Please Login</h2>
+        <form action="LoginServlet" method="post">
+            <p>
+                <label>Username: </label>
+                <input type="text" name="username" size="15" />
+            </p>
+            
+            <p>
+                <label>Password: </label>
+                <input type="password" name="password" size="15" />
+            </p>
+            
+            <input type="submit" value="Submit" />
+            
+            <p>
+                Hints:<br/>
+                User access: user/user <br/>
+                Admin access: admin/admin <br/>
+            </p>
+                
+        </form>
     </body>
 </html>
