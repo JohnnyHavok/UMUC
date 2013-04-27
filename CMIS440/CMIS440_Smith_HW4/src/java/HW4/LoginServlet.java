@@ -41,7 +41,14 @@ public class LoginServlet extends HttpServlet {
            request.getParameter("password").equals("admin") ) {
 
             System.out.println("Admin Login Sucessful");
-
+            
+            // Fetch current catalog table.  I don't think this is the proper
+            // way to do this.  I don't know any other way other than a DAO 
+            // class.
+            DBBean dbean = new DBBean();
+            ArrayList<TableRow> result = dbean.getCatalog();
+            request.setAttribute("results", result);
+            
             view = request.getRequestDispatcher("admin.jsp");
             view.forward(request, response);
             
@@ -50,9 +57,7 @@ public class LoginServlet extends HttpServlet {
             
             System.out.println("User Login Sucessful");
             
-            // Fetch current catalog table.  I don't think this is the proper
-            // way to do this.  I don't know any other way other than a DAO 
-            // class.
+            
             DBBean dbean = new DBBean(); 
             ArrayList<TableRow> result = dbean.getCatalog();
             request.setAttribute("results", result);
