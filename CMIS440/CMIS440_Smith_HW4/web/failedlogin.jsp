@@ -11,9 +11,20 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Login Error</title>
     </head>
     <body>
-        
+        <h1>Login Error Detected</h1>
+        <p>
+            The following credentials were invalid:
+    <ui>
+        <li>Username: <%= request.getParameter("username") %> </li>
+        <li>Password: <%= request.getParameter("password") %> </li>
+    </ui>
+        </p>
+        <p>
+            <a href="index.jsp">Please Try Again</a>
+        </p>
     </body>
 </html>
+

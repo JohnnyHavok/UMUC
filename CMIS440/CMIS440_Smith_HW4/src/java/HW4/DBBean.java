@@ -32,7 +32,6 @@ public class DBBean {
         try {
             PreparedStatement ps = c.prepareStatement("SELECT * FROM Catalog_T");
             rset = ps.executeQuery();
-            ps.close();
             while(rset.next()) {
                 TableRow row = new TableRow();
                 row.setId(rset.getInt("ID"));
@@ -40,10 +39,12 @@ public class DBBean {
                 row.setDesc(rset.getString("Description"));
                 row.setPrice(rset.getDouble("Price"));
                 row.setQty(rset.getInt("QuantityInStock"));
-            }            
+                result.add(row);
+            }
+            ps.close();
         } catch (Exception e) {
             System.err.println("Exception thrown from DBBean/getCatalog()");
-            System.err.println("e.getMessage()");
+            e.printStackTrace();
         } finally {
             try {
                 if(rset != null)
@@ -52,7 +53,7 @@ public class DBBean {
                     c.close();
             } catch (Exception e) {
                 System.err.println("Exception thrown from DBBean/getCatalog()");
-                System.err.println("e.getMessage()");
+                e.printStackTrace();
             }
         }
         return result;
@@ -66,7 +67,7 @@ public class DBBean {
             c = ds.getConnection();
         } catch (Exception e) {
             System.err.println("Exception thrown from DBBean/getConnection()");
-            System.err.println(e.getMessage());
+            e.printStackTrace();
         }
         
         return c;

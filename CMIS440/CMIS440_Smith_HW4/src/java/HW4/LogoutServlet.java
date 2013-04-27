@@ -1,6 +1,6 @@
 /**
- *   Document   : LoginServlet
- *   Created on : Apr 27, 2013, 2:51:35 PM
+ *   Document   : LogoutServlet
+ *   Created on : Apr 27, 2013, 5:27:28 PM
  *   Author     : Justin Smith
  *   Course     : CMIS 440
  *   Project    : Homework 4
@@ -14,58 +14,29 @@
 package HW4;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Justin Smith
  */
-public class LoginServlet extends HttpServlet {   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+@WebServlet(name="LogoutServlet", urlPatterns={"/LogoutServlet"})
+public class LogoutServlet extends HttpServlet {
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        RequestDispatcher view = null;
+        HttpSession session = request.getSession(false);
         
-        if(request.getParameter("username").equals("admin") &&
-           request.getParameter("password").equals("admin") ) {
-
-            System.out.println("Admin Login Sucessful");
-
-            view = request.getRequestDispatcher("admin.jsp");
-            view.forward(request, response);
-            
-        } else if(request.getParameter("username").equals("user") &&
-                  request.getParameter("password").equals("user") ) {
-            
-            System.out.println("User Login Sucessful");
-            
-            // Fetch current catalog table.  I don't think this is the proper
-            // way to do this.  I don't know any other way other than a DAO 
-            // class.
-            DBBean dbean = new DBBean(); 
-            ArrayList<TableRow> result = dbean.getCatalog();
-            request.setAttribute("results", result);
-
-            view = request.getRequestDispatcher("user.jsp");
-            view.forward(request, response);
-        } else {
-            System.out.println("Login Attempt Failed");
-            
-            view = request.getRequestDispatcher("failedlogin.jsp");
-            view.forward(request, response);
-        }
-    }
+        if(session != null)
+            session.invalidate();
+        
+        request.getRequestDispatcher("/index.jsp").forward(request, response);
+    } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 
