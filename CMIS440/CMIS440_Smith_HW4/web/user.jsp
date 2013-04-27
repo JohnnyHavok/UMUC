@@ -37,6 +37,7 @@
             </c:forEach>          
         </table>
         
+        <hr/>
         <form action="LogoutServlet" method="post">
             <input type="submit" value="Logout" />
         </form>
