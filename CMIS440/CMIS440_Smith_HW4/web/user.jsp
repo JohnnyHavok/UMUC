@@ -6,10 +6,6 @@
     Project    : Homework 4
 --%>
 
-<jsp:useBean id="dbbean"
-             scope="request"
-             class="HW4.DBBean" />
-
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
