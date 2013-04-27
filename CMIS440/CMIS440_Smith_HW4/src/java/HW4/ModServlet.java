@@ -39,22 +39,30 @@ public class ModServlet extends HttpServlet {
         if(request.getParameter("del") != null) { // User clicked delete
             int id = Integer.parseInt(request.getParameter("sel"));
             dbean.deleteItem(id);
-                    
-            // Update results and return user to admin page
-            ArrayList<TableRow> result = dbean.getCatalog();
-            request.setAttribute("results", result);
-            request.getRequestDispatcher("/admin.jsp").forward(request, response);
-        
+            
         } else if(request.getParameter("mod") != null) { // User clicked modify
-            int id = Integer.parseInt(request.getParameter("mod"));
+            int id = Integer.parseInt(request.getParameter("sel"));
             TableRow result = dbean.getItem(id);
             request.setAttribute("results", result);
             request.getRequestDispatcher("/moditem.jsp").forward(request, response);
             
             
-        } else { // User arrvied some other way
-            request.getRequestDispatcher("/index.jsp").forward(request, response);
+        } else if(request.getParameter("update") != null) { // User wants to update item
+            TableRow row = new TableRow();
+            row.setId(Integer.parseInt(request.getParameter("id")));
+            row.setName(request.getParameter("name"));
+            row.setDesc(request.getParameter("desc"));
+            row.setPrice(Double.parseDouble(request.getParameter("price")));
+            row.setQty(Integer.parseInt(request.getParameter("qty")));
+            
+            dbean.modifyItem(row);
         }
+        
+        // Update results and return user to admin page
+        ArrayList<TableRow> result = dbean.getCatalog();
+        request.setAttribute("results", result);
+        request.getRequestDispatcher("/admin.jsp").forward(request, response);
+        
 
         
         
