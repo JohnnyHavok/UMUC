@@ -1,9 +1,9 @@
 /*	
 **  hw1.cpp
-**	Justin Smith
-**	Homework 1
-**	CMIS 315.6380
-**	01.18.14
+**  Justin Smith
+**  Homework 1
+**  CMIS 315.6380
+**  01.18.14
 */
 
 #include <iostream>
