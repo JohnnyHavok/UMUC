@@ -1,7 +1,7 @@
 /*	
 **  hw1.cpp
 **  Justin Smith
-**  Homework 1
+**  Homework 1 - Rework
 **  CMIS 315.6380
 **  01.18.14
 */
@@ -14,8 +14,12 @@ using std::endl;
 
 int main()
 {
-	int input, sum;
-	float average;
+	int input 		= 0;
+	int sum 		= 0;
+	
+	long product	= 0;
+
+	float average 	= 0;
 
 	// Loop five times asking for numbers
 	for(int i = 1; i <= 5; i++)
@@ -23,8 +27,18 @@ int main()
 		cout << "Please enter number " << i << ": ";
 		cin >> input;
 		sum += input;
+
+		if(i == 1) // First time through do not multiply by initial 0
+			product = input;
+		else 
+			product *= input;
 	}
 
-	// Output results of the average of the five numbers entered
-	cout << "The average of the five numbers is: " << (sum / 5.0) << endl;
+	// Calculate average
+	average = sum / 5.0;
+
+	// Output results of the average and product of the five numbers
+	cout << "The average of the five numbers is: " << average << endl;
+	cout << "The product of the five numbers is: " << product << endl;
+
 }
