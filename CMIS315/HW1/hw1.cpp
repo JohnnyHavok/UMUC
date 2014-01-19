@@ -14,12 +14,12 @@ using std::endl;
 
 int main()
 {
-	int input 		= 0;
-	int sum 		= 0;
+	int input = 0;
+	int sum   = 0;
 	
-	long product	= 0;
+	long product = 0;
 
-	float average 	= 0;
+	float average = 0;
 
 	// Loop five times asking for numbers
 	for(int i = 1; i <= 5; i++)
