@@ -19,7 +19,7 @@ int main()
 	int input = 0;
 	int sum   = 0;
 	
-	long product = 0;
+	long product = 1;
 
 	float average = 0;
 
@@ -32,11 +32,6 @@ int main()
 		cout << "Please enter number " << i << ": ";
 		cin >> input;
 		sum += input;
-
-		if(i == 1) // First time through do not multiply by initial 0
-			product = input;
-		else 
-			product *= input;
 	}
 
 	// Calculate average
