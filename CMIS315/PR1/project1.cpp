@@ -41,7 +41,7 @@ int FineCalculator::getFine(int zone, int speedLimit, int actualSpeed) const
 		case 3: // Residential zone speeding
 			return (actualSpeed - speedLimit) * 7 + 200 + _courtFees;
 
-		default: // Project specification does not require a check on user input
+		default: // Project specification does not require a check on input 
 				 // so it is possible for a user of this class to reach this.
 			return 0;
 	}
@@ -56,16 +56,32 @@ int main()
 	int userInput; // Holds user interaction values
 	int zone, speedLimit, actualSpeed;
 
-	cout << "Enter court fees: ";
-	cin >> userInput;
+	while(true) // Loop until user enters a court fee >= 0
+	{
+		cout << "Enter court fees: ";
+		cin >> userInput;
+
+		if(userInput >= 0)
+			break;
+
+		cout << "Court fees cannot be a negative value, please try again"
+			 << endl;
+	}
 
 	FineCalculator fc(userInput); // Instantiate a calculator for this session
 
 	do
 	{
-		cout << "Enter the type of speeding offense "
+		cout << endl << "Enter the type of speeding offense "
 			 << "(1 for Regular, 2 for Work Zone, 3 for Residential): ";
 		cin >> zone;
+
+		// Make sure zone is within range 1...3
+		if(!(zone <= 3 && zone > 0))
+		{
+			cout << "Invalid zone number, please try again" << endl;
+			continue;  // Restart do...while. 
+		}
 
 		cout << "Enter the speed limit: ";
 		cin >> speedLimit;
@@ -73,12 +89,16 @@ int main()
 		cout << "Enter the actual speed: ";
 		cin >> actualSpeed;
 
-		cout << "The total fine is: $" << fc.getFine(zone, speedLimit, actualSpeed)
-			 << endl;
+		// Basic input check to make sure actualSpeed is greater than speedLimit
+		if(actualSpeed - speedLimit > 0)
+			cout << "The total fine is: $" << fc.getFine(zone, speedLimit, actualSpeed)
+				 << endl << endl;
+		else
+			cout << "Driver was not speeding!" << endl << endl;
 
 		cout << "Enter 1 to produce another ticket or 0 to exit: ";
 		cin >> userInput;	 
-		
+
 	} while (userInput != 0);
 
 	cout << "Program finished" << endl;
