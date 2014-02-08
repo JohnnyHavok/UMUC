@@ -7,13 +7,64 @@
 */
 
 #include <iostream> // cout, endl
-#include <iomanip> // setw
-#include <cstdlib> // srand
-#include <ctime> // time
+#include <iomanip>  // setw
+#include <cstdlib>  // srand, rand
+#include <ctime>    // time
 
 using namespace std;
 
 int main()
 {
-	const int arraySize = 7 
+	const int arraySize = 25; // 4x6-sided dice = 4 - 24, need at least 24 cells
+	int frequency[arraySize] = {};
+
+	srand(time(0)); // Seed random number generator
+
+	// Roll our dice four times and add up the results 
+	// and increment the corresponding cell. 
+	for(int roll = 1; roll <= 6000000; ++roll)
+		++frequency[ (1 + rand() % 6) 
+			       + (1 + rand() % 6) 
+			       + (1 + rand() % 6) 
+			       + (1 + rand() % 6) ];  // Roll four times, add together, update cell
+
+	cout << "Total" << setw(13) << "Frequency" << endl;
+
+	for(int i = 4; i < arraySize; ++i)
+		cout << setw(5) << i << setw(13) << frequency[i] << endl;
 }
+
+/**
+The results from running the above code was not inline with my expectations.
+Based on the example in the book and an understanding of basic probability,
+when rolling a single 6-sided dice we have an equal chance of rolling any
+number.  So when running the above code I expected an equal (+/- a few pts)
+chance of rolling a total between 4-24.  Instead the results were a bell 
+curve where the highest precentile was the total 14.
+
+Results:
+
+Total    Frequency
+    4         4701
+    5        18740
+    6        46594
+    7        92871
+    8       161970
+    9       258734
+   10       370404
+   11       481946
+   12       579074
+   13       648864
+   14       677020
+   15       647001
+   16       577704
+   17       480604
+   18       370134
+   19       259458
+   20       162242
+   21        92763
+   22        45838
+   23        18730
+   24         4608
+ 
+**/
