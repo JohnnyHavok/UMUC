@@ -60,31 +60,53 @@ Based on the example in the book and an understanding of basic probability,
 when rolling a single 6-sided dice we have an equal chance of rolling any
 number.  So when running the above code I expected an equal (+/- a few pts)
 chance of rolling a total between 4-24.  Instead the results were a bell 
-curve where the highest precentile was the total 14.
+curve where the highest precentile was the total 14.  For the 6x4 configuration
+I recieved a similar bell curve centered around 15.
 
-Results:
-
+Results for 4x 6-sided dice rolls:
 Total    Frequency
-    4         4701
-    5        18740
-    6        46594
-    7        92871
-    8       161970
-    9       258734
-   10       370404
-   11       481946
-   12       579074
-   13       648864
-   14       677020
-   15       647001
-   16       577704
-   17       480604
-   18       370134
-   19       259458
-   20       162242
-   21        92763
-   22        45838
-   23        18730
-   24         4608
+    4         4739
+    5        18601
+    6        46097
+    7        92794
+    8       162263
+    9       259198
+   10       370995
+   11       481555
+   12       577826
+   13       648844
+   14       676064
+   15       647663
+   16       579189
+   17       481486
+   18       369656
+   19       259446
+   20       161899
+   21        92208
+   22        46285
+   23        18526
+   24         4666
+
+Results for 6x 4-sided dice rolls:
+Total    Frequency
+    6         1434
+    7         8900
+    8        31088
+    9        81932
+   10       176242
+   11       316869
+   12       491991
+   13       669198
+   14       798009
+   15       849680
+   16       799738
+   17       668169
+   18       491841
+   19       316286
+   20       175421
+   21        81819
+   22        30877
+   23         9028
+   24         1478
  
 **/
