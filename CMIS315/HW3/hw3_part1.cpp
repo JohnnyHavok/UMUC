@@ -15,23 +15,43 @@ using namespace std;
 
 int main()
 {
-	const int arraySize = 25; // 4x6-sided dice = 4 - 24, need at least 24 cells
-	int frequency[arraySize] = {};
+	const int arraySize = 25; // Array size for 4x6-side and 6x4-side
+
+	int frequency_4x6[arraySize] = {};
+	int frequency_6x4[arraySize] = {};
 
 	srand(time(0)); // Seed random number generator
 
-	// Roll our dice four times and add up the results 
+	// Roll our dice four and six times and add up the results 
 	// and increment the corresponding cell. 
 	for(int roll = 1; roll <= 6000000; ++roll)
-		++frequency[ (1 + rand() % 6) 
-			       + (1 + rand() % 6) 
-			       + (1 + rand() % 6) 
-			       + (1 + rand() % 6) ];  // Roll four times, add together, update cell
+	{
+		++frequency_4x6[ (1 + rand() % 6) 
+			           + (1 + rand() % 6) 
+			           + (1 + rand() % 6) 
+			           + (1 + rand() % 6) ];
 
+		++frequency_6x4[ (1 + rand() % 4) 
+					   + (1 + rand() % 4)
+					   + (1 + rand() % 4)
+					   + (1 + rand() % 4)
+					   + (1 + rand() % 4)
+					   + (1 + rand() % 4) ];
+	}
+
+	cout << "Results for 4x 6-sided dice rolls:" << endl;
 	cout << "Total" << setw(13) << "Frequency" << endl;
 
 	for(int i = 4; i < arraySize; ++i)
-		cout << setw(5) << i << setw(13) << frequency[i] << endl;
+		cout << setw(5) << i << setw(13) << frequency_4x6[i] << endl;
+
+	cout << endl;
+
+	cout << "Results for 6x 4-sided dice rolls:" << endl;
+	cout << "Total" << setw(13) << "Frequency" << endl;
+
+	for(int i = 6; i < arraySize; ++i)
+		cout << setw(5) << i << setw(13) << frequency_6x4[i] << endl;
 }
 
 /**
