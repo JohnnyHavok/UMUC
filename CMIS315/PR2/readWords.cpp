@@ -20,7 +20,7 @@ char** read(const char* fileName, int& count)
   for (int index = 0; index < count; ++index) {
     char line[100];
     readingStream.getline(line, 100);
-    words[index] = _strdup(line);
+    words[index] = strdup(line);
   }
   readingStream.close();
   return words;

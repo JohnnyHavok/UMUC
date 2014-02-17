@@ -7,7 +7,8 @@
 */
 
 
-#include <iostream> // cout, endl;
+#include <iostream> // cout, endl
+#include <cstring> // strlen, strcpy
 
 using namespace std;
 
@@ -18,12 +19,13 @@ class KeyedWord
 public:
 	KeyedWord(char* word);
 	char* getWord();
-	char* getKey(); 
+	char* getKey();
+	// int keySize();
 private:
 	void swap(char *const, char *const);
 	void selectionSort(char *const);
-	int wordSize(const char *const);
-	void wordCopy(const char *const, char *const);
+	// int wordSize(const char *const);
+	// void wordCopy(const char *const, char *const);
 
 	char* _word;
 	char* _key;
@@ -35,40 +37,45 @@ private:
 KeyedWord::KeyedWord(char *word)
 {
 	_word = word;
-	_key = new char[wordSize(word)];
-	wordCopy(_word, _key);
+	_key = new char[strlen(_word)];
+	// wordCopy(_word, _key);
+	strcpy(_key, _word);
+	cout << strlen(_key) << ":" << strlen(_word) << endl;
 
 	selectionSort(_key);
 
 	// Test code, remove before shipping
 	cout << getWord() << ":" << getKey() << endl;
-
 }
 
 char* KeyedWord::getWord() {return _word;}
 char* KeyedWord::getKey() {return _key;}
 
 
-int KeyedWord::wordSize(const char *const word) 
-{
-	int letterCount = 0;
-	for(int i = 0; word[i] != '\0'; i++)
-		letterCount++;
-	return letterCount + 1; // Returns size of string literal
-}
+// int KeyedWord::keySize() {return wordSize(_key);}
 
-void KeyedWord::wordCopy(const char *const word, char *const key)
-{
-	int i = 0;
 
-	while(word[i] != '\0')
-	{
-		key[i] = *(word + i);
-		++i;
-	}
+// int KeyedWord::wordSize(const char *const word) 
+// {
+// 	int letterCount = 0;
+// 	for(int i = 0; word[i] != '\0'; ++i)
+// 		letterCount++;
 
-	key[i] = '\0';
-}
+// 	return letterCount - 1; // Returns size of string literal
+// }
+
+// void KeyedWord::wordCopy(const char *const word, char *const key)
+// {
+// 	int i = 0;
+
+// 	while(word[i] != '\0')
+// 	{
+// 		key[i] = *(word + i);
+// 		++i;
+// 	}
+
+// 	// key[i] = '\0';
+// }
 
 /*
 ** The following selectionSort() and swap() function code
@@ -82,12 +89,12 @@ void KeyedWord::wordCopy(const char *const word, char *const key)
 void KeyedWord::selectionSort(char *const key) 
 {
 	int smallest; // index of smallest element
-	int _wordSize = wordSize(key); // size of word
+	int _wordSize = strlen(key); // size of word
 
 	for(int i = 0; i < _wordSize - 1; ++i)
 	{
 		smallest = i;
-		for(int index = i + 1; index < _wordSize - 1; ++index)
+		for(int index = i + 1; index < _wordSize; ++index)
 			if(key[index] < key[smallest])
 				smallest = index;
 
@@ -127,7 +134,7 @@ int main(int argumentCount, char** arguments)
 
 		cout << numberOfWords << endl;
 
-		// sort(keyedWords, numberOfWords);
+		sort(keyedWords, numberOfWords);
 
 		// printAnagrams(keyedWords, numberOfWords);
 		
@@ -135,3 +142,12 @@ int main(int argumentCount, char** arguments)
 
 	}
 }
+
+void sort(KeyedWord *keyedWords[], int numberOfObjects)
+{
+
+
+
+
+}
+
