@@ -8,7 +8,7 @@
 
 
 #include <iostream> // cout, endl
-#include <cstring> // strlen, strcpy
+#include <cstring>  // strlen, strcpy, strcmp
 
 using namespace std;
 
@@ -20,12 +20,10 @@ public:
 	KeyedWord(char* word);
 	char* getWord();
 	char* getKey();
-	// int keySize();
+
 private:
 	void swap(char *const, char *const);
 	void selectionSort(char *const);
-	// int wordSize(const char *const);
-	// void wordCopy(const char *const, char *const);
 
 	char* _word;
 	char* _key;
@@ -38,54 +36,20 @@ KeyedWord::KeyedWord(char *word)
 {
 	_word = word;
 	_key = new char[strlen(_word)];
-	// wordCopy(_word, _key);
 	strcpy(_key, _word);
-	cout << strlen(_key) << ":" << strlen(_word) << endl;
-
 	selectionSort(_key);
-
-	// Test code, remove before shipping
-	cout << getWord() << ":" << getKey() << endl;
 }
 
 char* KeyedWord::getWord() {return _word;}
 char* KeyedWord::getKey() {return _key;}
 
-
-// int KeyedWord::keySize() {return wordSize(_key);}
-
-
-// int KeyedWord::wordSize(const char *const word) 
-// {
-// 	int letterCount = 0;
-// 	for(int i = 0; word[i] != '\0'; ++i)
-// 		letterCount++;
-
-// 	return letterCount - 1; // Returns size of string literal
-// }
-
-// void KeyedWord::wordCopy(const char *const word, char *const key)
-// {
-// 	int i = 0;
-
-// 	while(word[i] != '\0')
-// 	{
-// 		key[i] = *(word + i);
-// 		++i;
-// 	}
-
-// 	// key[i] = '\0';
-// }
-
 /*
 ** The following selectionSort() and swap() function code
-** was copied and modified from (Dietel, Dietel, C++ HTP, 8th)
+** was copied and modified from (Dietel, Dietel, C++ LTP, 8th)
 ** Figure 8.13 pg. 345.  It varies in that it figures out the
 ** the size of the string literal that was passed in and it
 ** has to deal with the terminating '\0' character.
 */
-
-
 void KeyedWord::selectionSort(char *const key) 
 {
 	int smallest; // index of smallest element
@@ -112,8 +76,8 @@ void KeyedWord::swap(char *const element1Ptr, char *const element2Ptr)
 // End KeyedWord class implementation
 //-------
 
-void sort(KeyedWord* keyedWords[], int numberOfObjects); // TO BE IMPLEMENTED
-void printAnagrams(KeyedWord* keyedWords[], int numberOfObjects); // TO BE IMPLEMENTED
+void sort(KeyedWord* keyedWords[], int numberOfObjects);
+void printAnagrams(KeyedWord* keyedWords[], int numberOfObjects);
 
 int main(int argumentCount, char** arguments)
 {
@@ -132,22 +96,67 @@ int main(int argumentCount, char** arguments)
 			keyedWords[wordIndex] = new KeyedWord(words[wordIndex]);
 		}
 
-		cout << numberOfWords << endl;
-
 		sort(keyedWords, numberOfWords);
 
-		// printAnagrams(keyedWords, numberOfWords);
-		
-		// EXTRA CREDIT (+5 points): clean up all allocated memory
+		cout << "Begin print function" << endl << endl << endl;
 
+		printAnagrams(keyedWords, numberOfWords);
 	}
 }
 
+/*
+** Again, modified from SelectionSort found in (Dietel, Dietel, C++ LTP, 8th)
+** Figure 8.13, page 345.
+*/
 void sort(KeyedWord *keyedWords[], int numberOfObjects)
 {
+	int smallest; // index of smallest element
 
+	for(int i = 0; i < numberOfObjects - 1; ++i)
+	{
+		smallest = i;
+		for(int index = i + 1; index < numberOfObjects; ++index)
+			if(strlen(keyedWords[index]->getKey()) < 
+				strlen(keyedWords[smallest]->getKey()))
+				smallest = index;
 
-
-
+		KeyedWord keyedWordPtr = *keyedWords[i];
+		*keyedWords[i] = *keyedWords[smallest];
+		*keyedWords[smallest] = keyedWordPtr;
+	}
 }
 
+/*
+** This function will iterate through the array and attempt to match 
+** the current word key to any key past its current index.  It will
+** short-curcuit the inner-loop if it starts seeing keys longer than 
+** it's own indicating that there will be no more key matches possible.
+*/
+void printAnagrams(KeyedWord *keyedWords[], int numberOfObjects)
+{
+	int totalAnagrams = 0;
+
+	for(int i = 0; i < numberOfObjects - 1; ++i)
+	{
+		char *currentKey = keyedWords[i]->getKey();
+		int maxLengthSearch = strlen(currentKey);
+
+		for(int j = i + 1; j < numberOfObjects; ++j)
+		{
+			// If the next anagram key is longer and array is sorted
+			// we know there will never be another match, no need
+			// to keep searching, go to next outer for loop index.
+			if(strlen(keyedWords[j]->getKey()) > maxLengthSearch)
+				break;
+
+			if(strcmp(currentKey, keyedWords[j]->getKey()) == 0) 
+			{
+				++totalAnagrams;
+				cout << keyedWords[i]->getWord() << endl;
+				cout << keyedWords[j]->getWord() << endl << endl; 
+			}
+		}
+	}
+
+	cout << "Found " << totalAnagrams << " anagrams in this file" << endl;
+}
