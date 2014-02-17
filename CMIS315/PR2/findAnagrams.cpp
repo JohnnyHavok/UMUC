@@ -40,6 +40,7 @@ KeyedWord::KeyedWord(char *word)
 
 	selectionSort(_key);
 
+	// Test code, remove before shipping
 	cout << getWord() << ":" << getKey() << endl;
 
 }
@@ -69,12 +70,14 @@ void KeyedWord::wordCopy(const char *const word, char *const key)
 	key[i] = '\0';
 }
 
-void KeyedWord::swap(char *const element1Ptr, char *const element2Ptr)
-{
-	char temp = *element1Ptr;
-	*element1Ptr = *element2Ptr;
-	*element2Ptr = temp;
-}
+/*
+** The following selectionSort() and swap() function code
+** was copied and modified from (Dietel, Dietel, C++ HTP, 8th)
+** Figure 8.13 pg. 345.  It varies in that it figures out the
+** the size of the string literal that was passed in and it
+** has to deal with the terminating '\0' character.
+*/
+
 
 void KeyedWord::selectionSort(char *const key) 
 {
@@ -85,16 +88,19 @@ void KeyedWord::selectionSort(char *const key)
 	{
 		smallest = i;
 		for(int index = i + 1; index < _wordSize - 1; ++index)
-		{
 			if(key[index] < key[smallest])
 				smallest = index;
-		}
 
 		swap(&key[i], &key[smallest]);
-
 	}
 }
 
+void KeyedWord::swap(char *const element1Ptr, char *const element2Ptr)
+{
+	char temp = *element1Ptr;
+	*element1Ptr = *element2Ptr;
+	*element2Ptr = temp;
+}
 
 // End KeyedWord class implementation
 //-------
@@ -102,7 +108,7 @@ void KeyedWord::selectionSort(char *const key)
 void sort(KeyedWord* keyedWords[], int numberOfObjects); // TO BE IMPLEMENTED
 void printAnagrams(KeyedWord* keyedWords[], int numberOfObjects); // TO BE IMPLEMENTED
 
-void main(int argumentCount, char** arguments)
+int main(int argumentCount, char** arguments)
 {
 	if (argumentCount <= 1) {
 		std::cout << "No file name given as argument" << std::endl;
@@ -119,9 +125,11 @@ void main(int argumentCount, char** arguments)
 			keyedWords[wordIndex] = new KeyedWord(words[wordIndex]);
 		}
 
-		sort(keyedWords, numberOfWords);
+		cout << numberOfWords << endl;
 
-		printAnagrams(keyedWords, numberOfWords);
+		// sort(keyedWords, numberOfWords);
+
+		// printAnagrams(keyedWords, numberOfWords);
 		
 		// EXTRA CREDIT (+5 points): clean up all allocated memory
 
