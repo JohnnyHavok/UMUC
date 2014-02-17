@@ -35,7 +35,7 @@ private:
 KeyedWord::KeyedWord(char *word)
 {
 	_word = word;
-	_key = new char[strlen(_word)];
+	_key = new char[strlen(_word) + 1]; // + 1 for '\0'
 	strcpy(_key, _word);
 	selectionSort(_key);
 }
