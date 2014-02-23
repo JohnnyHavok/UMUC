@@ -68,7 +68,7 @@ RationalNumber RationalNumber::operator / (const RationalNumber &RNOperand) cons
 {
   if(numerator == 0 || RNOperand.numerator == 0)
     throw "Cannot divide these fractions";
-  
+
   return RationalNumber(RNOperand.denominator * numerator,
                         RNOperand.numerator * denominator);
 }
@@ -93,7 +93,8 @@ bool RationalNumber::operator < (const RationalNumber &RNOperand) const
   return (numerator * RNOperand.denominator < denominator * RNOperand.numerator);
 }
 
-
+// -- gcdReduce() will reduce the fraction represented by this object
+//    so nothing needs to be returned.
 void RationalNumber::gcdReduce()
 {
   /*
