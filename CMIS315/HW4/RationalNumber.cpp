@@ -5,12 +5,15 @@
 **  CMIS 315.6380
 **  02.22.14
 */
-
+#include <iostream>
 #include "RationalNumber.h"
+
+using std::ostream;
+
 
 RationalNumber::RationalNumber(int n, int d)
   : numerator(n),
-    denominator(d);
+    denominator(d)
 {
   if(denominator == 0)
     throw "Invalid Denominator, cannot divide by 0";
@@ -23,7 +26,7 @@ RationalNumber::RationalNumber(int n, int d)
 
 RationalNumber::RationalNumber(const RationalNumber &rationalToCopy)
   : numerator(rationalToCopy.numerator),
-    denominator(rationalToCopy.denominator);
+    denominator(rationalToCopy.denominator)
 {  
 }
 
@@ -53,35 +56,34 @@ RationalNumber RationalNumber::operator - (const RationalNumber &RNOperand) cons
 
 RationalNumber RationalNumber::operator * (const RationalNumber &RNOperand) const
 {
-  return RationalNumber(&RNOperand.numerator * numerator,
-                        &RNOperand.denominator * denominator);
+  return RationalNumber(RNOperand.numerator * numerator,
+                        RNOperand.denominator * denominator);
 }
 
 RationalNumber RationalNumber::operator / (const RationalNumber &RNOperand) const
 {
-  return RationalNumber(&RNOperand.denominator * numerator,
-                        &RNOperand.numerator * denominator);
+  return RationalNumber(RNOperand.denominator * numerator,
+                        RNOperand.numerator * denominator);
 }
 
 bool RationalNumber::operator == (const RationalNumber &RNOperand) const
 {
-
-
+  return (numerator * RNOperand.denominator == denominator * RNOperand.numerator);
 }
 
 bool RationalNumber::operator != (const RationalNumber &RNOperand) const
 {
-
+  return (numerator * RNOperand.denominator != denominator * RNOperand.numerator);
 }
 
 bool RationalNumber::operator > (const RationalNumber &RNOperand) const
 {
-
+  return (numerator * RNOperand.denominator > denominator * RNOperand.numerator);
 }
 
 bool RationalNumber::operator < (const RationalNumber &RNOperand) const
 {
-
+  return (numerator * RNOperand.denominator < denominator * RNOperand.numerator);
 }
 
 
@@ -109,28 +111,8 @@ void RationalNumber::gcdReduce()
   denominator = denominator / a;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ostream &operator << (ostream &output, const RationalNumber &RNOutput)
+{
+  output << RNOutput.numerator << "/" << RNOutput.denominator;
+  return output;
+}
