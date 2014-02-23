@@ -17,10 +17,13 @@ RationalNumber::RationalNumber(int n, int d)
     denominator(d)
 {
   if(denominator == 0)
-    throw "Invalid Denominator, cannot divide by 0";
+    throw "Invalid input, cannot divide by zero";
 
   if(denominator < 0)
+  {
     numerator = negate(numerator);
+    denominator = negate(denominator);
+  }
 
   gcdReduce();
 }
@@ -63,6 +66,9 @@ RationalNumber RationalNumber::operator * (const RationalNumber &RNOperand) cons
 
 RationalNumber RationalNumber::operator / (const RationalNumber &RNOperand) const
 {
+  if(numerator == 0 || RNOperand.numerator == 0)
+    throw "Cannot divide these fractions";
+  
   return RationalNumber(RNOperand.denominator * numerator,
                         RNOperand.numerator * denominator);
 }
