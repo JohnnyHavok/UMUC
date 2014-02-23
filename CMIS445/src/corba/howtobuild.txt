@@ -1,0 +1,30 @@
+
+To build the all java version of the account sample you
+must have the JAVA jdk 1.3 installed on your
+system.
+
+Steps in building the sample:
+
+1) Create a directory called account
+2) Copy the following files into the directory:
+   a) account.idl
+   b) AccountClient.java
+   c) AccountServer.java
+3) Run the idl compiler against the idl file:
+    idlj -oldImplBase -Fall account.idl
+   The -Fall option tells the idl compiler to create
+   both the client and server stub and marshalling
+   components.
+4) Compiler the server:
+   a) Go to the account directory.
+   b) enter javac AccountServer.java AccountModule/*.java
+5) Compiler the client:
+   a) Go to the account directory.
+   b) enter javac AccountClient.java AccountModule/*.java
+
+Steps in running the program:
+   a) Run the server - 
+        java AccountServer & 
+   b) Run the client - 
+        java AccountClient 
+      
