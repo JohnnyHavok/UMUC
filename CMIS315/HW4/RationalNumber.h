@@ -1,5 +1,5 @@
 /*  
-**  hw4.cpp
+**  RationalNumber.h
 **  Justin Smith
 **  Homework 4 
 **  CMIS 315.6380
@@ -15,7 +15,7 @@ class RationalNumber
   friend ostream &operator >> (ostream &, RationalNumber &);
 
 public:
-  RationalNumber(int numerator = 0, int denominator = 0);
+  RationalNumber(int numerator = 0, int denominator = 1);
   RationalNumber(const RationalNumber &);
 
   RationalNumber operator + (const RationalNumber &) const;
@@ -28,13 +28,14 @@ public:
   bool operator >  (const RationalNumber &) const;
   bool operator <  (const RationalNumber &) const;
 
+  inline int negate(int i) { return i * -1; }
   inline double getDouble() { return numerator / denominator; }
 
 private:
+  void gcdReduce();
+
   int numerator;
   int denominator;
-
-  void gcdReduce();
 };
 
 #endif
