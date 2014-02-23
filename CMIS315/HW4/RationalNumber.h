@@ -31,7 +31,6 @@ public:
   bool operator <  (const RationalNumber &) const;
 
   inline int negate(int i) { return i * -1; }
-  inline double getDouble() { return numerator / denominator; }
 
 private:
   void gcdReduce();
