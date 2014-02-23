@@ -28,7 +28,9 @@ public:
   bool operator == (const RationalNumber &) const;
   bool operator != (const RationalNumber &) const;
   bool operator >  (const RationalNumber &) const;
+  bool operator >= (const RationalNumber &) const;
   bool operator <  (const RationalNumber &) const;
+  bool operator <= (const RationalNumber &) const;
 
   inline int negate(int i) { return i * -1; }
 

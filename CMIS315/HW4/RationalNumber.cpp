@@ -88,9 +88,19 @@ bool RationalNumber::operator > (const RationalNumber &RNOperand) const
   return (numerator * RNOperand.denominator > denominator * RNOperand.numerator);
 }
 
+bool RationalNumber::operator >= (const RationalNumber &RNOperand) const
+{
+  return ( (*this > RNOperand) || (*this == RNOperand) );
+}
+
 bool RationalNumber::operator < (const RationalNumber &RNOperand) const
 {
   return (numerator * RNOperand.denominator < denominator * RNOperand.numerator);
+}
+
+bool RationalNumber::operator <= (const RationalNumber &RNOperand) const
+{
+  return ( (*this < RNOperand) || (*this == RNOperand) );
 }
 
 // -- gcdReduce() will reduce the fraction represented by this object

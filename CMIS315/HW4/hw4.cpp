@@ -50,8 +50,14 @@ int main()
   cout << RNArray[1] << " < " << RNArray[2] << ": "
        << (RNArray[1] < RNArray[2]) << endl;
 
+  cout << RNArray[3] << " <= " << RNArray[5] << ": "
+       << (RNArray[3] <= RNArray[5]) << endl;
+
   cout << RNArray[5] << " > " << RNArray[4] << ": "
        << (RNArray[5] > RNArray[4]) << endl;
+
+  cout << RNArray[2] << " >= " << RNArray[3] << ": "
+       << (RNArray[2] >= RNArray[3]) << endl;
 
   cout << "\nOperations" << endl;
 
