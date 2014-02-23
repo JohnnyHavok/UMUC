@@ -5,6 +5,7 @@
 **  CMIS 315.6380
 **  02.22.14
 */
+
 #ifndef RATIONALNUMBER_H
 #define RATIONALNUMBER_H
 

@@ -5,6 +5,7 @@
 **  CMIS 315.6380
 **  02.22.14
 */
+
 #include <iostream>
 #include "RationalNumber.h"
 
