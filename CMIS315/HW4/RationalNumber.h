@@ -15,7 +15,6 @@ using std::ostream;
 class RationalNumber
 {
   friend ostream &operator << (ostream &, const RationalNumber &);
-  // friend ostream &operator >> (ostream &, RationalNumber &);
 
 public:
   RationalNumber(int numerator = 0, int denominator = 1);
