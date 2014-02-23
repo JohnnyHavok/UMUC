@@ -84,4 +84,6 @@ int main()
   cout << "(" << RNArray[6] << " * " << RNArray[4] << ") / " << RNArray[5] << " - "
        << RNArray[0] << " + " << RNArray[2] << " : "
        << (RNArray[6] * RNArray[4] / RNArray[5] - RNArray[0] + RNArray[2]) << endl;
+
+  delete [] RNArray;
 }
