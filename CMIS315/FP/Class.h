@@ -6,16 +6,24 @@
 **  03.06.14
 */
 
+#ifndef GRADE_ENUM
+#define GRADE_ENUM
+
+enum GRADE { F, D, C, B, A, W, IP };
+
+#endif
+
 #ifndef CLASS_H
 #define CLASS_H
 
 #include <string>
+
 using std::string;
 
 class Class
 {
 public:
-  Class();
+  Class(GRADE = IP); // Default all classes are IP / In Progress
 
   Class &setCatalogID(string);
   Class &setClassID(int);
@@ -26,25 +34,19 @@ public:
   int getClassID() const;
   int getClassSemester() const;
   int getCreditHrs() const;
-  char getGrade() const;
+  GRADE getGrade() const;
   string getClassTitle() const;
   string getCatalogID() const;
 
-  void setGrade(char);
+  void setGrade(GRADE);
 
 private:
-  // const string _catalogID;
-  // const int _classID;
-  // const int _classSemester;
-  // const string _classTitle;
-  // const int _creditHrs;
-  
   string _catalogID;
   int _classID;
   int _classSemester;
   string _classTitle;
   int _creditHrs;
-  char _grade;
+  GRADE _grade;
 };
 
 #endif
