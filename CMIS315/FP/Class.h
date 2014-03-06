@@ -15,21 +15,36 @@ using std::string;
 class Class
 {
 public:
-  Class(int, int, string, int);
+  Class();
 
-  int getClassID();
-  int getClassSemester();
-  int getCreditHrs();
-  char getGrade();
-  string getClassTitle();
+  Class &setCatalogID(string);
+  Class &setClassID(int);
+  Class &setClassSemester(int);
+  Class &setClassTitle(string);
+  Class &setClassCreditHrs(int);
+
+  int getClassID() const;
+  int getClassSemester() const;
+  int getCreditHrs() const;
+  char getGrade() const;
+  string getClassTitle() const;
+  string getCatalogID() const;
 
   void setGrade(char);
 
 private:
+  // const string _catalogID;
+  // const int _classID;
+  // const int _classSemester;
+  // const string _classTitle;
+  // const int _creditHrs;
+  
+  string _catalogID;
   int _classID;
   int _classSemester;
   string _classTitle;
-  char _grade;
   int _creditHrs;
+  char _grade;
 };
+
 #endif
