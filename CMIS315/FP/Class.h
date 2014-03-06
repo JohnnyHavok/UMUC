@@ -10,11 +10,12 @@
 #define CLASS_H
 
 #include <string>
+using std::string;
 
 class Class
 {
 public:
-  Class(int, int, string, creditHrs);
+  Class(int, int, string, int);
 
   int getClassID();
   int getClassSemester();
@@ -30,5 +31,5 @@ private:
   string _classTitle;
   char _grade;
   int _creditHrs;
-}
+};
 #endif
