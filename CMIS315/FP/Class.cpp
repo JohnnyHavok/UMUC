@@ -7,6 +7,8 @@
 */
 
 #include "Class.h"
+#include <iostream>
+using namespace std;
 
 Class::Class(GRADE grade) { _grade = grade; }
 
@@ -52,5 +54,18 @@ int Class::getCreditHrs() const { return _creditHrs; }
 GRADE Class::getGrade() const { return _grade; }
 string Class::getClassTitle() const { return _classTitle; }
 string Class::getCatalogID() const { return _catalogID; }
+
+int Class::getGradePoints() const
+{
+  switch(_grade)
+  {
+    case W:
+    case IP:
+      return -1; // Sentinel value, must check for this.
+    
+    default:
+      return static_cast<int>(_grade) * _creditHrs;
+  }
+}
 
 void Class::setGrade(GRADE grade) { _grade = grade; }

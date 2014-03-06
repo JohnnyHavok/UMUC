@@ -38,6 +38,7 @@ public:
   GRADE getGrade() const;
   string getClassTitle() const;
   string getCatalogID() const;
+  int getGradePoints() const;
 
   void setGrade(GRADE);
 
