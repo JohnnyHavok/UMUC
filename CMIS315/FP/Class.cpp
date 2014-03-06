@@ -40,6 +40,12 @@ Class &Class::setClassCreditHrs(int creditHrs)
   return *this;
 }
 
+Class &Class::setClassGrade(GRADE grade)
+{
+  _grade = grade;
+  return *this;
+}
+
 int Class::getClassID() const { return _classID; }
 int Class::getClassSemester() const { return _classSemester; }
 int Class::getCreditHrs() const { return _creditHrs; }

@@ -30,6 +30,7 @@ public:
   Class &setClassSemester(int);
   Class &setClassTitle(string);
   Class &setClassCreditHrs(int);
+  Class &setClassGrade(GRADE);
 
   int getClassID() const;
   int getClassSemester() const;
