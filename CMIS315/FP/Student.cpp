@@ -44,7 +44,7 @@ Class Student::getClass(std::string key)
   return _classList[key];
 }
 
-void Student::listClasses()
+void Student::listClasses() const
 {
   std::map<std::string, Class>::const_iterator iterator;
   for(iterator = _classList.begin(); iterator != _classList.end(); iterator++)

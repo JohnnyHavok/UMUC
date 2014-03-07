@@ -26,7 +26,7 @@ public:
 
   Class getClass(std::string);
 
-  void listClasses();
+  void listClasses() const;
 
 private:
   int _studentID;
