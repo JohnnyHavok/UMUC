@@ -18,12 +18,6 @@ Class &Class::setCatalogID(std::string catalogID)
   return *this;
 }
 
-// Class &Class::setClassID(int classID)
-// {
-//   _classID = classID;
-//   return *this;
-// }
-
 Class &Class::setClassSemester(int classSemester)
 {
   _classSemester = classSemester;
@@ -48,7 +42,6 @@ Class &Class::setClassGrade(GRADE grade)
   return *this;
 }
 
-// int Class::getClassID() const { return _classID; }
 int Class::getClassSemester() const { return _classSemester; }
 int Class::getCreditHrs() const { return _creditHrs; }
 GRADE Class::getGrade() const { return _grade; }
@@ -72,16 +65,16 @@ void Class::setGrade(GRADE grade) { _grade = grade; }
 
 std::ostream &operator << (std::ostream &output, const Class &classOutput)
 {
-  output << classOutput._catalogID << "." << classOutput._classSemester
-         << std::setw(20) << classOutput._classTitle << std::setw(4) << classOutput._creditHrs
-         << std::setw(4) << classOutput.getLetterGrade();
+  output << std::setw(8) << classOutput._catalogID << "." << classOutput._classSemester
+         << std::setw(30) << classOutput._classTitle << std::setw(5) << classOutput._creditHrs
+         << std::setw(5) << classOutput.getLetterGrade();
 
   int gradePoints = classOutput.getGradePoints();
 
   if(gradePoints != -1)
-    output << std::setw(4) << gradePoints;
+    output << std::setw(5) << gradePoints;
   else
-    output << std::setw(4) << "--";
+    output << std::setw(5) << "--";
 
   return output;
 }
