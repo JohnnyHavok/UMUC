@@ -7,12 +7,10 @@
 */
 
 #include "Class.h"
-#include <iostream>
-using namespace std;
 
 Class::Class(GRADE grade) { _grade = grade; }
 
-Class &Class::setCatalogID(string catalogID)
+Class &Class::setCatalogID(std::string catalogID)
 {
   _catalogID = catalogID;
   return *this;
@@ -30,7 +28,7 @@ Class &Class::setClassSemester(int classSemester)
   return *this;
 }
 
-Class &Class::setClassTitle(string classTitle)
+Class &Class::setClassTitle(std::string classTitle)
 {
   _classTitle = classTitle;
   return *this;
@@ -52,8 +50,8 @@ int Class::getClassID() const { return _classID; }
 int Class::getClassSemester() const { return _classSemester; }
 int Class::getCreditHrs() const { return _creditHrs; }
 GRADE Class::getGrade() const { return _grade; }
-string Class::getClassTitle() const { return _classTitle; }
-string Class::getCatalogID() const { return _catalogID; }
+std::string Class::getClassTitle() const { return _classTitle; }
+std::string Class::getCatalogID() const { return _catalogID; }
 
 int Class::getGradePoints() const
 {

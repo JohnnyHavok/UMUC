@@ -18,17 +18,15 @@ enum GRADE { F, D, C, B, A, W, IP };
 
 #include <string>
 
-using std::string;
-
 class Class
 {
 public:
   Class(GRADE = IP); // Default all classes are IP / In Progress
 
-  Class &setCatalogID(string);
+  Class &setCatalogID(std::string);
   Class &setClassID(int);
   Class &setClassSemester(int);
-  Class &setClassTitle(string);
+  Class &setClassTitle(std::string);
   Class &setClassCreditHrs(int);
   Class &setClassGrade(GRADE);
 
@@ -36,17 +34,17 @@ public:
   int getClassSemester() const;
   int getCreditHrs() const;
   GRADE getGrade() const;
-  string getClassTitle() const;
-  string getCatalogID() const;
+  std::string getClassTitle() const;
+  std::string getCatalogID() const;
   int getGradePoints() const;
 
   void setGrade(GRADE);
 
 private:
-  string _catalogID;
+  std::string _catalogID;
   int _classID;
   int _classSemester;
-  string _classTitle;
+  std::string _classTitle;
   int _creditHrs;
   GRADE _grade;
 };
