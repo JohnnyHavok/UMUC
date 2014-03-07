@@ -46,13 +46,11 @@ Class Student::getClass(std::string key)
   return _classList[key];
 }
 
-// -- Test Harness, remove before ship
-
 void Student::listClasses()
 {
-  map<string, Class>::const_iterator iter;
-  for(iter = _classList.begin(); iter != _classList.end(); iter++)
+  map<string, Class>::const_iterator iterator;
+  for(iterator = _classList.begin(); iterator != _classList.end(); iterator++)
   {
-    cout << "Key: " << iter->first << " Value: " << iter->second.getClassSemester() << endl;
+    cout << iterator->second << endl;
   }
 }

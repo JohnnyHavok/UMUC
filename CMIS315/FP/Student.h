@@ -26,7 +26,6 @@ public:
 
   Class getClass(std::string);
 
-  // Test harness, remove before ship
   void listClasses();
 
 private:
