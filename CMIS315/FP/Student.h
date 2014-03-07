@@ -15,11 +15,15 @@
 
 class Student
 {
+  friend std::ostream &operator << (std::ostream &, const Student &);
+
 public:
   Student(int, std::string);
 
-  int getStudentID() const;
   std::string getStudentName() const;
+
+
+  int getStudentID() const;
 
   bool addClass(const Class&);
   bool updateGrade(const std::string, const GRADE grade);
@@ -27,6 +31,8 @@ public:
   bool deleteClass(const std::string);
 
   void listClasses() const;
+
+  float getGPA() const;
 
 private:
   int _studentID;

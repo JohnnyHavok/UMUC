@@ -10,17 +10,18 @@
 #include "Class.h"
 
 #include <iostream>
+#include <iomanip>
 #include <string>
-
-using namespace std; // Remove before ship
+#include <sstream>
 
 Student::Student(int studentID, std::string studentName)
   : _studentID(studentID),
     _studentName(studentName)
 { }
 
-int Student::getStudentID() const { return _studentID; }
 std::string Student::getStudentName() const { return _studentName; }
+
+int Student::getStudentID() const { return _studentID; }
 
 bool Student::addClass(const Class &classToAdd)
 {
@@ -81,4 +82,91 @@ void Student::listClasses() const
   {
     std::cout << iterator->second << std::endl;
   }
+}
+
+float Student::getGPA() const
+{
+  int totalGradePoints = 0;
+  int creditsCompleted = 0;
+
+  std::map<std::string, Class>::const_iterator iterator;
+  for(iterator = _classList.begin(); iterator != _classList.end(); iterator++)
+  {
+    switch(iterator->second.getGrade())
+    {
+      case IP:
+      case W:
+        break;
+
+      default: // Catches A, B, C, D, F
+        totalGradePoints += iterator->second.getGradePoints();
+        creditsCompleted += iterator->second.getCreditHrs();
+    }
+  }
+
+  return static_cast<float> (totalGradePoints) / creditsCompleted;
+}
+
+std::ostream &operator << (std::ostream &output, const Student &studentRecord)
+{
+  std::stringstream inProgressList;
+  std::stringstream courseHistory;
+
+  int creditsInProgress = 0;
+  int totalGradePoints = 0;
+  int creditsCompleted = 0;
+  int creditsNotCompleted = 0;
+
+  bool coursesInProgress = false;
+
+  output << "Student Record" << std::endl
+         << "=============================================================" << std::endl
+         << "Student ID: " << studentRecord._studentID << std::endl
+         << "Student Name: " << studentRecord._studentName << std::endl
+         << "=============================================================" << std::endl;
+
+
+
+  std::map<std::string, Class>::const_iterator iterator;
+  for(iterator = studentRecord._classList.begin(); 
+        iterator != studentRecord._classList.end(); iterator++)
+  {
+    switch(iterator->second.getGrade())
+    {
+      case IP:
+        inProgressList << iterator->second << std::endl;
+        coursesInProgress = true;
+        creditsInProgress += iterator->second.getCreditHrs();
+        break;
+
+      case W:
+        courseHistory << iterator->second << std::endl;
+        creditsNotCompleted += iterator->second.getCreditHrs();
+        break;
+
+      default: // Catches A, B, C, D, F
+        courseHistory << iterator->second << std::endl;
+        totalGradePoints += iterator->second.getGradePoints();
+        creditsCompleted += iterator->second.getCreditHrs();
+    }
+
+  }
+
+  if(coursesInProgress)
+  {
+    output << "Courses in Progress" << std::endl << std::endl
+           << inProgressList.str() << std::endl
+           << "Total Credits in Progress: " << creditsInProgress << std::endl
+           << "=============================================================" << std::endl;
+  }
+
+  output << "Course History" << std::endl << std::endl
+         << courseHistory.str() << std::endl
+         << "Credits Completed: " << creditsCompleted << std::endl
+         << "Credits Not Completed: " << creditsNotCompleted << std::endl
+         << std::setprecision(3)
+         << "GPA: " << static_cast<float> (totalGradePoints) / creditsCompleted << std::endl;
+
+  return output;
+
 }
