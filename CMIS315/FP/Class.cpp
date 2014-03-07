@@ -7,6 +7,8 @@
 */
 
 #include "Class.h"
+#include <iostream>
+#include <iomanip>
 
 Class::Class(GRADE grade) { _grade = grade; }
 
@@ -67,3 +69,43 @@ int Class::getGradePoints() const
 }
 
 void Class::setGrade(GRADE grade) { _grade = grade; }
+
+std::ostream &operator << (std::ostream &output, const Class &classOutput)
+{
+  output << classOutput._catalogID << "." << classOutput._classSemester
+         << std::setw(20) << classOutput._classTitle << std::setw(4) << classOutput._creditHrs
+         << std::setw(4) << classOutput.getLetterGrade();
+
+
+
+  int gradePoints = classOutput.getGradePoints();
+
+  if(gradePoints != -1)
+    output << std::setw(4) << gradePoints;
+  else
+    output << std::setw(4) << "--";
+
+  return output;
+}
+
+std::string Class::getLetterGrade() const
+{
+  switch(_grade)
+  {
+    case A:
+      return "A";
+    case B:
+      return "B";
+    case C:
+      return "C";
+    case D:
+      return "D";
+    case F:
+      return "F";
+    case W:
+      return "W";
+    
+    default:
+      return "IP";
+  }
+}
