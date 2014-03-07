@@ -34,9 +34,10 @@ public:
   bool updateGrade(const std::string, const GRADE grade);
   bool deleteClass(const std::string);
 
-  // -- The pointer passed here will point to a copy of a class object
-  // -- found in _classList if bool returned is true
-  bool getClass(const std::string, Class*);
+  // -- The pointer returned will hold the location of the class
+  // -- object in _classList which has the passed string as a key
+  // -- MUST CHECK FOR NULL.
+  Class * getClass(const std::string);
 
   void listClasses() const;
 
