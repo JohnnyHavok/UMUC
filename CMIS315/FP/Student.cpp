@@ -12,7 +12,7 @@
 #include <iostream>
 #include <string>
 
-using namespace std; // Remove before ship
+// using namespace std; // Remove before ship
 
 Student::Student(int studentID, std::string studentName)
   : _studentID(studentID),
@@ -25,14 +25,14 @@ std::string Student::getStudentName() const { return _studentName; }
 bool Student::addClass(const Class &classToAdd)
 {
   // -- http://www.cplusplus.com/reference/map/map/insert/
-  std::pair<std::map<string, Class>::iterator, bool> success;
+  std::pair<std::map<std::string, Class>::iterator, bool> success;
 
-  success = _classList.insert( std::pair<string, Class>(classToAdd.getCatalogID(), classToAdd) );
+  success = _classList.insert( std::pair<std::string, Class>(classToAdd.getCatalogID(), classToAdd) );
 
   return success.second;
 }
 
-bool Student::updateGrade(const string courseID, GRADE grade)
+bool Student::updateGrade(const std::string courseID, GRADE grade)
 {
   Class &classRef = _classList[courseID];
   classRef.setGrade(grade);
@@ -46,9 +46,9 @@ Class Student::getClass(std::string key)
 
 void Student::listClasses()
 {
-  map<string, Class>::const_iterator iterator;
+  std::map<std::string, Class>::const_iterator iterator;
   for(iterator = _classList.begin(); iterator != _classList.end(); iterator++)
   {
-    cout << iterator->second << endl;
+    std::cout << iterator->second << std::endl;
   }
 }
