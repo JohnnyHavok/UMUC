@@ -6,11 +6,11 @@
 **  03.06.14
 */
 
-#include "Student.h"
 #include "Class.h"
+#include "Student.h"
 
-#include <iostream>
 #include <iomanip>
+#include <iostream>
 #include <sstream>
 #include <string>
 
@@ -31,7 +31,7 @@ bool Student::addClass(const Class &classToAdd)
   success = _classList.insert( std::pair<std::string, Class>(classToAdd.getCatalogID(), classToAdd) );
 
   return success.second;
-} 
+} // -- END FUNC addClass()
 
 bool Student::updateGrade(const std::string courseID, GRADE grade)
 {
@@ -45,7 +45,7 @@ bool Student::updateGrade(const std::string courseID, GRADE grade)
   }
 
   return false;
-}
+} // -- END FUNC updateGrade()
 
 bool Student::getClass(const std::string courseID, Class *classCopy)
 {
@@ -59,7 +59,7 @@ bool Student::getClass(const std::string courseID, Class *classCopy)
   }
 
   return false;
-}
+} // -- END FUNC getClass()
 
 bool Student::deleteClass(const std::string courseID)
 {
@@ -73,7 +73,7 @@ bool Student::deleteClass(const std::string courseID)
   }
 
   return false;
-}
+} // -- END FUNC deleteClass()
 
 void Student::listClasses() const
 {
@@ -83,7 +83,7 @@ void Student::listClasses() const
   {
     std::cout << iterator->second << std::endl;
   }
-}
+} // -- END FUNC listClasses()
 
 float Student::getGPA() const
 {
@@ -106,7 +106,7 @@ float Student::getGPA() const
   }
 
   return static_cast<float> (totalGradePoints) / creditsCompleted;
-}
+} // -- END FUNC getGPA()
 
 std::ostream &operator << (std::ostream &output, const Student &studentRecord)
 {
@@ -170,7 +170,7 @@ std::ostream &operator << (std::ostream &output, const Student &studentRecord)
 
   return output;
 
-}
+} // -- END FUNC OVERLOAD STREAM <<
 
 std::string Student::getColumnHeader() const 
 {
@@ -182,4 +182,4 @@ std::string Student::getColumnHeader() const
          << std::setw(7) << "Points";
 
   return header.str();
-}
+} // -- END FUNC getColumnHeader()

@@ -7,8 +7,9 @@
 */
 
 #include "Class.h"
-#include <iostream>
+
 #include <iomanip>
+#include <iostream>
 
 Class::Class(GRADE grade) { _grade = grade; }
 
