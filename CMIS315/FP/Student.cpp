@@ -12,7 +12,7 @@
 #include <iostream>
 #include <string>
 
-// using namespace std; // Remove before ship
+using namespace std; // Remove before ship
 
 Student::Student(int studentID, std::string studentName)
   : _studentID(studentID),
@@ -34,9 +34,16 @@ bool Student::addClass(const Class &classToAdd)
 
 bool Student::updateGrade(const std::string courseID, GRADE grade)
 {
-  Class &classRef = _classList[courseID];
-  classRef.setGrade(grade);
-  return true; // TODO: Check to make sure courseID was valid and grade was updated.
+  std::map<std::string, Class>::iterator iterator;
+  iterator = _classList.find(courseID);
+
+  if(iterator != _classList.end())
+  {
+    iterator->second.setGrade(grade);
+    return true;
+  }
+
+  return false;
 }
 
 Class Student::getClass(std::string key)
