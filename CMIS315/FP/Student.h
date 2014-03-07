@@ -23,8 +23,8 @@ public:
 
   bool addClass(const Class&);
   bool updateGrade(const std::string, const GRADE grade);
-
-  Class getClass(std::string);
+  bool getClass(const std::string, Class*);
+  bool deleteClass(const std::string);
 
   void listClasses() const;
 

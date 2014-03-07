@@ -46,9 +46,32 @@ bool Student::updateGrade(const std::string courseID, GRADE grade)
   return false;
 }
 
-Class Student::getClass(std::string key)
+bool Student::getClass(const std::string courseID, Class *classCopy)
 {
-  return _classList[key];
+  std::map<std::string, Class>::iterator iterator;
+  iterator = _classList.find(courseID);
+
+  if(iterator != _classList.end())
+  {
+    *classCopy = iterator->second;
+    return true;    
+  }
+
+  return false;
+}
+
+bool Student::deleteClass(const std::string courseID)
+{
+  std::map<std::string, Class>::iterator iterator;
+  iterator = _classList.find(courseID);
+
+  if(iterator != _classList.end())
+  {
+    _classList.erase(iterator);
+    return true;
+  }
+
+  return false;
 }
 
 void Student::listClasses() const
