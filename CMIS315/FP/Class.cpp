@@ -66,15 +66,15 @@ void Class::setGrade(GRADE grade) { _grade = grade; }
 std::ostream &operator << (std::ostream &output, const Class &classOutput)
 {
   output << std::setw(8) << classOutput._catalogID << "." << classOutput._classSemester
-         << std::setw(30) << classOutput._classTitle << std::setw(5) << classOutput._creditHrs
-         << std::setw(5) << classOutput.getLetterGrade();
+         << std::setw(30) << classOutput._classTitle << std::setw(6) << classOutput._creditHrs
+         << std::setw(6) << classOutput.getLetterGrade();
 
   int gradePoints = classOutput.getGradePoints();
 
   if(gradePoints != -1)
-    output << std::setw(5) << gradePoints;
+    output << std::setw(7) << gradePoints;
   else
-    output << std::setw(5) << "--";
+    output << std::setw(7) << "--";
 
   return output;
 }

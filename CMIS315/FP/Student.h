@@ -10,8 +10,9 @@
 #define STUDENT_H
 
 #include "Class.h"
-#include <string>
+
 #include <map> 
+#include <string>
 
 class Student
 {
@@ -38,6 +39,8 @@ private:
   int _studentID;
   std::string _studentName;
   std::map<std::string, Class> _classList;
+
+  std::string getColumnHeader() const;
 };
 
 #endif

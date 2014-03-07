@@ -11,8 +11,8 @@
 
 #include <iostream>
 #include <iomanip>
-#include <string>
 #include <sstream>
+#include <string>
 
 Student::Student(int studentID, std::string studentName)
   : _studentID(studentID),
@@ -31,7 +31,7 @@ bool Student::addClass(const Class &classToAdd)
   success = _classList.insert( std::pair<std::string, Class>(classToAdd.getCatalogID(), classToAdd) );
 
   return success.second;
-}
+} 
 
 bool Student::updateGrade(const std::string courseID, GRADE grade)
 {
@@ -77,6 +77,7 @@ bool Student::deleteClass(const std::string courseID)
 
 void Student::listClasses() const
 {
+  std::cout << getColumnHeader() << std::endl;
   std::map<std::string, Class>::const_iterator iterator;
   for(iterator = _classList.begin(); iterator != _classList.end(); iterator++)
   {
@@ -120,10 +121,10 @@ std::ostream &operator << (std::ostream &output, const Student &studentRecord)
   bool coursesInProgress = false;
 
   output << "Student Record" << std::endl
-         << "=============================================================" << std::endl
+         << "================================================================" << std::endl
          << "Student ID: " << studentRecord._studentID << std::endl
          << "Student Name: " << studentRecord._studentName << std::endl
-         << "=============================================================" << std::endl;
+         << "================================================================" << std::endl;
 
 
 
@@ -154,13 +155,13 @@ std::ostream &operator << (std::ostream &output, const Student &studentRecord)
 
   if(coursesInProgress)
   {
-    output << "Courses in Progress" << std::endl << std::endl
+    output << "Courses in Progress" << std::endl << studentRecord.getColumnHeader() << std::endl
            << inProgressList.str() << std::endl
            << "Total Credits in Progress: " << creditsInProgress << std::endl
-           << "=============================================================" << std::endl;
+           << "================================================================" << std::endl;
   }
 
-  output << "Course History" << std::endl << std::endl
+  output << "Course History" << std::endl << studentRecord.getColumnHeader() << std::endl
          << courseHistory.str() << std::endl
          << "Credits Completed: " << creditsCompleted << std::endl
          << "Credits Not Completed: " << creditsNotCompleted << std::endl
@@ -169,4 +170,16 @@ std::ostream &operator << (std::ostream &output, const Student &studentRecord)
 
   return output;
 
+}
+
+std::string Student::getColumnHeader() const 
+{
+  std::stringstream header;
+
+  header << std::setw(50) << "Credit" << std::setw(14) << "Grade" << std::endl
+         << std::setw(8) << "Course ID" << std::setw(34) << "Course Title"
+         << std::setw(7) << "Hours" << std::setw(7) << "Grade"
+         << std::setw(7) << "Points";
+
+  return header.str();
 }
