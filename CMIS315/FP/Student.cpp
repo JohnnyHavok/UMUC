@@ -17,9 +17,7 @@ using namespace std; // Remove before ship
 Student::Student(int studentID, std::string studentName)
   : _studentID(studentID),
     _studentName(studentName)
-{
-
-}
+{ }
 
 int Student::getStudentID() const { return _studentID; }
 std::string Student::getStudentName() const { return _studentName; }

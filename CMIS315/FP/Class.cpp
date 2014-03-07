@@ -76,8 +76,6 @@ std::ostream &operator << (std::ostream &output, const Class &classOutput)
          << std::setw(20) << classOutput._classTitle << std::setw(4) << classOutput._creditHrs
          << std::setw(4) << classOutput.getLetterGrade();
 
-
-
   int gradePoints = classOutput.getGradePoints();
 
   if(gradePoints != -1)
