@@ -11,7 +11,6 @@
 
 #include <iostream>
 #include <string>
-using namespace std;
 
 Student::Student(int studentID, std::string studentName)
   : _studentID(studentID),
@@ -26,6 +25,12 @@ std::string Student::getStudentName() const { return _studentName; }
 void Student::addClass(const Class &classToAdd)
 {
   _classList[classToAdd.getCatalogID()] = classToAdd;
+}
+
+void Student::updateGrade(const string courseID, GRADE grade)
+{
+  Class &classRef = _classList[courseID];
+  classRef.setGrade(grade);
 }
 
 Class Student::getClass(std::string key)

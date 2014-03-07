@@ -22,6 +22,7 @@ public:
   std::string getStudentName() const;
 
   void addClass(const Class&);
+  void updateGrade(const std::string, const GRADE grade);
 
   Class getClass(std::string);
 
