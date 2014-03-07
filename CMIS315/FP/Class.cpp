@@ -16,11 +16,11 @@ Class &Class::setCatalogID(std::string catalogID)
   return *this;
 }
 
-Class &Class::setClassID(int classID)
-{
-  _classID = classID;
-  return *this;
-}
+// Class &Class::setClassID(int classID)
+// {
+//   _classID = classID;
+//   return *this;
+// }
 
 Class &Class::setClassSemester(int classSemester)
 {
@@ -46,7 +46,7 @@ Class &Class::setClassGrade(GRADE grade)
   return *this;
 }
 
-int Class::getClassID() const { return _classID; }
+// int Class::getClassID() const { return _classID; }
 int Class::getClassSemester() const { return _classSemester; }
 int Class::getCreditHrs() const { return _creditHrs; }
 GRADE Class::getGrade() const { return _grade; }

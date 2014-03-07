@@ -24,13 +24,13 @@ public:
   Class(GRADE = IP); // Default all classes are IP / In Progress
 
   Class &setCatalogID(std::string);
-  Class &setClassID(int);
+  // Class &setClassID(int);
   Class &setClassSemester(int);
   Class &setClassTitle(std::string);
   Class &setClassCreditHrs(int);
   Class &setClassGrade(GRADE);
 
-  int getClassID() const;
+  // int getClassID() const;
   int getClassSemester() const;
   int getCreditHrs() const;
   GRADE getGrade() const;
@@ -42,7 +42,7 @@ public:
 
 private:
   std::string _catalogID;
-  int _classID;
+  // int _classID;
   int _classSemester;
   std::string _classTitle;
   int _creditHrs;
