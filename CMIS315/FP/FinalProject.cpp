@@ -37,6 +37,30 @@ int main()
 
   cout << "Good Student's new transcript:" << endl << endl;
   cout << goodStudent << endl;
+
+  cout << "Attempt to duplicate a course using catalogID: MATH141" << endl << endl;
+  cout << "-----Previous MATH141-----" << endl;
+
+  Class *mathCoursePtr;
+  goodStudent.getClass("MATH141", &mathCoursePtr);
+  cout << *mathCoursePtr << endl;
+
+  Class duplicateCourse;
+
+  duplicateCourse.setCatalogID("MATH141")
+                 .setClassSemester(7000)
+                 .setClassTitle("Calculus I")
+                 .setClassCreditHrs(4);
+
+  cout << "-----New MATH141-----" << endl;
+  cout << duplicateCourse << endl;
+
+  if(goodStudent.addClass(duplicateCourse))
+    cout << "Duplicate Course Successfully Added!!" << endl;
+  else
+    cout << "Duplicate Course Was Not Accepted!!" << endl;
+
+
 }
 
 void populateStudentFromFile(string fileName, Student *student)
