@@ -178,9 +178,10 @@ std::string Student::getColumnHeader() const
 {
   std::stringstream header;
 
-  header << std::setw(50) << "Credit" << std::setw(14) << "Grade" << std::endl
-         << std::setw(8) << "Course ID" << std::setw(34) << "Course Title"
-         << std::setw(7) << "Hours" << std::setw(7) << "Grade"
+  header << std::setw(51) << "Credit" << std::setw(12) << "Grade" << std::endl
+         << std::left << std::setw(14) << "Course ID" 
+         << std::setw(31) << std::left << "Course Title"
+         << std::setw(6) << "Hours" << std::setw(7) << "Grade"
          << std::setw(7) << "Points";
 
   return header.str();
