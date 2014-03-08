@@ -10,6 +10,7 @@
 #define GRADE_ENUM
 
 // -- enum for comparing grades more concise
+// -- A-F coorespond to 0-4 point system.
 enum GRADE { F, D, C, B, A, W, IP };
 
 #endif
