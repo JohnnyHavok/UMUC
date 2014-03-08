@@ -1,0 +1,10 @@
+MATH141 3280 Calculus_I 4 B 
+MATH241 4280 Calculus_II 4 A 
+HIST100 1920 History_I 3 B 
+HIST200 2220 History_II 3 B 
+PHYS150 3280 Physics_I 4 B 
+CMSC230 5230 Computer_Science_II 3 A 
+CMIS330 6380 C++_Programming 3 I 
+CMSC335 6380 Object-Oriented_Programming 3 I 
+CMSC411 6380 Computer_Architecture 3 I
+CMSC412 6380 Operating_Systems 3 I
