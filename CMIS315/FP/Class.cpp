@@ -8,8 +8,8 @@
 
 #include "Class.h"
 
-#include <iomanip>
-#include <iostream>
+#include <iomanip>  // setw
+#include <iostream> // endl
 
 Class::Class(GRADE grade) { _grade = grade; }
 
