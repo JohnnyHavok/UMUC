@@ -11,6 +11,7 @@
 
 #include "Class.h" // Composition
 
+#include <iostream>
 #include <map> 
 #include <string>
 
@@ -30,14 +31,14 @@ public:
   // -- Following accessors into _classList map return bool
   // -- to notify user if something failed, most likely due
   // -- to a class not being in the map
-  bool addClass(const Class&);
+  bool addClass(const Class &);
   bool updateGrade(const std::string, const GRADE grade);
   bool deleteClass(const std::string);
 
-  // -- The pointer returned will hold the location of the class
-  // -- object in _classList which has the passed string as a key
-  // -- MUST CHECK FOR NULL.
-  Class * getClass(const std::string);
+  // -- The bool returned will indicate if the pointer passed to the 
+  // -- function contains the location of the Class object stored in
+  // -- the map _classList whose key is the string.
+  bool getClass(const std::string, Class **);
 
   void listClasses() const;
 

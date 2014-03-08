@@ -9,10 +9,10 @@
 #include "Class.h"
 #include "Student.h"
 
-#include <iomanip>
-#include <iostream>
-#include <sstream>
-#include <string>
+#include <iomanip>   // setprecision, setw
+#include <iostream>  // endl
+#include <sstream>   // stringstream
+#include <string>    // string
 
 Student::Student(int studentID, std::string studentName)
   : _studentID(studentID),
@@ -25,6 +25,11 @@ int Student::getStudentID() const { return _studentID; }
 
 bool Student::addClass(const Class &classToAdd)
 {
+  // -- Based on Stroustrup, B (2013). The C++ Programming Language (4th ed.) 
+  // -- Associative Container Operations, Section 31.4.3.1 (pg 911)
+  // -- Pair, Section 34.2.4.1 (pg 983)
+  // -- pair(p,b) = c.insert(x) where p is an iterator, b is a bool
+  // -- c is the collection and x is a tuple that can be inserted into c. 
   std::pair<std::map<std::string, Class>::iterator, bool> success;
   success = _classList.insert( std::pair<std::string, Class>(classToAdd.getCatalogID(), classToAdd) );
   return success.second;
@@ -44,15 +49,18 @@ bool Student::updateGrade(const std::string courseID, GRADE grade)
   return false;
 } // -- END FUNC updateGrade()
 
-Class * Student::getClass(const std::string courseID)
+bool Student::getClass(const std::string courseID, Class **classPointer)
 {
   std::map<std::string, Class>::iterator iterator;
   iterator = _classList.find(courseID);
 
   if(iterator != _classList.end())
-    return &iterator->second;
+  {
+    *classPointer = &iterator->second;
+    return true;
+  }
 
-  return NULL;
+  return false;
 } // -- END FUNC getClass()
 
 bool Student::deleteClass(const std::string courseID)
