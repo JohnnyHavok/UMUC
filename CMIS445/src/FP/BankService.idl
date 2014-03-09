@@ -1,0 +1,39 @@
+// -- BankService.idl
+// -- Justin Smith
+// -- CMIS445.6980
+// -- Final Project
+// -- 03/09/14
+// -- CORBA IDL
+// -- Build Settings - idlj -oldImplBase -Fall
+
+// -- ORB Service
+module BankService {
+
+  typedef Object DateTime; // org.joda.time.DateTime 
+  typedef Object Address;  // Built-in Class
+
+  enum AccountType { checking, saving };
+
+  struct Account {
+    string lastName;
+    string firstName;
+    string SSN;
+    DateTime DOB;
+    Address address;
+    string phoneNumber;
+    string emailAddress;
+    long savingBalance;
+    long checkingBalance;
+    long accountID;
+  };
+
+  interface TellerService {
+    long getBalance(in AccountType accountType);
+
+    // -- Boolean values indicate sucessful transaction
+    boolean deposit (in AccountType accountType, in long amount);
+    boolean withdraw (in AccountType accountType, in long amount);
+    boolean transfer (in AccountType accountType, in long amount, in long accountID);
+  };
+  
+};
