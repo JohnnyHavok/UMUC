@@ -41,8 +41,7 @@ SELECT ProductID, ProductDescription, ProductFinish, ProductStandardPrice
 /* END Problem 39 */
 
 /* BEGIN Problem 40 */
-SELECT OrderID, CustomerID, OrderDate
-  FROM Order_T;
-SELECT MAX(OrderDate) AS MostRecent
-  FROM Order_T;
+SELECT OrderID, CustomerID, OrderDate, MostRecent
+  FROM Order_T, ( SELECT MAX(OrderDate) AS MostRecent FROM Order_T );
+  /* Create Derived Table for Most Recent order date in Order_T */  
 /* END Problem 40 */
