@@ -3,12 +3,12 @@ package DBTools;
 import java.sql.*;
 
 public class DBTools {
-  protected static int insertAccount( Connection conn,
-                                          String LastName,
-                                          String FirstName,
-                                          int PIN,
-                                          double checkingBal,
-                                          double savingsBal  ) throws SQLException {
+  protected static int addAccount(Connection conn,
+                                  String LastName,
+                                  String FirstName,
+                                  int PIN,
+                                  double checkingBal,
+                                  double savingsBal) throws SQLException {
 
     int accountID = 0;
 
@@ -38,14 +38,14 @@ public class DBTools {
   }
 
   protected static boolean addTransaction( Connection conn, int accountID, String desc,
-                                           String accType, double ammount ) throws SQLException {
+                                           String accType, double amount ) throws SQLException {
     try {
       String transaction = new StringBuilder().append("INSERT INTO TRANSACTION_T")
           .append(" VALUES(")
           .append(accountID).append(",'")
           .append(desc).append("','")
           .append(accType).append("',")
-          .append(ammount).append(")")
+          .append(amount).append(")")
           .toString();
 
       Statement s = conn.createStatement();

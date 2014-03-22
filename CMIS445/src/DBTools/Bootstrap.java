@@ -69,7 +69,7 @@ public class Bootstrap {
             .append("       ON DELETE NO ACTION ON UPDATE RESTRICT, ")
             .append(" Description VARCHAR(32) NOT NULL, ")
             .append(" AccountType VARCHAR(8) NOT NULL, ")
-            .append(" Ammount DECIMAL(12, 2) NOT NULL ) ")
+            .append(" Amount DECIMAL(12, 2) NOT NULL ) ")
             .toString();
 
 
@@ -81,7 +81,7 @@ public class Bootstrap {
       System.out.println("CREATING TRANACTION_T");
       s.execute(createTransactionTable);
 
-      DBTools.insertAccount(conn, "Smith", "Justin", 1234, 5432.10, 9876.54);
+      DBTools.addAccount(conn, "Smith", "Justin", 1234, 5432.10, 9876.54);
     } catch (SQLException e) {
       throw e;
     }
