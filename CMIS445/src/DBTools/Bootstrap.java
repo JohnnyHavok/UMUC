@@ -57,7 +57,7 @@ public class Bootstrap {
             .append("           CONSTRAINT Account_PK PRIMARY KEY, ")
             .append("  LastName VARCHAR(32) NOT NULL, ")
             .append("  FirstName VARCHAR(32) NOT NULL, ")
-            .append("  PIN DECIMAL(4, 0) NOT NULL, ")
+            .append("  PIN CHAR(4) NOT NULL, ")
             .append("  CheckingBalance DECIMAL(12, 2) NOT NULL, ")
             .append("  SavingsBalance DECIMAL(12, 2) NOT NULL ) ")
             .toString();
@@ -76,7 +76,7 @@ public class Bootstrap {
         new StringBuilder().append("CREATE TABLE USERS_T ")
             .append("( UserID VARCHAR(12) NOT NULL ")
             .append("       CONSTRAINT UserID_PK PRIMARY KEY, ")
-            .append(" UserPin DECIMAL(4, 0) NOT NULL )")
+            .append(" UserPin CHAR(4) NOT NULL )")
             .toString();
 
     try {
@@ -89,15 +89,15 @@ public class Bootstrap {
       s.execute(createUserTable);
 
       // -- Create initial bank employees --
-      DBTools.addUser(conn, "jsmith", 1234);
-      DBTools.addUser(conn, "user", 0);
+      DBTools.addUser(conn, "jsmith", "1234");
+      DBTools.addUser(conn, "user", "0000");
 
 
       // -- Create initial accounts --
-      DBTools.addAccount(conn, "Smith", "Justin", 1234, 5432.10, 9876.54);
-      DBTools.addAccount(conn, "Sanders", "Susan", 4321, 1621.52, 546.20);
-      DBTools.addAccount(conn, "Dickens", "Charles", 8974, 7654.12, 987.12);
-      DBTools.addAccount(conn, "Mayers", "Steven", 5324, 123.45, 52.32);
+      DBTools.addAccount(conn, "Smith", "Justin", "1234", 5432.10, 9876.54);
+      DBTools.addAccount(conn, "Sanders", "Susan", "4321", 1621.52, 546.20);
+      DBTools.addAccount(conn, "Dickens", "Charles", "7363", 7654.12, 987.12);
+      DBTools.addAccount(conn, "Mayer", "Steven", "1365", 123.45, 52.32);
 
     } catch (SQLException e) {
       throw e;

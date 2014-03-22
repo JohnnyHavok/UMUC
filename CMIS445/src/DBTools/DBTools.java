@@ -6,7 +6,7 @@ public class DBTools {
   protected static int addAccount(Connection conn,
                                   String LastName,
                                   String FirstName,
-                                  int PIN,
+                                  String PIN,
                                   double checkingBal,
                                   double savingsBal) throws SQLException {
 
@@ -18,7 +18,7 @@ public class DBTools {
           "values (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
       ps.setString(1, LastName);
       ps.setString(2, FirstName);
-      ps.setInt(3, PIN);
+      ps.setString(3, PIN);
       ps.setDouble(4, checkingBal);
       ps.setDouble(5, savingsBal);
       ps.execute();
@@ -59,10 +59,10 @@ public class DBTools {
     return true;
   }
 
-  protected static boolean addUser( Connection conn, String userID, int pin )
+  protected static boolean addUser( Connection conn, String userID, String pin )
                                      throws SQLException {
     try {
-      conn.createStatement().execute("INSERT INTO USERS_T VALUES('"+userID+"',"+pin+")");
+      conn.createStatement().execute("INSERT INTO USERS_T VALUES('"+userID+"','"+pin+"')");
     } catch (SQLException e) {
       throw e; // Unhandled SQL Exception
     }
