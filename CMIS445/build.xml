@@ -1,6 +1,6 @@
 <project basedir = ".">
 
-  <property name = "MAIN_CLASS" value = "WwdEmbedded" />
+  <property name = "MAIN_CLASS" value = "DBTools.Bootstrap" />
   <property name = "DIST" value = "${basedir}" />
 
   <taskdef name = "idlcompile" classname = "net.coderazzi.idldepend.IDLCheckerTask">
