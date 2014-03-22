@@ -2,8 +2,10 @@ package Customer;
 
 
 public class Customer {
+
   private String lastName;
   private String firstName;
+  private String SSN;
   private String email;
   private String phone;
   private String street;
@@ -11,11 +13,35 @@ public class Customer {
   private String state;
   private String zip;
   private int accountID;
-  private int pin;
+  private String pin;
   private double checkingBalance;
   private double savingsBalance;
 
+  @Override
+  public String toString() {
+    final StringBuilder sb = new StringBuilder("Customer{");
+    sb.append("lastName='").append(lastName).append('\'');
+    sb.append(", firstName='").append(firstName).append('\'');
+    sb.append(", SSN='").append(SSN).append('\'');
+    sb.append(", email='").append(email).append('\'');
+    sb.append(", phone='").append(phone).append('\'');
+    sb.append(", street='").append(street).append('\'');
+    sb.append(", city='").append(city).append('\'');
+    sb.append(", state='").append(state).append('\'');
+    sb.append(", zip='").append(zip).append('\'');
+    sb.append(", accountID=").append(accountID);
+    sb.append(", pin='").append(pin).append('\'');
+    sb.append(", checkingBalance=").append(checkingBalance);
+    sb.append(", savingsBalance=").append(savingsBalance);
+    sb.append('}');
+    return sb.toString();
+  }
+
   public Customer() {}
+
+  public String getSSN() { return SSN; }
+
+  public void setSSN(String SSN) { this.SSN = SSN; }
 
   public String getLastName() {
     return lastName;
@@ -89,11 +115,11 @@ public class Customer {
     this.accountID = accountID;
   }
 
-  public int getPin() {
+  public String getPin() {
     return pin;
   }
 
-  public void setPin(int pin) {
+  public void setPin(String pin) {
     this.pin = pin;
   }
 

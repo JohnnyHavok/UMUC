@@ -1,11 +1,14 @@
 package DBTools;
 
+import Customer.Customer;
+
 import java.sql.*;
 
 public class DBTools {
   protected static int addAccount(Connection conn,
                                   String LastName,
                                   String FirstName,
+                                  String SSN,
                                   String PIN,
                                   double checkingBal,
                                   double savingsBal) throws SQLException {
@@ -14,13 +17,14 @@ public class DBTools {
 
     try {
       PreparedStatement ps = conn.prepareStatement("INSERT INTO ACCOUNT_T" +
-          "(LastName, FirstName, PIN, CheckingBalance, SavingsBalance) " +
-          "values (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+          "(LastName, FirstName, SSN, PIN, CheckingBalance, SavingsBalance) " +
+          "values (?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
       ps.setString(1, LastName);
       ps.setString(2, FirstName);
-      ps.setString(3, PIN);
-      ps.setDouble(4, checkingBal);
-      ps.setDouble(5, savingsBal);
+      ps.setString(3, SSN);
+      ps.setString(4, PIN);
+      ps.setDouble(5, checkingBal);
+      ps.setDouble(6, savingsBal);
       ps.execute();
 
       ResultSet rs = ps.getGeneratedKeys();
@@ -35,6 +39,47 @@ public class DBTools {
     }
 
     return accountID;
+  }
+
+  protected static Customer getAccount(Connection conn, int accountID) throws SQLException {
+    Customer cust = new Customer();
+
+    try {
+      ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM ACCOUNT_T " +
+                                           "WHERE AccountID = " + accountID);
+      if(rs.next()) {
+        cust.setAccountID(rs.getInt("AccountID"));
+        cust.setLastName(rs.getString("LastName"));
+        cust.setFirstName(rs.getString("FirstName"));
+        cust.setSSN(rs.getString("SSN"));
+        cust.setPin(rs.getString("PIN"));
+        cust.setCheckingBalance(rs.getDouble("CheckingBalance"));
+        cust.setSavingsBalance(rs.getDouble("SavingsBalance"));
+      } else {
+        return null;
+      }
+    } catch (SQLException e) {
+      throw e;
+    }
+
+    return cust;
+  }
+
+  protected static int getAccountID(Connection conn, String SSN) throws SQLException {
+    int id;
+
+    try {
+      ResultSet rs = conn.createStatement().executeQuery("SELECT AccountID FROM ACCOUNT_T " +
+                                            "WHERE SSN = '" + SSN + "'");
+
+      if(rs.next()) {
+        return rs.getInt("AccountID");
+      } else {
+        throw new SQLException("SSN of " + SSN + " does not have an account!");
+      }
+    } catch (SQLException e) {
+      throw e;
+    }
   }
 
   protected static boolean addTransaction( Connection conn, int accountID, String desc,
@@ -62,7 +107,7 @@ public class DBTools {
   protected static boolean addUser( Connection conn, String userID, String pin )
                                      throws SQLException {
     try {
-      conn.createStatement().execute("INSERT INTO USERS_T VALUES('"+userID+"','"+pin+"')");
+      conn.createStatement().execute("INSERT INTO USERS_T VALUES('" + userID + "','" + pin + "')");
     } catch (SQLException e) {
       throw e; // Unhandled SQL Exception
     }
