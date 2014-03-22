@@ -9,7 +9,6 @@
 
 // IDL for Account
 module AccountModule {
-
    interface Account
       {
    	  
