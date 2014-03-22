@@ -2,6 +2,7 @@
 .project
 .settings/
 .idea/
+umuc.properties
 *.iml
 *.iws
 *.out
