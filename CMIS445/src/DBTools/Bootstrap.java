@@ -1,6 +1,6 @@
 package DBTools;
 
-import java.sql.*
+import java.sql.*;
 
 public class Bootstrap {
 
