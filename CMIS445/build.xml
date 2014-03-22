@@ -47,6 +47,7 @@
       <fileset dir = "." includes = "derby.log" />
     </delete>
     <delete dir = "build" />
+    <delete dir = "BankDB" />
   </target>
 
 </project>
