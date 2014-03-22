@@ -12,15 +12,16 @@
   <!-- TODO: Target output needs to dump Java files to src tree  -->
   <target name = "idl">
     <idlcompile compiler = "jdk" force = "false" checkAll = "false"
-                verbose = "basic"
-                targetDir = "${DIST}">
+                verbose = "basic" targetDir = "${DIST}/src">
       <fileset dir = "${DIST}/src">
         <include name = "*.idl" />
       </fileset>
       <include>
         <pathelement path = ".." />
       </include>
-      <package module = "AccountModule" prefix = "build" />
+      <!-- TODO: Change to reflect BankService.idl name-->
+      <package module = "AccountModule" prefix = "Final" />
+      <translate module = "Final.AccountModule" package = "BankService" />
     </idlcompile>
   </target>
 
@@ -46,8 +47,9 @@
       <fileset dir = "." includes = "**/*.depends" />
       <fileset dir = "." includes = "derby.log" />
     </delete>
-    <delete dir = "build" />
-    <delete dir = "BankDB" />
+    <delete dir = "${DIST}/build" />
+    <delete dir = "${DIST}/BankDB" />
+    <delete dir = "${DIST}/src/BankService" />
   </target>
 
 </project>
