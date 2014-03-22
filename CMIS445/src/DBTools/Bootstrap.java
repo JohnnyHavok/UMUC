@@ -32,7 +32,7 @@ public class Bootstrap {
     // -- CHECK FOR TABLES, BUILD TABLES IF NOT PRESENT --
       try {
         if(!DBTools.checkDB(conn)) {
-          bootstrap(conn);
+          buildDB(conn);
         } else {
           System.out.println("DATABASE EXIST, RETAINING DB FOR USE");
         }
@@ -46,7 +46,7 @@ public class Bootstrap {
     }
   }
 
-  private static void bootstrap(Connection conn) throws SQLException {
+  private static void buildDB(Connection conn) throws SQLException {
     Statement s = conn.createStatement();
 
     // -- Table Creation SQL Statements --
@@ -57,7 +57,7 @@ public class Bootstrap {
             .append("           CONSTRAINT Account_PK PRIMARY KEY, ")
             .append("  LastName VARCHAR(32) NOT NULL, ")
             .append("  FirstName VARCHAR(32) NOT NULL, ")
-            .append("  PIN SMALLINT NOT NULL, ")
+            .append("  PIN DECIMAL(4, 0) NOT NULL, ")
             .append("  CheckingBalance DECIMAL(12, 2) NOT NULL, ")
             .append("  SavingsBalance DECIMAL(12, 2) NOT NULL ) ")
             .toString();
@@ -72,16 +72,33 @@ public class Bootstrap {
             .append(" Amount DECIMAL(12, 2) NOT NULL ) ")
             .toString();
 
-
+    String createUserTable =
+        new StringBuilder().append("CREATE TABLE USERS_T ")
+            .append("( UserID VARCHAR(12) NOT NULL ")
+            .append("       CONSTRAINT UserID_PK PRIMARY KEY, ")
+            .append(" UserPin DECIMAL(4, 0) NOT NULL )")
+            .toString();
 
     try {
       System.out.println("CREATING FIRST TIME DATABASE TABLES");
       System.out.println("CREATING ACCOUNT_T");
       s.execute(createAccountTable);
-      System.out.println("CREATING TRANACTION_T");
+      System.out.println("CREATING TRANSACTION_T");
       s.execute(createTransactionTable);
+      System.out.println("CREATING USERS_T");
+      s.execute(createUserTable);
 
+      // -- Create initial bank employees --
+      DBTools.addUser(conn, "jsmith", 1234);
+      DBTools.addUser(conn, "user", 0);
+
+
+      // -- Create initial accounts --
       DBTools.addAccount(conn, "Smith", "Justin", 1234, 5432.10, 9876.54);
+      DBTools.addAccount(conn, "Sanders", "Susan", 4321, 1621.52, 546.20);
+      DBTools.addAccount(conn, "Dickens", "Charles", 8974, 7654.12, 987.12);
+      DBTools.addAccount(conn, "Mayers", "Steven", 5324, 123.45, 52.32);
+
     } catch (SQLException e) {
       throw e;
     }

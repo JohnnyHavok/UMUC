@@ -40,6 +40,8 @@ public class DBTools {
   protected static boolean addTransaction( Connection conn, int accountID, String desc,
                                            String accType, double amount ) throws SQLException {
     try {
+      Statement s = conn.createStatement();
+
       String transaction = new StringBuilder().append("INSERT INTO TRANSACTION_T")
           .append(" VALUES(")
           .append(accountID).append(",'")
@@ -48,7 +50,6 @@ public class DBTools {
           .append(amount).append(")")
           .toString();
 
-      Statement s = conn.createStatement();
       s.execute(transaction);
 
     } catch (SQLException e) {
@@ -58,10 +59,22 @@ public class DBTools {
     return true;
   }
 
+  protected static boolean addUser( Connection conn, String userID, int pin )
+                                     throws SQLException {
+    try {
+      conn.createStatement().execute("INSERT INTO USERS_T VALUES('"+userID+"',"+pin+")");
+    } catch (SQLException e) {
+      throw e; // Unhandled SQL Exception
+    }
+
+    // TODO: Create meaningful test of correctness
+    return true;
+  }
+
 
   protected static boolean checkDB(Connection conn) throws SQLException {
     try {
-      conn.createStatement().execute("SELECT * FROM ACCOUNT_T");
+      conn.createStatement().execute("SELECT * FROM USERS_T");
     } catch (SQLException e) {
       if(e.getSQLState().equals("42X05")) // Table does not exist
         return false;
