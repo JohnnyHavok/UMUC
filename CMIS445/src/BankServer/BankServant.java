@@ -48,6 +48,7 @@ public class BankServant extends TellerServicePOA {
 
   @Override
   public double withdraw(int accountID, String accountType, double amount) throws InsufficientFunds {
+    System.out.println("BankServant responding to withdraw()");
     try {
       if(accountType.equalsIgnoreCase("checking")) {
         if(this.getCheckingBalance(accountID) > amount)
@@ -73,6 +74,7 @@ public class BankServant extends TellerServicePOA {
 
   @Override
   public double cashCheck(int accountID, int checkNumber, double amount) throws InsufficientFunds {
+    System.out.println("BankServant responding to cashCheck()");
     try {
       if(this.getCheckingBalance(accountID) > amount)
         return DBTools.cashCheck(dbConnection, accountID, checkNumber, amount);
@@ -84,18 +86,42 @@ public class BankServant extends TellerServicePOA {
     } catch (AccountNotFound accountNotFound) {
       // Stuck in Exception Hell, puke message for now
       // TODO: Fix exception handling for multi-part calls.
-      accountNotFound.getMessage();    }
+      accountNotFound.getMessage();
+    }
 
     return 0;
   }
 
   @Override
-  public double transfer(int accountID, String accountType, int toAccountID, double amount) throws InsufficientFunds {
+  public double transfer(int accountID, String accountType, int toAccountID, String toAccountType,
+                         double amount) throws InsufficientFunds {
+    System.out.println("BankServant responding to transfer()");
+    try {
+      if(accountType.equalsIgnoreCase("checking")) {
+        if(this.getCheckingBalance(accountID) > amount)
+          return DBTools.transfer(dbConnection, accountID, accountType, toAccountID, toAccountType, amount);
+        else
+          throw new InsufficientFunds("Checking Account has Insufficient Funds");
+      } else if(accountType.equalsIgnoreCase("savings")) {
+        if(this.getSavingsBalance(accountID) > amount)
+          return DBTools.transfer(dbConnection, accountID, accountType, toAccountID, toAccountType, amount);
+        else
+          throw new InsufficientFunds("Savings Account has Insufficient Funds");
+      }
+    } catch (AccountNotFound accountNotFound) {
+      // Stuck in Exception Hell, puke message for now
+      // TODO: Fix exception handling for multi-part calls.
+      accountNotFound.getMessage();
+    } catch (SQLException e) {
+      System.err.println("SQL Error Reached BankServant.withdraw");
+      System.err.println(e.getMessage());
+    }
     return 0;
   }
 
   @Override
   public double getCheckingBalance(int accountID) throws AccountNotFound {
+    System.out.println("BankServant responding to getCheckingBalance()");
     try {
       System.out.println("BankServant responding to getCheckingBalance()");
       return DBTools.getCheckingBalance(dbConnection, accountID);
@@ -108,6 +134,7 @@ public class BankServant extends TellerServicePOA {
 
   @Override
   public double getSavingsBalance(int accountID) throws AccountNotFound {
+    System.out.println("BankServant responding to getSavingsBalance()");
     try {
       System.out.println("BankServant responding to getSavingsBalance()");
       return DBTools.getSavingsBalance(dbConnection, accountID);
@@ -120,16 +147,23 @@ public class BankServant extends TellerServicePOA {
 
   @Override
   public int createAccount(Customer newCustomer) throws AccountAlreadyExist {
+    System.out.println("BankServant responding to createAccount()");
     return 0;
   }
 
   @Override
   public int getAccountID(String SSN) throws AccountNotFound {
-    return 0;
+    System.out.println("BankServant responding to getAccountID()");
+    try {
+      return DBTools.getAccountID(dbConnection, SSN);
+    } catch (SQLException e) {
+      throw new AccountNotFound("Account not associated with this SSN");
+    }
   }
 
   @Override
   public Customer getAccount(String accountID) throws AccountNotFound {
+    System.out.println("BankServant responding to getAccount()");
     return null;
   }
 

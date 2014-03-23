@@ -199,6 +199,38 @@ public class DBTools {
     }
   }
 
+  public static double transfer( Connection conn, int fromAccountID, String fromAccountType,
+                                 int toAccountID, String toAccountType, double amount) throws SQLException {
+    try {
+      Statement s = conn.createStatement();
+      String withdraw = new StringBuilder().append("UPDATE ACCOUNT_T ")
+          .append("SET ").append(fromAccountType).append(" = ").append(fromAccountType)
+          .append(" - ").append(amount).append("WHERE AccountID = ").append(fromAccountID)
+          .toString();
+      s.execute(withdraw);
+
+      DBTools.addTransaction(conn, fromAccountID, "Transfer To: " + toAccountID, fromAccountType, amount);
+
+      String deposit = new StringBuilder().append("UPDATE ACCOUNT_T ")
+          .append("SET ").append(toAccountType).append(" = ").append(toAccountType)
+          .append(" + ").append(amount).append("WHERE AccountID = ").append(toAccountID)
+          .toString();
+      s.execute(deposit);
+
+      DBTools.addTransaction(conn, toAccountID, "Transfer From: " + fromAccountID, fromAccountType, amount);
+
+      if(fromAccountType.equalsIgnoreCase("checking"))
+        return DBTools.getCheckingBalance(conn, fromAccountID);
+
+      if(fromAccountType.equalsIgnoreCase("savings"))
+        return DBTools.getSavingsBalance(conn, fromAccountID);
+
+      return 0;
+    } catch (SQLException e) {
+      throw e;
+    }
+  }
+
   public static double cashCheck( Connection conn, int accountID, int checkNum, double amount )
       throws SQLException {
     try {
