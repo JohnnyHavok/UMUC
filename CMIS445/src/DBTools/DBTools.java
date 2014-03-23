@@ -1,7 +1,5 @@
 package DBTools;
 
-import Customer.Customer;
-
 import java.sql.*;
 
 public class DBTools {
@@ -80,20 +78,50 @@ public class DBTools {
     return accountID;
   }
 
-  public static Customer getAccount(Connection conn, int accountID) throws SQLException {
-    Customer cust = new Customer();
+  public static int addAccount(Connection conn, BankService.Customer customer)
+                                  throws SQLException {
+    int accountID = 0;
+
+    try {
+      PreparedStatement ps = conn.prepareStatement("INSERT INTO ACCOUNT_T" +
+          "(LastName, FirstName, SSN, PIN, Checking, Savings) " +
+          "values (?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+      ps.setString(1, customer.lastName);
+      ps.setString(2, customer.firstName);
+      ps.setString(3, customer.SSN);
+      ps.setString(4, customer.pin);
+      ps.setDouble(5, customer.checkingBalance);
+      ps.setDouble(6, customer.SavingsBalance);
+      ps.execute();
+
+      ResultSet rs = ps.getGeneratedKeys();
+
+      if(rs.next()) {
+        accountID = rs.getInt(1);
+        addTransaction(conn, accountID, "New Account Setup", "Checking", customer.checkingBalance);
+        addTransaction(conn, accountID, "New Account Setup", "Savings", customer.SavingsBalance);
+      }
+    } catch (SQLException e) {
+      throw e; // Unhandled SQL Exception
+    }
+
+    return accountID;
+  }
+
+  public static BankService.Customer getAccount(Connection conn, int accountID) throws SQLException {
+    BankService.Customer c = new BankService.Customer();
 
     try {
       ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM ACCOUNT_T " +
                                            "WHERE AccountID = " + accountID);
       if(rs.next()) {
-        cust.setAccountID(rs.getInt("AccountID"));
-        cust.setLastName(rs.getString("LastName"));
-        cust.setFirstName(rs.getString("FirstName"));
-        cust.setSSN(rs.getString("SSN"));
-        cust.setPin(rs.getString("PIN"));
-        cust.setCheckingBalance(rs.getDouble("Checking"));
-        cust.setSavingsBalance(rs.getDouble("Savings"));
+        c.accountID = rs.getInt("AccountID");
+        c.lastName = rs.getString("LastName");
+        c.firstName = rs.getString("FirstName");
+        c.SSN = rs.getString("SSN");
+        c.pin = rs.getString("PIN");
+        c.checkingBalance = rs.getDouble("Checking");
+        c.SavingsBalance = rs.getDouble("Savings");
       } else {
         return null;
       }
@@ -101,7 +129,7 @@ public class DBTools {
       throw e;
     }
 
-    return cust;
+    return c;
   }
 
   public static int getAccountID(Connection conn, String SSN) throws SQLException {

@@ -2,6 +2,8 @@ package BankClient;
 
 import BankService.TellerService;
 import BankService.TellerServiceHelper;
+import BankService.TellerServicePackage.AccountNotFound;
+import BankService.TellerServicePackage.InsufficientFunds;
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.ORBPackage.InvalidName;
 import org.omg.CosNaming.NamingContextExt;
@@ -30,6 +32,8 @@ public class BankClient {
       System.out.println("Obtained Handle to Server: " + server);
 
       System.out.println(server.deposit(50000, "Checking", 2000));
+      System.out.println(server.transfer(50000, "Checking", 50007, "Savings", 123.56));
+      System.out.println(server.getSavingsBalance(50007));
 
 
 
@@ -47,6 +51,10 @@ public class BankClient {
     } catch (NotFound notFound) {
       System.err.println("Thrown from BankClient.main");
       notFound.printStackTrace();
+    } catch (InsufficientFunds insufficientFunds) {
+      insufficientFunds.printStackTrace();
+    } catch (AccountNotFound accountNotFound) {
+      accountNotFound.printStackTrace();
     }
   }
 }

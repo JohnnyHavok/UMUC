@@ -1,7 +1,5 @@
 package DBTools;
 
-import Customer.Customer;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -105,11 +103,9 @@ public class Bootstrap {
 
       // -- Testing SELECT Query --
       System.out.println("Testing SELECT Query");
-      Customer cust = DBTools.getAccount(conn, DBTools.getAccountID(conn, "123-45-6789"));
+      BankService.Customer cust = DBTools.getAccount(conn, DBTools.getAccountID(conn, "123-45-6789"));
 
-      if(cust != null) {
-        System.out.println(cust);
-      } else {
+      if(cust == null) {
         System.out.println("ERROR ON FETCHING CUSTOMER");
       }
 

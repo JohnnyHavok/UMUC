@@ -148,7 +148,11 @@ public class BankServant extends TellerServicePOA {
   @Override
   public int createAccount(Customer newCustomer) throws AccountAlreadyExist {
     System.out.println("BankServant responding to createAccount()");
-    return 0;
+    try {
+      return DBTools.addAccount(dbConnection, newCustomer);
+    } catch (SQLException e) {
+      throw new AccountAlreadyExist("Account could not be created, could possibly exist already");
+    }
   }
 
   @Override
