@@ -121,7 +121,7 @@ public class DBTools {
     }
   }
 
-  public static boolean addTransaction( Connection conn, int accountID, String desc,
+  private static boolean addTransaction( Connection conn, int accountID, String desc,
                                            String accType, double amount ) throws SQLException {
     try {
       Statement s = conn.createStatement();
@@ -166,6 +166,54 @@ public class DBTools {
       return 0;
 
 
+    } catch (SQLException e) {
+      throw e;
+    }
+  }
+
+  public static double withdraw( Connection conn, int accountID, String accType, double amount )
+      throws SQLException {
+    try {
+      Statement s = conn.createStatement();
+
+      String q = new StringBuilder().append("UPDATE ACCOUNT_T ")
+          .append("SET ").append(accType).append(" = ").append(accType)
+          .append(" - ").append(amount).append("WHERE AccountID = ").append(accountID)
+          .toString();
+
+      s.executeUpdate(q);
+
+      DBTools.addTransaction(conn, accountID, "Withdraw Made", accType, amount);
+
+      if(accType.equalsIgnoreCase("checking"))
+        return DBTools.getCheckingBalance(conn, accountID);
+
+      if(accType.equalsIgnoreCase("savings"))
+        return DBTools.getSavingsBalance(conn, accountID);
+
+      return 0;
+
+
+    } catch (SQLException e) {
+      throw e;
+    }
+  }
+
+  public static double cashCheck( Connection conn, int accountID, int checkNum, double amount )
+      throws SQLException {
+    try {
+      Statement s = conn.createStatement();
+
+      String q = new StringBuilder().append("UPDATE ACCOUNT_T ")
+          .append("SET ").append("Checking").append(" = ").append("Checking")
+          .append(" - ").append(amount).append("WHERE AccountID = ").append(accountID)
+          .toString();
+
+      s.executeUpdate(q);
+
+      DBTools.addTransaction(conn, accountID, "Check Cashed: " + checkNum, "Checking", amount);
+
+      return DBTools.getCheckingBalance(conn, accountID);
     } catch (SQLException e) {
       throw e;
     }
