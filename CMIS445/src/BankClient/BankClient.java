@@ -243,7 +243,9 @@ public class BankClient {
       int flag = getNextInt();
       if(flag == 1)
         try {
-          server.createAccount(newCustomer);
+          System.out.println("Creating Account...");
+          int id = server.createAccount(newCustomer);
+          System.out.println("Account created!\n Customer Account ID is: " + id);
           return;
         } catch (AccountAlreadyExist accountAlreadyExist) {
           System.out.println(accountAlreadyExist.message);
