@@ -61,14 +61,8 @@
     </java>
   </target>
 
-  <target name = "run_server">
+  <target name = "run">
     <java jar = "${BIN}/BankServer.jar" fork = "true">
-      <arg line="-ORBInitialPort 1050 -ORBInitialHost localhost" />
-    </java>
-  </target>
-
-  <target name = "run_client">
-    <java jar = "${BIN}/BankClient.jar" fork = "true">
       <arg line="-ORBInitialPort 1050 -ORBInitialHost localhost" />
     </java>
   </target>
