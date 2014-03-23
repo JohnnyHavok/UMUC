@@ -1,3 +1,9 @@
+/**
+ * Created By: Justin Smith
+ * Course: CMIS 445
+ * Assignment: Final Project
+ * Date: 03/23/14
+ */
 package DBTools;
 
 import java.sql.Connection;
