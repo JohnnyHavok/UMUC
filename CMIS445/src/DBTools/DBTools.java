@@ -5,7 +5,45 @@ import Customer.Customer;
 import java.sql.*;
 
 public class DBTools {
-  protected static int addAccount(Connection conn,
+  public static Connection dbConnect() throws SQLException {
+    String driver = "org.apache.derby.jdbc.EmbeddedDriver";
+    String dbName = "BankDB";
+    String URL    = "jdbc:derby:" + dbName + ";create=true";
+
+    Connection conn = null;
+
+    // -- LOAD JDBC DRIVER --
+    try {
+      Class.forName(driver);
+      System.out.println(driver + " loaded successfully!");
+    } catch (ClassNotFoundException e) {
+      System.err.println("Derby Embedded Driver Not Found!");
+      System.err.println(e.getMessage());
+    }
+
+    // -- CONNECT TO DATABASE --
+    try {
+      conn = DriverManager.getConnection(URL);
+
+      System.out.println("CONNECTED TO DATABASE "+ dbName);
+
+      // -- CHECK FOR TABLES, BUILD TABLES IF NOT PRESENT --
+      try {
+        if(!DBTools.checkDB(conn))
+          throw new SQLException("Database not initialized, run Bootstrap process!");
+      } catch (SQLException e) {
+        System.err.println("Unhandled Exception from checkDB:");
+        System.err.println(e.getMessage());
+      }
+    } catch (SQLException e) {
+      System.err.println("Unhandled Exception while bootstrapping");
+      System.err.println(e.getMessage());
+    }
+
+    return conn;
+  }
+
+  public static int addAccount(Connection conn,
                                   String LastName,
                                   String FirstName,
                                   String SSN,
@@ -41,7 +79,7 @@ public class DBTools {
     return accountID;
   }
 
-  protected static Customer getAccount(Connection conn, int accountID) throws SQLException {
+  public static Customer getAccount(Connection conn, int accountID) throws SQLException {
     Customer cust = new Customer();
 
     try {
@@ -65,7 +103,7 @@ public class DBTools {
     return cust;
   }
 
-  protected static int getAccountID(Connection conn, String SSN) throws SQLException {
+  public static int getAccountID(Connection conn, String SSN) throws SQLException {
     int id;
 
     try {
@@ -82,7 +120,7 @@ public class DBTools {
     }
   }
 
-  protected static boolean addTransaction( Connection conn, int accountID, String desc,
+  public static boolean addTransaction( Connection conn, int accountID, String desc,
                                            String accType, double amount ) throws SQLException {
     try {
       Statement s = conn.createStatement();
@@ -104,7 +142,7 @@ public class DBTools {
     return true;
   }
 
-  protected static boolean addUser( Connection conn, String userID, String pin )
+  public static boolean addUser( Connection conn, String userID, String pin )
                                      throws SQLException {
     try {
       conn.createStatement().execute("INSERT INTO USERS_T VALUES('" + userID + "','" + pin + "')");
@@ -114,6 +152,23 @@ public class DBTools {
 
     // TODO: Create meaningful test of correctness
     return true;
+  }
+
+  public static boolean verifyUser( Connection conn, String userID, String pin )
+                                        throws SQLException {
+    try {
+      ResultSet rs = conn.createStatement().executeQuery("SELECT UserID FROM USERS_T " +
+                              "WHERE UserID = '" + userID + "' AND " +
+                                    "UserPin = '" + pin + "'");
+
+      if(rs.next())
+        return true;
+
+      return false;
+
+    } catch (SQLException e) {
+      throw e;
+    }
   }
 
 
