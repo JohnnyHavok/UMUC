@@ -4,55 +4,46 @@
 // -- Final Project
 // -- 03/09/14
 // -- CORBA IDL
-// -- Build Settings - idlj -oldImplBase -Fall
+// -- Build Settings - idlj -Fall
 
 // -- ORB Service
+
 module BankService {
-
-  enum AccountType { checking, saving };
-
-  struct Address {
-    string street;
-    string city;
-    string state;
-    long zip;
-  };
-
-  struct AccountHistory {
-    sequence<string> history;
-  };
-
-  struct Account {
+  struct Customer {
     long accountID;
     string lastName;
     string firstName;
     string SSN;
-    DateTime DOB;
-    Address address;
-    string phoneNumber;
-    string emailAddress;
-    long savingBalance;
-    long checkingBalance;
-    AccountHistory transactions;
+    string pin;
+    double checkingBalance;
+    double SavingsBalance;
   };
 
+//  interface Customer {
+//    string getLastName();
+//    string getFirstName();
+//    string getSSN();
+//    string getPin();
+//
+//    double getCheckingBalance();
+//    double getSavingsBalance();
+//
+//    void setLastName(in string lastName);
+//    void setFirstName(in string firstName);
+//    void setSSN(in string SSN);
+//    void setPin(in string pin);
+//  };
+
   interface TellerService {
-    Account getAccount (in long accountID);
+    double deposit (in long accountID, in string accountType, in long amount);
+    double withdraw (in long accountID, in string accountType, in long amount);
+    double cashCheck (in long accountID, in long checkNumber, in long amount);
+    double transfer (in long accountID, in string accountType, in long toAccountID, in long amount);
 
-    // -- Boolean values indicate sucessful transaction
-    boolean deposit (in AccountType accountType, in long amount, in long accountID);
-    boolean withdraw (in AccountType accountType, in long amount, in long accountID);
-    boolean transfer (in AccountType accountType, in long amount,
-                      in long accountID, in long tooAccountID);
-
-    boolean addAccount (in Account account, in long managerID, in long managerPin);
+    long createAccount (in BankService::Customer newCustomer);
   };
 
   interface AuthTeller {
-    // -- Basic "security", boolean will indicate sucess/failure, client program
-    // -- will "respect" boolean = false.
-    boolean login (in long tellerID, in long tellerPin);
-    boolean logout (in long tellerID);
+    boolean login (in string userID, in string PIN);
   };
-
 };
