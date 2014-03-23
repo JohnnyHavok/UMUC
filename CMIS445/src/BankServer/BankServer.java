@@ -33,7 +33,7 @@ public class BankServer {
       Connection dbConnection = DBTools.dbConnect();
 
       // Create servant
-      BankServant servant = new BankServant(broker, dbConnection);
+      BankServant servant = new BankServant(dbConnection);
 
       // Get object reference from BankServant
       org.omg.CORBA.Object ref = rootpoa.servant_to_reference(servant);

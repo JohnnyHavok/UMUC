@@ -5,19 +5,15 @@ import BankService.TellerServicePOA;
 import BankService.TellerServicePackage.AccountAlreadyExist;
 import BankService.TellerServicePackage.AccountNotFound;
 import BankService.TellerServicePackage.InsufficientFunds;
-import BankService.TellerServicePackage.ShutdownMessage;
 import DBTools.DBTools;
-import org.omg.CORBA.ORB;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
 public class BankServant extends TellerServicePOA {
   private Connection dbConnection;
-  private ORB broker;
 
-  public BankServant(ORB broker, Connection c) {
-    this.broker = broker;
+  public BankServant(Connection c) {
     this.dbConnection = c;
   }
 
@@ -166,13 +162,12 @@ public class BankServant extends TellerServicePOA {
   }
 
   @Override
-  public Customer getAccount(String accountID) throws AccountNotFound {
+  public Customer getAccount(int accountID) throws AccountNotFound {
     System.out.println("BankServant responding to getAccount()");
-    return null;
-  }
-
-  @Override
-  public void shutdown() throws ShutdownMessage {
-    throw new ShutdownMessage("Shutdown requested by BankServant");
+    try {
+      return DBTools.getAccount(dbConnection, accountID);
+    } catch (SQLException e) {
+      throw new AccountNotFound("AccountID Not Found");
+    }
   }
 }

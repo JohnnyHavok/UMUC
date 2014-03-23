@@ -37,8 +37,6 @@ module BankService {
 
     long createAccount (in BankService::Customer newCustomer) raises (AccountAlreadyExist);
     long getAccountID (in string SSN) raises (AccountNotFound);
-    BankService::Customer getAccount (in string accountID) raises (AccountNotFound);
-
-    void shutdown() raises (ShutdownMessage);
+    BankService::Customer getAccount (in long accountID) raises (AccountNotFound);
   };
 };
