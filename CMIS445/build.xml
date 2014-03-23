@@ -12,7 +12,6 @@
     </classpath>
   </taskdef>
 
-  <!-- TODO: Target output needs to dump Java files to src tree  -->
   <target name = "idl">
     <idlcompile compiler = "jdk" force = "false" checkAll = "false"
                 verbose = "basic" targetDir = "${DIST}/src">
@@ -22,9 +21,6 @@
       <include>
         <pathelement path = ".." />
       </include>
-      <!-- TODO: Change to reflect BankService.idl name-->
-      <package module = "AccountModule" prefix = "Final" />
-      <translate module = "Final.AccountModule" package = "BankService" />
     </idlcompile>
   </target>
 
@@ -40,6 +36,12 @@
         <attribute name = "Class-Path" value = "${LIB}/derby.jar" />
       </manifest>
     </jar>
+    <!--Bootstrap Database on Compile-->
+    <java classname="DBTools.Bootstrap">
+      <classpath>
+        <pathelement location="${BIN}/App.jar" />
+      </classpath>
+    </java>
   </target>
 
   <target name = "run" depends = "compile">
