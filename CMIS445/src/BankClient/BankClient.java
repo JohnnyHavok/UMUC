@@ -129,12 +129,12 @@ public class BankClient {
   }
 
   private void deposit() {
-    System.out.println("Please Enter AccountID: ");
+    System.out.print("Please Enter AccountID: ");
     int id = getNextInt();
     if(!server.checkAccount(id)) return;
-    System.out.println("Please enter 1 for Checking 2 for Savings: ");
+    System.out.print("Please enter 1 for Checking 2 for Savings: ");
     int type = getNextInt();
-    System.out.println("Please Enter Amount: ");
+    System.out.print("Please Enter Amount: ");
     double amount = getNextDouble();
 
     if(type == 1) {
@@ -147,12 +147,12 @@ public class BankClient {
   }
 
   private void withdraw() {
-    System.out.println("Please Enter AccountID: ");
+    System.out.print("Please Enter AccountID: ");
     int id = getNextInt();
     if(!server.checkAccount(id)) return;
-    System.out.println("Please enter 1 for Checking 2 for Savings: ");
+    System.out.print("Please enter 1 for Checking 2 for Savings: ");
     int type = getNextInt();
-    System.out.println("Please Enter Amount: ");
+    System.out.print("Please Enter Amount: ");
     double amount = getNextDouble();
 
     if(!checkPIN(id)) return;
@@ -171,12 +171,12 @@ public class BankClient {
   }
 
   private void cashCheck() {
-    System.out.println("Please Enter AccountID: ");
+    System.out.print("Please Enter AccountID: ");
     int id = getNextInt();
     if(!server.checkAccount(id)) return;
-    System.out.println("Pleaes Enter Check Number: ");
+    System.out.print("Pleaes Enter Check Number: ");
     int chkNum = getNextInt();
-    System.out.println("Please Enter Amount: ");
+    System.out.print("Please Enter Amount: ");
     double amount = getNextDouble();
 
     if(!checkPIN(id)) return;
@@ -190,17 +190,17 @@ public class BankClient {
   }
 
   private void transfer() {
-    System.out.println("Please Enter AccountID: ");
+    System.out.print("Please Enter AccountID: ");
     int id = getNextInt();
     if(!server.checkAccount(id)) return;
-    System.out.println("Please enter 1 for Checking and 2 for Savings: ");
+    System.out.print("Please enter 1 for Checking and 2 for Savings: ");
     int type = getNextInt();
-    System.out.println("Please Enter Amount: ");
+    System.out.print("Please Enter Amount: ");
     double amount = getNextDouble();
-    System.out.println("Enter Account to Transfer To: ");
+    System.out.print("Enter Account to Transfer To: ");
     int toID = getNextInt();
     if(!server.checkAccount(id)) return;
-    System.out.println("Please enter 1 for Checking and 2 for Savings: ");
+    System.out.print("Please enter 1 for Checking and 2 for Savings: ");
     int toType = getNextInt();
 
     if(!checkPIN(id)) return;
@@ -223,17 +223,17 @@ public class BankClient {
     Customer newCustomer;
     do {
       newCustomer = new Customer();
-      System.out.println("Please Enter Customer First Name: ");
+      System.out.print("Please Enter Customer First Name: ");
       newCustomer.firstName = getNextString();
-      System.out.println("Please Enter Customer Last Name: ");
+      System.out.print("Please Enter Customer Last Name: ");
       newCustomer.lastName = getNextString();
-      System.out.println("Please Enter Customer SSN: ");
+      System.out.print("Please Enter Customer SSN: ");
       newCustomer.SSN = getNextString();
-      System.out.println("Please Enter Customer PIN: ");
+      System.out.print("Please Enter Customer PIN: ");
       newCustomer.pin = getNextString();
-      System.out.println("Please Enter Customer Initial Checking Deposit: ");
+      System.out.print("Please Enter Customer Initial Checking Deposit: ");
       newCustomer.checkingBalance = getNextDouble();
-      System.out.println("Please Enter Customer Initial Savings Deposit: ");
+      System.out.print("Please Enter Customer Initial Savings Deposit: ");
       newCustomer.SavingsBalance = getNextDouble();
 
       System.out.println("\nNew Customer Preview: ");
@@ -255,7 +255,7 @@ public class BankClient {
   }
 
   private void viewAccount() {
-    System.out.println("Please Enter AccountID: ");
+    System.out.print("Please Enter AccountID: ");
     int id = getNextInt();
     if(!server.checkAccount(id)) return;
 
@@ -272,7 +272,7 @@ public class BankClient {
   }
 
   private void lookupAccount() {
-    System.out.println("Please Enter Customer's SSN: ");
+    System.out.print("Please Enter Customer's SSN: ");
     String ssn  = getNextString();
 
     try {
