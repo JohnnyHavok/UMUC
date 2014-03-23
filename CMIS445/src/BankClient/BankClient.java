@@ -89,9 +89,10 @@ public class BankClient {
         "\t(2) Withdraw Money\n" +
         "\t(3) Transfer Money\n" +
         "\t(4) Cash Check\n" +
-        "\t(5) View Account\n" +
-        "\t(6) Lookup Account\n" +
-        "\t(7) Add Account\n" +
+        "\t(5) View Transactions\n" +
+        "\t(6) View Account\n" +
+        "\t(7) Lookup Account\n" +
+        "\t(8) Add Account\n" +
         "\t(0) Quit\n");
 
       System.out.print("Choose > ");
@@ -111,12 +112,15 @@ public class BankClient {
           cashCheck();
           break;
         case 5 :
-          viewAccount();
+          viewTransactions();
           break;
         case 6 :
-          lookupAccount();
+          viewAccount();
           break;
         case 7 :
+          lookupAccount();
+          break;
+        case 8 :
           addAccount();
           break;
         case 0 :
@@ -273,6 +277,21 @@ public class BankClient {
     }
   }
 
+  private void viewTransactions() {
+    System.out.print("Please Enter AccountID: ");
+    int id = getNextInt();
+    if(!server.checkAccount(id)) return;
+
+    try {
+      String[] tranactions = server.getTransactions(id);
+      System.out.println("Printing Last 100 Transactions for Account: "+id);
+      for(String s : tranactions)
+        System.out.println(s);
+    } catch (AccountNotFound accountNotFound) {
+      System.out.println(accountNotFound.message);
+    }
+  }
+
   private void lookupAccount() {
     System.out.print("Please Enter Customer's SSN: ");
     String ssn  = getNextString();
@@ -284,6 +303,37 @@ public class BankClient {
       System.out.println(anf.message);
       return;
     }
+  }
+
+  private boolean checkPIN(int id) {
+    int attempts = 0;
+    do {
+      attempts++;
+      System.out.println("This transaction requires the customer's PIN");
+      System.out.println("Please Enter PIN: ");
+      String pin = getNextString();
+
+      try {
+        if(server.checkPIN(id, pin))
+         return true;
+      } catch (AccountNotFound accountNotFound) {
+        return false;
+      }
+
+      if(attempts == 3) {
+        System.out.println("You failed three times, must quit");
+        return false;
+      }
+    } while (true);
+  }
+
+  private void printCustomer(Customer c) {
+    System.out.println("Customer : " + c.firstName + " " + c.lastName);
+    System.out.println("Account ID : " + c.accountID);
+    System.out.println("SSN : " + c.SSN);
+    System.out.println("PIN : " + c.pin);
+    System.out.println("Checking Balance : " + c.checkingBalance);
+    System.out.println("Savings Balance : " + c.SavingsBalance);
   }
 
   private int getNextInt() {
@@ -322,36 +372,5 @@ public class BankClient {
       e.printStackTrace();
     }
     return s;
-  }
-
-  private boolean checkPIN(int id) {
-    int attempts = 0;
-    do {
-      attempts++;
-      System.out.println("This transaction requires the customer's PIN");
-      System.out.println("Please Enter PIN: ");
-      String pin = getNextString();
-
-      try {
-        if(server.checkPIN(id, pin))
-         return true;
-      } catch (AccountNotFound accountNotFound) {
-        return false;
-      }
-
-      if(attempts == 3) {
-        System.out.println("You failed three times, must quit");
-        return false;
-      }
-    } while (true);
-  }
-
-  private void printCustomer(Customer c) {
-    System.out.println("Customer : " + c.firstName + " " + c.lastName);
-    System.out.println("Account ID : " + c.accountID);
-    System.out.println("SSN : " + c.SSN);
-    System.out.println("PIN : " + c.pin);
-    System.out.println("Checking Balance : " + c.checkingBalance);
-    System.out.println("Savings Balance : " + c.SavingsBalance);
   }
 }

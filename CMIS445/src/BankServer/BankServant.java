@@ -191,4 +191,15 @@ public class BankServant extends TellerServicePOA {
       throw new AccountNotFound("AccountID Not Found");
     }
   }
+
+  @Override
+  public String[] getTransactions(int accountID) throws AccountNotFound {
+    System.out.println("BankServant responding to getTransactions()");
+    try {
+      return DBTools.getTransactions(dbConnection, accountID);
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+      throw new AccountNotFound("AccountID Not Found");
+    }
+  }
 }

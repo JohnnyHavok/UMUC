@@ -19,6 +19,8 @@ module BankService {
     double SavingsBalance;
   };
 
+  typedef sequence<string> Transactions;
+
   interface TellerService {
     exception InsufficientFunds { string message; };
     exception AccountAlreadyExist { string message; };
@@ -40,5 +42,6 @@ module BankService {
     long createAccount (in Customer newCustomer) raises (AccountAlreadyExist);
     long getAccountID (in string SSN) raises (AccountNotFound);
     Customer getAccount (in long accountID) raises (AccountNotFound);
+    Transactions getTransactions (in long accountID) raises (AccountNotFound);
   };
 };

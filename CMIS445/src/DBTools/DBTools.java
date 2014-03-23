@@ -132,6 +132,36 @@ public class DBTools {
     return c;
   }
 
+  public static String[] getTransactions(Connection conn, int accountID) throws SQLException {
+    String[] results;
+    try {
+      ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM Transaction_T " +
+                              "WHERE AccountID = " + accountID);
+
+      String[] temp = new String[100];
+      int i;
+
+      for(i = 0; rs.next() && i < temp.length; i++) {
+        temp[i]  = new StringBuilder()
+                    .append(rs.getTimestamp("TStamp"))
+                    .append("\t" + rs.getString("Description"))
+                    .append("\t" + rs.getString("AccountType"))
+                    .append("\t" + rs.getDouble("Amount"))
+                    .toString();
+      }
+
+      results = new String[i];
+
+      for(int n = 0; n < i; n++)
+        results[n] = temp[n];
+
+      return results;
+
+    } catch (SQLException e) {
+      throw e;
+    }
+  }
+
   public static int getAccountID(Connection conn, String SSN) throws SQLException {
     int id;
 
