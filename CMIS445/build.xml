@@ -4,6 +4,7 @@
   <property name = "DIST" value = "${basedir}" />
   <property name = "BIN" value = "${DIST}/bin" />
   <property name = "BUILD" value = "${DIST}/build" />
+  <property name = "LIB" value = "${DIST}/lib" />
 
   <taskdef name = "idlcompile" classname = "net.coderazzi.idldepend.IDLCheckerTask">
     <classpath>
@@ -36,7 +37,7 @@
     <jar destfile = "${BIN}/App.jar" basedir = "${BUILD}/classes">
       <manifest>
         <attribute name = "Main-Class" value = "${MAIN_CLASS}" />
-        <attribute name = "Class-Path" value = "${DIST}/lib/derby.jar" />
+        <attribute name = "Class-Path" value = "${LIB}/derby.jar" />
       </manifest>
     </jar>
   </target>
