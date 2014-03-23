@@ -23,8 +23,6 @@
     </idlcompile>
   </target>
 
-  <!--TODO: Create seperate compile task, need JAR for Client and Server-->
-  <!--TODO: See if we can execute the Bootstrap from ANT after compile-->
   <target name = "compile" depends = "idl">
     <mkdir dir = "${BUILD}/classes" />
     <mkdir dir = "${BIN}" />
