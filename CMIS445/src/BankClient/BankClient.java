@@ -184,12 +184,10 @@ public class BankClient {
     System.out.print("Please Enter AccountID: ");
     int id = getNextInt();
     if (!server.checkAccount(id)) return;
-    System.out.print("Pleaes Enter Check Number: ");
+    System.out.print("Please Enter Check Number: ");
     int chkNum = getNextInt();
     System.out.print("Please Enter Amount: ");
     double amount = getNextDouble();
-
-    if (!checkPIN(id)) return;
 
     try {
       server.cashCheck(id, chkNum, amount);
@@ -316,7 +314,7 @@ public class BankClient {
     do {
       attempts++;
       System.out.println("This transaction requires the customer's PIN");
-      System.out.println("Please Enter PIN: ");
+      System.out.print("Please Enter PIN: ");
       String pin = getNextString();
 
       try {
