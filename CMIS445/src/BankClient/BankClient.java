@@ -1,5 +1,6 @@
 package BankClient;
 
+import BankService.Customer;
 import BankService.TellerService;
 import BankService.TellerServiceHelper;
 import BankService.TellerServicePackage.AccountNotFound;
@@ -88,8 +89,8 @@ public class BankClient {
         "\t(3) Transfer Money\n" +
         "\t(4) Cash Check\n" +
         "\t(5) View Account\n" +
-        "\t(6) Add Account\n" +
-        "\t(7) Lookup Account\n" +
+        "\t(6) Lookup Account\n" +
+        "\t(7) Add Account\n" +
         "\t(0) Quit\n");
 
       System.out.print("Choose > ");
@@ -109,8 +110,10 @@ public class BankClient {
           cashCheck();
           break;
         case 5 :
+          viewAccount();
           break;
         case 6 :
+          lookupAccount();
           break;
         case 7 :
           break;
@@ -214,6 +217,36 @@ public class BankClient {
     }
   }
 
+  private void viewAccount() {
+    System.out.println("Please Enter AccountID: ");
+    int id = getNextInt();
+    if(!server.checkAccount(id)) return;
+
+    try {
+      Customer c = server.getAccount(id);
+      if(c == null) {
+        System.out.println("Error while getting Account Information");
+        return;
+      }
+      printCustomer(c);
+    } catch (AccountNotFound accountNotFound) {
+      System.out.println(accountNotFound.message);
+    }
+  }
+
+  private void lookupAccount() {
+    System.out.println("Please Enter Customer's SSN: ");
+    String ssn  = getNextString();
+
+    try {
+      int id  = server.getAccountID(ssn);
+      System.out.println("The Account ID for this SSN is: " + id);
+    } catch (AccountNotFound anf) {
+      System.out.println(anf.message);
+      return;
+    }
+  }
+
   private int getNextInt() {
     do {
       try {
@@ -272,5 +305,14 @@ public class BankClient {
         return false;
       }
     } while (true);
+  }
+
+  private void printCustomer(Customer c) {
+    System.out.println("Customer : " + c.firstName + " " + c.lastName);
+    System.out.println("Account ID : " + c.accountID);
+    System.out.println("SSN : " + c.SSN);
+    System.out.println("PIN : " + c.pin);
+    System.out.println("Checking Balance : " + c.checkingBalance);
+    System.out.println("Savings Balance : " + c.SavingsBalance);
   }
 }
