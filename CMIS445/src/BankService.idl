@@ -19,21 +19,6 @@ module BankService {
     double SavingsBalance;
   };
 
-//  interface Customer {
-//    string getLastName();
-//    string getFirstName();
-//    string getSSN();
-//    string getPin();
-//
-//    double getCheckingBalance();
-//    double getSavingsBalance();
-//
-//    void setLastName(in string lastName);
-//    void setFirstName(in string firstName);
-//    void setSSN(in string SSN);
-//    void setPin(in string pin);
-//  };
-
   interface TellerService {
     boolean login (in string userID, in string PIN);
 
