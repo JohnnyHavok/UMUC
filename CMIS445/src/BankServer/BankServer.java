@@ -54,20 +54,28 @@ public class BankServer {
       broker.run();
 
     } catch (InvalidName invalidName) {
+      System.err.println("Thrown from BankServer.main");
       invalidName.printStackTrace();
     } catch (AdapterInactive adapterInactive) {
+      System.err.println("Thrown from BankServer.main");
       adapterInactive.printStackTrace();
     } catch (SQLException e) {
+      System.err.println("Thrown from BankServer.main");
       e.printStackTrace();
     } catch (WrongPolicy wrongPolicy) {
+      System.err.println("Thrown from BankServer.main");
       wrongPolicy.printStackTrace();
     } catch (ServantNotActive servantNotActive) {
+      System.err.println("Thrown from BankServer.main");
       servantNotActive.printStackTrace();
     } catch (org.omg.CosNaming.NamingContextPackage.InvalidName invalidName) {
+      System.err.println("Thrown from BankServer.main");
       invalidName.printStackTrace();
     } catch (CannotProceed cannotProceed) {
+      System.err.println("Thrown from BankServer.main");
       cannotProceed.printStackTrace();
     } catch (NotFound notFound) {
+      System.err.println("Thrown from BankServer.main");
       notFound.printStackTrace();
     }
   }
