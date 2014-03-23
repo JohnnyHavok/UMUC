@@ -2,7 +2,10 @@ package DBTools;
 
 import Customer.Customer;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class Bootstrap {
 
@@ -58,8 +61,8 @@ public class Bootstrap {
             .append("  FirstName VARCHAR(32) NOT NULL, ")
             .append("  SSN VARCHAR(11) NOT NULL, ")
             .append("  PIN CHAR(4) NOT NULL, ")
-            .append("  CheckingBalance DECIMAL(12, 2) NOT NULL, ")
-            .append("  SavingsBalance DECIMAL(12, 2) NOT NULL ) ")
+            .append("  Checking DECIMAL(12, 2) NOT NULL, ")
+            .append("  Savings DECIMAL(12, 2) NOT NULL ) ")
             .toString();
 
     String createTransactionTable =
@@ -69,7 +72,8 @@ public class Bootstrap {
             .append("       ON DELETE NO ACTION ON UPDATE RESTRICT, ")
             .append(" Description VARCHAR(32) NOT NULL, ")
             .append(" AccountType VARCHAR(8) NOT NULL, ")
-            .append(" Amount DECIMAL(12, 2) NOT NULL ) ")
+            .append(" Amount DECIMAL(12, 2) NOT NULL, ")
+            .append(" TStamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP ) ")
             .toString();
 
     String createUserTable =

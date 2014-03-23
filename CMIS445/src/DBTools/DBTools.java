@@ -56,7 +56,7 @@ public class DBTools {
 
     try {
       PreparedStatement ps = conn.prepareStatement("INSERT INTO ACCOUNT_T" +
-          "(LastName, FirstName, SSN, PIN, CheckingBalance, SavingsBalance) " +
+          "(LastName, FirstName, SSN, PIN, Checking, Savings) " +
           "values (?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
       ps.setString(1, LastName);
       ps.setString(2, FirstName);
@@ -92,8 +92,8 @@ public class DBTools {
         cust.setFirstName(rs.getString("FirstName"));
         cust.setSSN(rs.getString("SSN"));
         cust.setPin(rs.getString("PIN"));
-        cust.setCheckingBalance(rs.getDouble("CheckingBalance"));
-        cust.setSavingsBalance(rs.getDouble("SavingsBalance"));
+        cust.setCheckingBalance(rs.getDouble("Checking"));
+        cust.setSavingsBalance(rs.getDouble("Savings"));
       } else {
         return null;
       }
@@ -126,7 +126,7 @@ public class DBTools {
     try {
       Statement s = conn.createStatement();
 
-      String transaction = new StringBuilder().append("INSERT INTO TRANSACTION_T")
+      String transaction = new StringBuilder().append("INSERT INTO TRANSACTION_T(AccountID, Description, AccountType, Amount)")
           .append(" VALUES(")
           .append(accountID).append(",'")
           .append(desc).append("','")
@@ -141,6 +141,64 @@ public class DBTools {
     }
     // TODO: Create meaning full test of transaction correctness
     return true;
+  }
+
+  public static double deposit( Connection conn, int accountID, String accType, double amount )
+                                throws SQLException {
+    try {
+      Statement s = conn.createStatement();
+
+      String q = new StringBuilder().append("UPDATE ACCOUNT_T ")
+          .append("SET ").append(accType).append(" = ").append(accType)
+          .append(" + ").append(amount).append("WHERE AccountID = ").append(accountID)
+          .toString();
+
+      s.executeUpdate(q);
+
+      DBTools.addTransaction(conn, accountID, "Deposit Made", accType, amount);
+
+      if(accType.equalsIgnoreCase("checking"))
+        return DBTools.getCheckingBalance(conn, accountID);
+
+      if(accType.equalsIgnoreCase("savings"))
+        return DBTools.getSavingsBalance(conn, accountID);
+
+      return 0;
+
+
+    } catch (SQLException e) {
+      throw e;
+    }
+  }
+
+  public static double getCheckingBalance( Connection conn, int accountID) throws SQLException {
+    try {
+      ResultSet rs = conn.createStatement().executeQuery("SELECT Checking FROM Account_T " +
+          "WHERE AccountID = " + accountID);
+
+      if(rs.next())
+        return rs.getDouble("Checking");
+
+      else return 0;
+
+    } catch (SQLException e) {
+      throw e;
+    }
+  }
+
+  public static double getSavingsBalance( Connection conn, int accountID) throws SQLException {
+    try {
+      ResultSet rs = conn.createStatement().executeQuery("SELECT Savings FROM Account_T " +
+          "WHERE AccountID = " + accountID);
+
+      if(rs.next())
+        return rs.getDouble("Savings");
+
+      else return 0;
+
+    } catch (SQLException e) {
+      throw e;
+    }
   }
 
   public static boolean addUser( Connection conn, String userID, String pin )

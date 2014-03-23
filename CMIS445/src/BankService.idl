@@ -20,15 +20,25 @@ module BankService {
   };
 
   interface TellerService {
+    exception InsufficientFunds { string message; };
+    exception AccountAlreadyExist { string message; };
+    exception AccountNotFound { string message; };
+    exception ShutdownMessage { string message; };
+
     boolean login (in string userID, in string PIN);
 
-    double deposit (in long accountID, in string accountType, in long amount);
-    double withdraw (in long accountID, in string accountType, in long amount);
-    double cashCheck (in long accountID, in long checkNumber, in long amount);
-    double transfer (in long accountID, in string accountType, in long toAccountID, in long amount);
+    double deposit (in long accountID, in string accountType, in double amount);
+    double withdraw (in long accountID, in string accountType, in double amount) raises (InsufficientFunds);
+    double cashCheck (in long accountID, in long checkNumber, in double amount) raises (InsufficientFunds);
+    double transfer (in long accountID, in string accountType, in long toAccountID, in double amount) raises (InsufficientFunds);
 
-    long createAccount (in BankService::Customer newCustomer);
+    double getCheckingBalance (in long accountID) raises (AccountNotFound);
+    double getSavingsBalance (in long accountID) raises (AccountNotFound);
 
-    oneway void shtudown();
+    long createAccount (in BankService::Customer newCustomer) raises (AccountAlreadyExist);
+    long getAccountID (in string SSN) raises (AccountNotFound);
+    BankService::Customer getAccount (in string accountID) raises (AccountNotFound);
+
+    void shutdown() raises (ShutdownMessage);
   };
 };

@@ -29,10 +29,7 @@ public class BankClient {
 
       System.out.println("Obtained Handle to Server: " + server);
 
-      server.shtudown();
-
-      System.out.println("Shutdown command issued");
-      System.out.println("Exiting");
+      System.out.println(server.deposit(50000, "Checking", 2000));
 
 
 
