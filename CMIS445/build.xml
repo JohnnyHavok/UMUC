@@ -63,11 +63,11 @@
     </java>
   </target>
 
-  <target name = "run server">
+  <target name = "run_server">
     <java jar = "${BIN}/BankServer.jar" fork = "true" />
   </target>
 
-  <target name = "run client">
+  <target name = "run_client">
     <java jar = "${BIN}/BankClient.jar" fork = "true" />
   </target>
 
