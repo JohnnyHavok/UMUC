@@ -30,8 +30,8 @@ conf/
 /CMIS440/CMIS440_Smith_HW4/build/
 /CMIS440/CMIS440_Smith_HW4/setup/glassfish-resources.xml
 /CMIS445/build/
-/CMIS445/bin
-/CMIS445/BankService
+/CMIS445/bin/
+/CMIS445/BankService/
 /CMIS445/derby.log
 /CMIS445/BankService.idl.*.depends
-/CMIS445/BankDB
+/CMIS445/BankDB/
