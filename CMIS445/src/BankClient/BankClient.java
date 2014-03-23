@@ -103,8 +103,10 @@ public class BankClient {
           withdraw();
           break;
         case 3 :
+          transfer();
           break;
         case 4 :
+          cashCheck();
           break;
         case 5 :
           break;
@@ -163,6 +165,25 @@ public class BankClient {
     }
   }
 
+  private void cashCheck() {
+    System.out.println("Please Enter AccountID: ");
+    int id = getNextInt();
+    if(!server.checkAccount(id)) return;
+    System.out.println("Pleaes Enter Check Number: ");
+    int chkNum = getNextInt();
+    System.out.println("Please Enter Amount: ");
+    double amount = getNextDouble();
+
+    if(!checkPIN(id)) return;
+
+    try {
+      server.cashCheck(id, chkNum, amount);
+      System.out.println("Check successfully cashed");
+    } catch (InsufficientFunds insufficientFunds) {
+      System.out.println("Cannot cash check, account has insufficient funds");
+    }
+  }
+
   private void transfer() {
     System.out.println("Please Enter AccountID: ");
     int id = getNextInt();
@@ -187,6 +208,7 @@ public class BankClient {
 
     try {
       double balance = server.transfer(id, accType, toID, toAccType, amount);
+      System.out.println("New Account Balance After Transfer: " + balance);
     } catch (InsufficientFunds insufficientFunds) {
       System.out.println("Cannot transfer, account has insufficient funds");
     }
