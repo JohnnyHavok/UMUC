@@ -13,9 +13,7 @@ import java.sql.SQLException;
 public class BankServant extends TellerServicePOA {
   private Connection dbConnection;
 
-  public BankServant(Connection c) {
-    this.dbConnection = c;
-  }
+  public BankServant(Connection c) { this.dbConnection = c; }
 
   @Override
   public boolean login(String userID, String PIN) {
@@ -29,6 +27,7 @@ public class BankServant extends TellerServicePOA {
     return false;
   }
 
+  // TODO: Add AccountNotFound Exception.
   @Override
   public double deposit(int accountID, String accountType, double amount) {
     System.out.println("BankServant responding to deposit()");
@@ -40,6 +39,28 @@ public class BankServant extends TellerServicePOA {
     }
 
     return 0;
+  }
+
+  @Override
+  public boolean checkPIN(int accountID, String PIN) throws AccountNotFound {
+    System.out.println("BankServant responding to checkPIN()");
+    try {
+      return DBTools.checkPIN(dbConnection, accountID, PIN);
+    } catch (SQLException e) {
+      throw new AccountNotFound("AccountID not found for this PIN");
+    }
+  }
+
+  @Override
+  public boolean checkAccount(int accountID) {
+    System.out.println("BankServant responding to checkAccount()");
+    try {
+      return DBTools.checkAccount(dbConnection, accountID);
+    } catch (SQLException e) {
+      System.out.println("SQL Error Reached BankServant.checkAccount()");
+      e.getMessage();
+    }
+    return false;
   }
 
   @Override

@@ -26,6 +26,8 @@ module BankService {
     exception ShutdownMessage { string message; };
 
     boolean login (in string userID, in string PIN);
+    boolean checkAccount (in long accountID);
+    boolean checkPIN (in long accountID, in string PIN) raises (AccountNotFound);
 
     double deposit (in long accountID, in string accountType, in double amount);
     double withdraw (in long accountID, in string accountType, in double amount) raises (InsufficientFunds);

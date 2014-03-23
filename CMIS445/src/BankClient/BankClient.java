@@ -11,9 +11,16 @@ import org.omg.CosNaming.NamingContextExtHelper;
 import org.omg.CosNaming.NamingContextPackage.CannotProceed;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Scanner;
+
 public class BankClient {
 
   static TellerService server;
+
+  BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
   public static void main(String[] args) {
     try {
@@ -29,15 +36,28 @@ public class BankClient {
       // Resolve Object Reference in Naming Service
       server = TellerServiceHelper.narrow(ncRef.resolve_str("TellerService"));
 
-      System.out.println("Obtained Handle to Server: " + server);
+      System.out.println("Connected to BankServer");
 
-      System.out.println(server.deposit(50000, "Checking", 2000));
-      System.out.println(server.transfer(50000, "Checking", 50007, "Savings", 123.56));
-      System.out.println(server.getSavingsBalance(50007));
-
-
+      // Begin Teller Program
+      boolean loggedIn = false;
+      Scanner in = new Scanner(System.in);
 
 
+      do {
+        System.out.print("Please Enter Username (Hint: user): ");
+        String user = in.nextLine();
+        System.out.print("Please Enter Your Pin (Hint: 0000): ");
+        String pin = in.nextLine();
+        System.out.println("Logging In");
+
+        if(server.login(user.toLowerCase(), pin)) {
+          loggedIn = true;
+          new BankClient();
+        } else {
+          System.out.println("Incorrect User/PIN, try again");
+        }
+
+      } while (!loggedIn);
 
     } catch (InvalidName invalidName) {
       System.err.println("Thrown from BankClient.main");
@@ -51,10 +71,184 @@ public class BankClient {
     } catch (NotFound notFound) {
       System.err.println("Thrown from BankClient.main");
       notFound.printStackTrace();
-    } catch (InsufficientFunds insufficientFunds) {
-      insufficientFunds.printStackTrace();
-    } catch (AccountNotFound accountNotFound) {
-      accountNotFound.printStackTrace();
     }
+  }
+
+  private BankClient() {
+    System.out.println("Logged Into Remote Bank Server");
+
+    Scanner in = new Scanner(System.in);
+    boolean quit = false;
+    int input;
+
+    while(!quit) {
+      System.out.println("\nSelect Option:\n" +
+        "\t(1) Deposit Money\n" +
+        "\t(2) Withdraw Money\n" +
+        "\t(3) Transfer Money\n" +
+        "\t(4) Cash Check\n" +
+        "\t(5) View Account\n" +
+        "\t(6) Add Account\n" +
+        "\t(7) Lookup Account\n" +
+        "\t(0) Quit\n");
+
+      System.out.print("Choose > ");
+      input = getNextInt();
+
+      switch(input) {
+        case 1 :
+          deposit();
+          break;
+        case 2 :
+          withdraw();
+          break;
+        case 3 :
+          break;
+        case 4 :
+          break;
+        case 5 :
+          break;
+        case 6 :
+          break;
+        case 7 :
+          break;
+        case 0 :
+          quit = true;
+          break;
+        default :
+          System.out.println("Invalid option, try again");
+      }
+    }
+  }
+
+  private void deposit() {
+    System.out.println("Please Enter AccountID: ");
+    int id = getNextInt();
+    if(!server.checkAccount(id)) return;
+    System.out.println("Please enter 1 for Checking 2 for Savings: ");
+    int type = getNextInt();
+    System.out.println("Please Enter Amount: ");
+    double amount = getNextDouble();
+
+    if(type == 1) {
+      double balance = server.deposit(id, "checking", amount);
+      System.out.println("New Checking Account Balance is: " + balance);
+    } else if(type == 2) {
+      double balance = server.deposit(id, "savings", amount);
+      System.out.println("New Savings Account Balance is: " + balance);
+    }
+  }
+
+  private void withdraw() {
+    System.out.println("Please Enter AccountID: ");
+    int id = getNextInt();
+    if(!server.checkAccount(id)) return;
+    System.out.println("Please enter 1 for Checking 2 for Savings: ");
+    int type = getNextInt();
+    System.out.println("Please Enter Amount: ");
+    double amount = getNextDouble();
+
+    if(!checkPIN(id)) return;
+
+    try {
+      if(type == 1) {
+        double balance = server.withdraw(id, "checking", amount);
+        System.out.println("New Checking Account Balance is: " + balance);
+      } else if(type == 2) {
+        double balance = server.withdraw(id, "savings", amount);
+        System.out.println("New Savings Account Balance is: " + balance);
+      }
+    } catch (InsufficientFunds insufficientFunds) {
+        System.out.println("Cannot withdraw, account has insufficient funds");
+    }
+  }
+
+  private void transfer() {
+    System.out.println("Please Enter AccountID: ");
+    int id = getNextInt();
+    if(!server.checkAccount(id)) return;
+    System.out.println("Please enter 1 for Checking and 2 for Savings: ");
+    int type = getNextInt();
+    System.out.println("Please Enter Amount: ");
+    double amount = getNextDouble();
+    System.out.println("Enter Account to Transfer To: ");
+    int toID = getNextInt();
+    if(!server.checkAccount(id)) return;
+    System.out.println("Please enter 1 for Checking and 2 for Savings: ");
+    int toType = getNextInt();
+
+    if(!checkPIN(id)) return;
+
+    String accType = "checking";
+    String toAccType = "checking";
+
+    if(type == 2) accType = "savings";
+    if(toType == 2) toAccType = "savings";
+
+    try {
+      double balance = server.transfer(id, accType, toID, toAccType, amount);
+    } catch (InsufficientFunds insufficientFunds) {
+      System.out.println("Cannot transfer, account has insufficient funds");
+    }
+  }
+
+  private int getNextInt() {
+    do {
+      try {
+        return Integer.parseInt(in.readLine());
+      } catch (IOException e) {
+        System.out.println("Error thrown from getNextInt input");
+        e.printStackTrace();
+      } catch (NumberFormatException e) {
+        System.out.print("Enter numbers only, please try again > ");
+      }
+    } while(true);
+  }
+
+  private double getNextDouble() {
+    do {
+      try {
+        return Double.parseDouble(in.readLine());
+      } catch (IOException e) {
+        System.out.println("Error thrown from getNextInt input");
+        e.printStackTrace();
+      } catch (NumberFormatException e) {
+        System.out.print("Enter numbers only, please try again > ");
+      }
+    } while(true);
+  }
+
+  private String getNextString() {
+    String s = null;
+    try {
+      s = in.readLine();
+      if(s.length() == 0) return null;
+    } catch (IOException e) {
+      System.out.println("Thrown from getNextString() on user input");
+      e.printStackTrace();
+    }
+    return s;
+  }
+
+  private boolean checkPIN(int id) {
+    int attempts = 0;
+    do {
+      attempts++;
+      System.out.println("This transaction requires the customer's PIN");
+      System.out.println("Please Enter PIN: ");
+      String pin = getNextString();
+
+      try {
+        if(server.checkPIN(id, pin))
+         return true;
+      } catch (AccountNotFound accountNotFound) {
+        return false;
+      }
+
+      if(attempts == 3) {
+        System.out.println("You failed three times, must quit");
+        return false;
+      }
+    } while (true);
   }
 }

@@ -338,6 +338,36 @@ public class DBTools {
     }
   }
 
+  public static boolean checkPIN( Connection conn, int accountID, String pin )
+      throws SQLException {
+    try {
+      ResultSet rs = conn.createStatement().executeQuery("SELECT AccountID FROM Account_T " +
+          "WHERE AccountID = " + accountID + " AND " +
+          "PIN = '" + pin + "'");
+
+      if(rs.next())
+        return true;
+
+      return false;
+
+    } catch (SQLException e) {
+      throw e;
+    }
+  }
+
+  public static boolean checkAccount( Connection conn, int accountID ) throws SQLException {
+    try {
+      ResultSet rs = conn.createStatement().executeQuery("SELECT AccountID FROM Account_T " +
+          "WHERE AccountID = " +  accountID);
+
+      if(rs.next())
+        return true;
+
+      return false;
+    } catch (SQLException e) {
+      throw e;
+    }
+  }
 
   protected static boolean checkDB(Connection conn) throws SQLException {
     try {
