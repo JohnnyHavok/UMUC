@@ -37,8 +37,8 @@ module BankService {
     double getCheckingBalance (in long accountID) raises (AccountNotFound);
     double getSavingsBalance (in long accountID) raises (AccountNotFound);
 
-    long createAccount (in BankService::Customer newCustomer) raises (AccountAlreadyExist);
+    long createAccount (in Customer newCustomer) raises (AccountAlreadyExist);
     long getAccountID (in string SSN) raises (AccountNotFound);
-    BankService::Customer getAccount (in long accountID) raises (AccountNotFound);
+    Customer getAccount (in long accountID) raises (AccountNotFound);
   };
 };
