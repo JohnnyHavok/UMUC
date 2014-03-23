@@ -35,15 +35,15 @@ module BankService {
 //  };
 
   interface TellerService {
+    boolean login (in string userID, in string PIN);
+
     double deposit (in long accountID, in string accountType, in long amount);
     double withdraw (in long accountID, in string accountType, in long amount);
     double cashCheck (in long accountID, in long checkNumber, in long amount);
     double transfer (in long accountID, in string accountType, in long toAccountID, in long amount);
 
     long createAccount (in BankService::Customer newCustomer);
-  };
 
-  interface AuthTeller {
-    boolean login (in string userID, in string PIN);
+    oneway void shtudown();
   };
 };
