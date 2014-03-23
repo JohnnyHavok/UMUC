@@ -3,6 +3,7 @@ package BankClient;
 import BankService.Customer;
 import BankService.TellerService;
 import BankService.TellerServiceHelper;
+import BankService.TellerServicePackage.AccountAlreadyExist;
 import BankService.TellerServicePackage.AccountNotFound;
 import BankService.TellerServicePackage.InsufficientFunds;
 import org.omg.CORBA.ORB;
@@ -116,6 +117,7 @@ public class BankClient {
           lookupAccount();
           break;
         case 7 :
+          addAccount();
           break;
         case 0 :
           quit = true;
@@ -215,6 +217,41 @@ public class BankClient {
     } catch (InsufficientFunds insufficientFunds) {
       System.out.println("Cannot transfer, account has insufficient funds");
     }
+  }
+
+  private void addAccount() {
+    Customer newCustomer;
+    do {
+      newCustomer = new Customer();
+      System.out.println("Please Enter Customer First Name: ");
+      newCustomer.firstName = getNextString();
+      System.out.println("Please Enter Customer Last Name: ");
+      newCustomer.lastName = getNextString();
+      System.out.println("Please Enter Customer SSN: ");
+      newCustomer.SSN = getNextString();
+      System.out.println("Please Enter Customer PIN: ");
+      newCustomer.pin = getNextString();
+      System.out.println("Please Enter Customer Initial Checking Deposit: ");
+      newCustomer.checkingBalance = getNextDouble();
+      System.out.println("Please Enter Customer Initial Savings Deposit: ");
+      newCustomer.SavingsBalance = getNextDouble();
+
+      System.out.println("\nNew Customer Preview: ");
+      printCustomer(newCustomer);
+
+      System.out.println("Enter 1 if this information is correct, any other to redo: ");
+      int flag = getNextInt();
+      if(flag == 1)
+        try {
+          server.createAccount(newCustomer);
+          return;
+        } catch (AccountAlreadyExist accountAlreadyExist) {
+          System.out.println(accountAlreadyExist.message);
+          return;
+        }
+    } while(true);
+
+
   }
 
   private void viewAccount() {
