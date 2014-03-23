@@ -1,54 +1,54 @@
-<project basedir = ".">
+<project basedir=".">
 
-  <property name = "DIST" value = "${basedir}" />
-  <property name = "BIN" value = "${DIST}/bin" />
-  <property name = "BUILD" value = "${DIST}/build" />
-  <property name = "LIB" value = "${DIST}/lib" />
+  <property name="DIST" value="${basedir}"/>
+  <property name="BIN" value="${DIST}/bin"/>
+  <property name="BUILD" value="${DIST}/build"/>
+  <property name="LIB" value="${DIST}/lib"/>
 
-  <taskdef name = "idlcompile" classname = "net.coderazzi.idldepend.IDLCheckerTask">
+  <taskdef name="idlcompile" classname="net.coderazzi.idldepend.IDLCheckerTask">
     <classpath>
-      <pathelement location = "${DIST}/lib/idldepend-1-3-0.jar" />
+      <pathelement location="${DIST}/lib/idldepend-1-3-0.jar"/>
     </classpath>
   </taskdef>
 
-  <target name = "idl">
-    <idlcompile compiler = "jdk" force = "false" checkAll = "false"
-                verbose = "basic" targetDir = "${DIST}/src">
-      <fileset dir = "${DIST}/src">
-        <include name = "*.idl" />
+  <target name="idl">
+    <idlcompile compiler="jdk" force="false" checkAll="false"
+                verbose="basic" targetDir="${DIST}/src">
+      <fileset dir="${DIST}/src">
+        <include name="*.idl"/>
       </fileset>
       <include>
-        <pathelement path = ".." />
+        <pathelement path=".."/>
       </include>
     </idlcompile>
   </target>
 
-  <target name = "compile" depends = "idl">
-    <mkdir dir = "${BUILD}/classes" />
-    <mkdir dir = "${BIN}" />
-    <javac srcdir = "${DIST}/src" destdir = "${BUILD}/classes" />
+  <target name="compile" depends="idl">
+    <mkdir dir="${BUILD}/classes"/>
+    <mkdir dir="${BIN}"/>
+    <javac srcdir="${DIST}/src" destdir="${BUILD}/classes"/>
 
     <!--Build Server JAR-->
-    <jar destfile = "${BIN}/BankServer.jar" basedir = "${BUILD}/classes">
-      <fileset dir="${BUILD}/classes" includes = "BankServer/**" />
-      <fileset dir="${BUILD}/classes" includes = "BankService/**" />
-      <fileset dir="${BUILD}/classes" includes = "Customer/**" />
-      <fileset dir="${BUILD}/classes" includes = "DBTools/**" />
+    <jar destfile="${BIN}/BankServer.jar" basedir="${BUILD}/classes">
+      <fileset dir="${BUILD}/classes" includes="BankServer/**"/>
+      <fileset dir="${BUILD}/classes" includes="BankService/**"/>
+      <fileset dir="${BUILD}/classes" includes="Customer/**"/>
+      <fileset dir="${BUILD}/classes" includes="DBTools/**"/>
 
       <manifest>
-        <attribute name = "Main-Class" value = "BankServer.BankServer" />
-        <attribute name = "Class-Path" value = "${LIB}/derby.jar" />
+        <attribute name="Main-Class" value="BankServer.BankServer"/>
+        <attribute name="Class-Path" value="${LIB}/derby.jar"/>
       </manifest>
 
     </jar>
 
     <!--Build Client JAR-->
-    <jar destfile = "${BIN}/BankClient.jar" basedir = "${BUILD}/classes">
-      <fileset dir="${BUILD}/classes" includes = "BankService/**" />
-      <fileset dir="${BUILD}/classes" includes = "BankClient/**" />
+    <jar destfile="${BIN}/BankClient.jar" basedir="${BUILD}/classes">
+      <fileset dir="${BUILD}/classes" includes="BankService/**"/>
+      <fileset dir="${BUILD}/classes" includes="BankClient/**"/>
 
       <manifest>
-        <attribute name = "Main-Class" value = "BankClient.BankClient" />
+        <attribute name="Main-Class" value="BankClient.BankClient"/>
       </manifest>
 
     </jar>
@@ -56,26 +56,26 @@
     <!--Bootstrap Database on Compile-->
     <java classname="DBTools.Bootstrap">
       <classpath>
-        <pathelement location="${BIN}/BankServer.jar" />
+        <pathelement location="${BIN}/BankServer.jar"/>
       </classpath>
     </java>
   </target>
 
-  <target name = "run">
-    <java jar = "${BIN}/BankServer.jar" fork = "true">
-      <arg line="-ORBInitialPort 1050 -ORBInitialHost localhost" />
+  <target name="run">
+    <java jar="${BIN}/BankServer.jar" fork="true">
+      <arg line="-ORBInitialPort 1050 -ORBInitialHost localhost"/>
     </java>
   </target>
 
-  <target name = "clean">
+  <target name="clean">
     <delete>
-      <fileset dir = "." includes = "**/*.depends" />
-      <fileset dir = "." includes = "derby.log" />
+      <fileset dir="." includes="**/*.depends"/>
+      <fileset dir="." includes="derby.log"/>
     </delete>
-    <delete dir = "${BUILD}" />
-    <delete dir = "${BIN}" />
-    <delete dir = "${DIST}/BankDB" />
-    <delete dir = "${DIST}/src/BankService" />
+    <delete dir="${BUILD}"/>
+    <delete dir="${BIN}"/>
+    <delete dir="${DIST}/BankDB"/>
+    <delete dir="${DIST}/src/BankService"/>
   </target>
 
 </project>

@@ -10,7 +10,7 @@ public class Bootstrap {
   public static void main(String[] args) {
     String driver = "org.apache.derby.jdbc.EmbeddedDriver";
     String dbName = "BankDB";
-    String URL    = "jdbc:derby:" + dbName + ";create=true";
+    String URL = "jdbc:derby:" + dbName + ";create=true";
 
     Connection conn;
 
@@ -27,11 +27,11 @@ public class Bootstrap {
     try {
       conn = DriverManager.getConnection(URL);
 
-      System.out.println("CONNECTED TO DATABASE "+ dbName);
+      System.out.println("CONNECTED TO DATABASE " + dbName);
 
-    // -- CHECK FOR TABLES, BUILD TABLES IF NOT PRESENT --
+      // -- CHECK FOR TABLES, BUILD TABLES IF NOT PRESENT --
       try {
-        if(!DBTools.checkDB(conn)) {
+        if (!DBTools.checkDB(conn)) {
           buildDB(conn);
         } else {
           System.out.println("DATABASE EXIST, RETAINING DB FOR USE");
@@ -98,14 +98,14 @@ public class Bootstrap {
       // -- Create initial accounts --
       DBTools.addAccount(conn, "Smith", "Justin", "123-45-6789", "1234", 5432.10, 9876.54);
       DBTools.addAccount(conn, "Sanders", "Susan", "322-98-5647", "4321", 1621.52, 546.20);
-      DBTools.addAccount(conn, "Dickens", "Charles", "432-23-0098" ,"7363", 7654.12, 987.12);
+      DBTools.addAccount(conn, "Dickens", "Charles", "432-23-0098", "7363", 7654.12, 987.12);
       DBTools.addAccount(conn, "Mayer", "Steven", "874-12-9876", "1365", 123.45, 52.32);
 
       // -- Testing SELECT Query --
       System.out.println("Testing SELECT Query");
       BankService.Customer cust = DBTools.getAccount(conn, DBTools.getAccountID(conn, "123-45-6789"));
 
-      if(cust == null) {
+      if (cust == null) {
         System.out.println("ERROR ON FETCHING CUSTOMER");
       }
 

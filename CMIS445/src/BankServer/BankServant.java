@@ -13,7 +13,9 @@ import java.sql.SQLException;
 public class BankServant extends TellerServicePOA {
   private Connection dbConnection;
 
-  public BankServant(Connection c) { this.dbConnection = c; }
+  public BankServant(Connection c) {
+    this.dbConnection = c;
+  }
 
   @Override
   public boolean login(String userID, String PIN) {
@@ -67,13 +69,13 @@ public class BankServant extends TellerServicePOA {
   public double withdraw(int accountID, String accountType, double amount) throws InsufficientFunds {
     System.out.println("BankServant responding to withdraw()");
     try {
-      if(accountType.equalsIgnoreCase("checking")) {
-        if(this.getCheckingBalance(accountID) > amount)
+      if (accountType.equalsIgnoreCase("checking")) {
+        if (this.getCheckingBalance(accountID) > amount)
           return DBTools.withdraw(dbConnection, accountID, accountType, amount);
         else
           throw new InsufficientFunds("Checking Account has Insufficient Funds");
-      } else if(accountType.equalsIgnoreCase("savings")) {
-        if(this.getSavingsBalance(accountID) > amount)
+      } else if (accountType.equalsIgnoreCase("savings")) {
+        if (this.getSavingsBalance(accountID) > amount)
           return DBTools.withdraw(dbConnection, accountID, accountType, amount);
         else
           throw new InsufficientFunds("Savings Account has Insufficient Funds");
@@ -93,7 +95,7 @@ public class BankServant extends TellerServicePOA {
   public double cashCheck(int accountID, int checkNumber, double amount) throws InsufficientFunds {
     System.out.println("BankServant responding to cashCheck()");
     try {
-      if(this.getCheckingBalance(accountID) > amount)
+      if (this.getCheckingBalance(accountID) > amount)
         return DBTools.cashCheck(dbConnection, accountID, checkNumber, amount);
       else
         throw new InsufficientFunds("Checking Account Has Insufficient Funds for Check");
@@ -114,13 +116,13 @@ public class BankServant extends TellerServicePOA {
                          double amount) throws InsufficientFunds {
     System.out.println("BankServant responding to transfer()");
     try {
-      if(accountType.equalsIgnoreCase("checking")) {
-        if(this.getCheckingBalance(accountID) > amount)
+      if (accountType.equalsIgnoreCase("checking")) {
+        if (this.getCheckingBalance(accountID) > amount)
           return DBTools.transfer(dbConnection, accountID, accountType, toAccountID, toAccountType, amount);
         else
           throw new InsufficientFunds("Checking Account has Insufficient Funds");
-      } else if(accountType.equalsIgnoreCase("savings")) {
-        if(this.getSavingsBalance(accountID) > amount)
+      } else if (accountType.equalsIgnoreCase("savings")) {
+        if (this.getSavingsBalance(accountID) > amount)
           return DBTools.transfer(dbConnection, accountID, accountType, toAccountID, toAccountType, amount);
         else
           throw new InsufficientFunds("Savings Account has Insufficient Funds");

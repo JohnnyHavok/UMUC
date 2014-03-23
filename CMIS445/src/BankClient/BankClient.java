@@ -52,7 +52,7 @@ public class BankClient {
         String pin = in.nextLine();
         System.out.println("Logging In");
 
-        if(server.login(user.toLowerCase(), pin)) {
+        if (server.login(user.toLowerCase(), pin)) {
           loggedIn = true;
           new BankClient();
         } else {
@@ -83,50 +83,50 @@ public class BankClient {
     boolean quit = false;
     int input;
 
-    while(!quit) {
+    while (!quit) {
       System.out.println("\nSelect Option:\n" +
-        "\t(1) Deposit Money\n" +
-        "\t(2) Withdraw Money\n" +
-        "\t(3) Transfer Money\n" +
-        "\t(4) Cash Check\n" +
-        "\t(5) View Transactions\n" +
-        "\t(6) View Account\n" +
-        "\t(7) Lookup Account\n" +
-        "\t(8) Add Account\n" +
-        "\t(0) Quit\n");
+          "\t(1) Deposit Money\n" +
+          "\t(2) Withdraw Money\n" +
+          "\t(3) Transfer Money\n" +
+          "\t(4) Cash Check\n" +
+          "\t(5) View Transactions\n" +
+          "\t(6) View Account\n" +
+          "\t(7) Lookup Account\n" +
+          "\t(8) Add Account\n" +
+          "\t(0) Quit\n");
 
       System.out.print("Choose > ");
       input = getNextInt();
 
-      switch(input) {
-        case 1 :
+      switch (input) {
+        case 1:
           deposit();
           break;
-        case 2 :
+        case 2:
           withdraw();
           break;
-        case 3 :
+        case 3:
           transfer();
           break;
-        case 4 :
+        case 4:
           cashCheck();
           break;
-        case 5 :
+        case 5:
           viewTransactions();
           break;
-        case 6 :
+        case 6:
           viewAccount();
           break;
-        case 7 :
+        case 7:
           lookupAccount();
           break;
-        case 8 :
+        case 8:
           addAccount();
           break;
-        case 0 :
+        case 0:
           quit = true;
           break;
-        default :
+        default:
           System.out.println("Invalid option, try again");
       }
     }
@@ -135,16 +135,16 @@ public class BankClient {
   private void deposit() {
     System.out.print("Please Enter AccountID: ");
     int id = getNextInt();
-    if(!server.checkAccount(id)) return;
+    if (!server.checkAccount(id)) return;
     System.out.print("Please enter 1 for Checking 2 for Savings: ");
     int type = getNextInt();
     System.out.print("Please Enter Amount: ");
     double amount = getNextDouble();
 
-    if(type == 1) {
+    if (type == 1) {
       double balance = server.deposit(id, "checking", amount);
       System.out.println("New Checking Account Balance is: " + balance);
-    } else if(type == 2) {
+    } else if (type == 2) {
       double balance = server.deposit(id, "savings", amount);
       System.out.println("New Savings Account Balance is: " + balance);
     }
@@ -153,37 +153,37 @@ public class BankClient {
   private void withdraw() {
     System.out.print("Please Enter AccountID: ");
     int id = getNextInt();
-    if(!server.checkAccount(id)) return;
+    if (!server.checkAccount(id)) return;
     System.out.print("Please enter 1 for Checking 2 for Savings: ");
     int type = getNextInt();
     System.out.print("Please Enter Amount: ");
     double amount = getNextDouble();
 
-    if(!checkPIN(id)) return;
+    if (!checkPIN(id)) return;
 
     try {
-      if(type == 1) {
+      if (type == 1) {
         double balance = server.withdraw(id, "checking", amount);
         System.out.println("New Checking Account Balance is: " + balance);
-      } else if(type == 2) {
+      } else if (type == 2) {
         double balance = server.withdraw(id, "savings", amount);
         System.out.println("New Savings Account Balance is: " + balance);
       }
     } catch (InsufficientFunds insufficientFunds) {
-        System.out.println("Cannot withdraw, account has insufficient funds");
+      System.out.println("Cannot withdraw, account has insufficient funds");
     }
   }
 
   private void cashCheck() {
     System.out.print("Please Enter AccountID: ");
     int id = getNextInt();
-    if(!server.checkAccount(id)) return;
+    if (!server.checkAccount(id)) return;
     System.out.print("Pleaes Enter Check Number: ");
     int chkNum = getNextInt();
     System.out.print("Please Enter Amount: ");
     double amount = getNextDouble();
 
-    if(!checkPIN(id)) return;
+    if (!checkPIN(id)) return;
 
     try {
       server.cashCheck(id, chkNum, amount);
@@ -196,24 +196,24 @@ public class BankClient {
   private void transfer() {
     System.out.print("Please Enter AccountID: ");
     int id = getNextInt();
-    if(!server.checkAccount(id)) return;
+    if (!server.checkAccount(id)) return;
     System.out.print("Please enter 1 for Checking and 2 for Savings: ");
     int type = getNextInt();
     System.out.print("Please Enter Amount: ");
     double amount = getNextDouble();
     System.out.print("Enter Account to Transfer To: ");
     int toID = getNextInt();
-    if(!server.checkAccount(id)) return;
+    if (!server.checkAccount(id)) return;
     System.out.print("Please enter 1 for Checking and 2 for Savings: ");
     int toType = getNextInt();
 
-    if(!checkPIN(id)) return;
+    if (!checkPIN(id)) return;
 
     String accType = "checking";
     String toAccType = "checking";
 
-    if(type == 2) accType = "savings";
-    if(toType == 2) toAccType = "savings";
+    if (type == 2) accType = "savings";
+    if (toType == 2) toAccType = "savings";
 
     try {
       double balance = server.transfer(id, accType, toID, toAccType, amount);
@@ -245,7 +245,7 @@ public class BankClient {
 
       System.out.println("Enter 1 if this information is correct, any other to redo: ");
       int flag = getNextInt();
-      if(flag == 1)
+      if (flag == 1)
         try {
           System.out.println("Creating Account...");
           int id = server.createAccount(newCustomer);
@@ -255,7 +255,7 @@ public class BankClient {
           System.out.println(accountAlreadyExist.message);
           return;
         }
-    } while(true);
+    } while (true);
 
 
   }
@@ -263,11 +263,11 @@ public class BankClient {
   private void viewAccount() {
     System.out.print("Please Enter AccountID: ");
     int id = getNextInt();
-    if(!server.checkAccount(id)) return;
+    if (!server.checkAccount(id)) return;
 
     try {
       Customer c = server.getAccount(id);
-      if(c == null) {
+      if (c == null) {
         System.out.println("Error while getting Account Information");
         return;
       }
@@ -280,12 +280,12 @@ public class BankClient {
   private void viewTransactions() {
     System.out.print("Please Enter AccountID: ");
     int id = getNextInt();
-    if(!server.checkAccount(id)) return;
+    if (!server.checkAccount(id)) return;
 
     try {
       String[] tranactions = server.getTransactions(id);
-      System.out.println("Printing Last 100 Transactions for Account: "+id);
-      for(String s : tranactions)
+      System.out.println("Printing Last 100 Transactions for Account: " + id);
+      for (String s : tranactions)
         System.out.println(s);
     } catch (AccountNotFound accountNotFound) {
       System.out.println(accountNotFound.message);
@@ -294,10 +294,10 @@ public class BankClient {
 
   private void lookupAccount() {
     System.out.print("Please Enter Customer's SSN: ");
-    String ssn  = getNextString();
+    String ssn = getNextString();
 
     try {
-      int id  = server.getAccountID(ssn);
+      int id = server.getAccountID(ssn);
       System.out.println("The Account ID for this SSN is: " + id);
     } catch (AccountNotFound anf) {
       System.out.println(anf.message);
@@ -314,13 +314,13 @@ public class BankClient {
       String pin = getNextString();
 
       try {
-        if(server.checkPIN(id, pin))
-         return true;
+        if (server.checkPIN(id, pin))
+          return true;
       } catch (AccountNotFound accountNotFound) {
         return false;
       }
 
-      if(attempts == 3) {
+      if (attempts == 3) {
         System.out.println("You failed three times, must quit");
         return false;
       }
@@ -346,7 +346,7 @@ public class BankClient {
       } catch (NumberFormatException e) {
         System.out.print("Enter numbers only, please try again > ");
       }
-    } while(true);
+    } while (true);
   }
 
   private double getNextDouble() {
@@ -359,14 +359,14 @@ public class BankClient {
       } catch (NumberFormatException e) {
         System.out.print("Enter numbers only, please try again > ");
       }
-    } while(true);
+    } while (true);
   }
 
   private String getNextString() {
     String s = null;
     try {
       s = in.readLine();
-      if(s.length() == 0) return null;
+      if (s.length() == 0) return null;
     } catch (IOException e) {
       System.out.println("Thrown from getNextString() on user input");
       e.printStackTrace();
