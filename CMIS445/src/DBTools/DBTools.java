@@ -8,7 +8,7 @@ public class DBTools {
   public static Connection dbConnect() throws SQLException {
     String driver = "org.apache.derby.jdbc.EmbeddedDriver";
     String dbName = "BankDB";
-    String URL    = "jdbc:derby:" + dbName + ";create=true";
+    String URL    = "jdbc:derby:" + dbName + ";create=false";
 
     Connection conn = null;
 
@@ -36,7 +36,8 @@ public class DBTools {
         System.err.println(e.getMessage());
       }
     } catch (SQLException e) {
-      System.err.println("Unhandled Exception while bootstrapping");
+      System.err.println("You must run BankServer.jar from the root directory of the project");
+      System.err.println("Either use the ANT build file or use java -jar bin/BankServer.jar");
       System.err.println(e.getMessage());
     }
 

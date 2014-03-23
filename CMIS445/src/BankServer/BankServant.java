@@ -8,7 +8,7 @@ import org.omg.CORBA.Object;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class BankServant implements AuthTeller, TellerService {
+public class BankServant implements AuthTeller {
   private Connection dbConnection;
 
   public BankServant(Connection c) {
@@ -24,31 +24,6 @@ public class BankServant implements AuthTeller, TellerService {
       System.err.println(e.getMessage());
     }
     return false;
-  }
-
-  @Override
-  public double deposit(int accountID, String accountType, int amount) {
-    return 0;
-  }
-
-  @Override
-  public double withdraw(int accountID, String accountType, int amount) {
-    return 0;
-  }
-
-  @Override
-  public double cashCheck(int accountID, int checkNumber, int amount) {
-    return 0;
-  }
-
-  @Override
-  public double transfer(int accountID, String accountType, int toAccountID, int amount) {
-    return 0;
-  }
-
-  @Override
-  public int createAccount(Customer newCustomer) {
-    return 0;
   }
 
   @Override

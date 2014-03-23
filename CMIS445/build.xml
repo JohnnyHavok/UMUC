@@ -1,6 +1,5 @@
 <project basedir = ".">
 
-  <property name = "MAIN_CLASS" value = "DBTools.Bootstrap" />
   <property name = "DIST" value = "${basedir}" />
   <property name = "BIN" value = "${DIST}/bin" />
   <property name = "BUILD" value = "${DIST}/build" />
@@ -30,22 +29,46 @@
     <mkdir dir = "${BUILD}/classes" />
     <mkdir dir = "${BIN}" />
     <javac srcdir = "${DIST}/src" destdir = "${BUILD}/classes" />
-    <jar destfile = "${BIN}/App.jar" basedir = "${BUILD}/classes">
+
+    <!--Build Server JAR-->
+    <jar destfile = "${BIN}/BankServer.jar" basedir = "${BUILD}/classes">
+      <fileset dir="${BUILD}/classes" includes = "BankServer/**" />
+      <fileset dir="${BUILD}/classes" includes = "BankService/**" />
+      <fileset dir="${BUILD}/classes" includes = "Customer/**" />
+      <fileset dir="${BUILD}/classes" includes = "DBTools/**" />
+
       <manifest>
-        <attribute name = "Main-Class" value = "${MAIN_CLASS}" />
+        <attribute name = "Main-Class" value = "BankServer.BankServer" />
         <attribute name = "Class-Path" value = "${LIB}/derby.jar" />
       </manifest>
+
     </jar>
+
+    <!--Build Client JAR-->
+    <jar destfile = "${BIN}/BankClient.jar" basedir = "${BUILD}/classes">
+      <fileset dir="${BUILD}/classes" includes = "BankService/**" />
+      <fileset dir="${BUILD}/classes" includes = "BankClient/**" />
+
+      <manifest>
+        <attribute name = "Main-Class" value = "BankClient.BankClient" />
+      </manifest>
+
+    </jar>
+
     <!--Bootstrap Database on Compile-->
     <java classname="DBTools.Bootstrap">
       <classpath>
-        <pathelement location="${BIN}/App.jar" />
+        <pathelement location="${BIN}/BankServer.jar" />
       </classpath>
     </java>
   </target>
 
-  <target name = "run" depends = "compile">
-    <java jar = "${BIN}/App.jar" fork = "true" />
+  <target name = "run server">
+    <java jar = "${BIN}/BankServer.jar" fork = "true" />
+  </target>
+
+  <target name = "run client">
+    <java jar = "${BIN}/BankClient.jar" fork = "true" />
   </target>
 
   <target name = "clean">
