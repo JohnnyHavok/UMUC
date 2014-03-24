@@ -1,0 +1,52 @@
+The purpose of this README is to compile and build the CMIS445 Final Project.
+
+It requires the following dependencies:
+
+    1. JavaJDK 7 or greater
+    2. Apache ANT 1.9 or greater
+    3. Permissions to run orbd on your system and accept incoming connections.
+
+The following dependencies are included in ./lib.  They are:
+    ./lib/derby.jar - Apache Derby Embedded SQL Server
+    ./lib/idldepend-1-3-0.jar - ANT CORBA Task (http://coderazzi.net/idldepend/index.htm)
+
+The following steps assume you are using a UNIX / Linux based operating system.
+Similar steps are available for Windows but you will have to look for those yourself.
+
+From this directory, Justin_Smith_Final_Project, all commands will be executed.
+
+Step 1: Translate IDL and compile java sources.
+
+  > ant compile
+
+Step 2: Run ORB name service daemon. Pick one
+
+  > orbd -InitialPort 1050        //  Non-Background mode for using ^C
+  > orbd -InitialPort 1050 &      //  Background mode, remember PID to kill
+
+Step 3: Run BankServer. This too can be run background, it spits out some information
+as it goes I leave it in front on a separate terminal.  Options passed tell it where
+look for ORB name service.  If running fully remotely change localhost to where the
+name service in.  I will not provide support for remote service, firewalls, security,
+and network topology vary too much.
+
+  > java -jar bin/BankServer.java -ORBInitialPort 1050 -ORBInitialHost localhost
+
+Step 4: Run BankClient.  This is interactive, do not run in background.
+
+  > java -jar bin/BankClient.java -ORBInitialPort 1050 -ORBInitialHost localhost
+
+
+Other available ANT targets include:
+  > ant clean  // Deletes everything back to source files, BankDB, bin, and build are deleted.
+
+  > ant run    // Runs BankServer on localhost as in Step 3.
+
+  > ant idl    // Runs idldepend CORBA task which takes BankService.idl and produces Java
+               // useful if you want to generate BankService source for development.
+
+
+Manual build without ANT not supported, but not difficult either, make sure your $CLASSPATH includes
+ ./lib/derby.jar when compiling and running.  If compiling and then creating JAR make sure the
+ Manifest includes Class-Path: lib/derby.jar.  idldepend-1-3-0.jar will not be needed you will
+ have to invoke idlj manually.
