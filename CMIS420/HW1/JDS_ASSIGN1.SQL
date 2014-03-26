@@ -35,7 +35,7 @@ SELECT MaterialName, Material, Width
 
 /* BEGIN Problem 39 */
 SELECT ProductID, ProductDescription, ProductFinish, ProductStandardPrice
-  FROM Product_t
+  FROM Product_T
     WHERE (ProductFinish = 'Oak' AND ProductStandardPrice > 400)
        OR (ProductFinish = 'Cherry' AND ProductStandardPrice < 300);
 /* END Problem 39 */
