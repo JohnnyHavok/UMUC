@@ -74,9 +74,13 @@ SELECT OL.orderid, OL.ProductID
 /* END Problem 39 */
 
 /* BEGIN Problem 41 */
-SELECT P.ProductID, OL.MostOrdered
+SELECT P.ProductID, 
+  CASE
+    WHEN MAXORDER > 0 THEN MAXORDER
+    ELSE 0
+  END AS MostOrdered
 FROM Product_T P LEFT OUTER JOIN
-  ( SELECT O.ProductID, MAX(O.OrderedQuantity) AS MostOrdered 
+  ( SELECT O.ProductID, MAX(O.OrderedQuantity) AS MAXORDER
     FROM OrderLine_T O 
     GROUP BY O.ProductID ) OL
   ON P.ProductID = OL.ProductID
