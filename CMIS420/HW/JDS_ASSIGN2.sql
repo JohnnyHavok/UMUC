@@ -55,7 +55,9 @@ GROUP BY W.WorkCenterID;
 
 /* BEGIN Problem 27 */
 -- This method provides 0's for customers without Vendors in their
--- state.
+-- state.  I could move the COUNT function into the subquery but
+-- the resulting table would have blanks instead of 0s.  The book
+-- isn't really clear on which they perfer.
 SELECT C.CustomerName, COUNT(VendorState) AS NumVendors
 FROM Customer_T C LEFT OUTER JOIN 
   (SELECT VendorState FROM Vendor_T) VS
