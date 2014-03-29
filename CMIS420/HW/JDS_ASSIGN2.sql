@@ -54,11 +54,21 @@ GROUP BY W.WorkCenterID;
 /* END Problem 26 */
 
 /* BEGIN Problem 27 */
-
+-- This method provides 0's for customers without Vendors in their
+-- state.
+SELECT C.CustomerName, COUNT(VendorState) AS NumVendors
+FROM Customer_T C LEFT OUTER JOIN 
+  (SELECT VendorState FROM Vendor_T) VS
+  ON C.CustomerState = VS.VendorState
+GROUP BY C.CustomerName;
 /* END Problem 27 */
 
 /* BEGIN Problem 39 */
-
+SELECT OL.orderid, OL.ProductID
+  FROM OrderLine_T OL
+  WHERE OL.OrderedQuantity > ALL 
+    ( SELECT  AVG(OE.OrderedQuantity) FROM OrderLine_T OE
+      WHERE OE.ProductID = OL.productid );
 /* END Problem 39 */
 
 /* BEGIN Problem 41 */
