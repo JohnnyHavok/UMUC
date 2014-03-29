@@ -39,11 +39,18 @@ ORDER BY (TotalDue - P.PaymentAmount) DESC;
 /* END Problem 22 */
 
 /* BEGIN Problem 24 */
-
+SELECT DISTINCT M.EmployeeName AS Manager
+  FROM Employee_T E, Employee_T M 
+  WHERE E.EmployeeSupervisor = M.EmployeeID
+   AND E.EmployeeID IN 
+   (SELECT EmployeeID from EmployeeSkills_T where SkillID = 'BS12');
 /* END Problem 24 */
 
 /* BEGIN Problem 26 */
-
+SELECT W.WorkCenterID, COUNT(P.WorkCenterID) AS TotalProducts
+FROM WorkCenter_T W LEFT OUTER JOIN ProducedIn_T P
+ON W.WorkCenterID = P.WorkCenterID
+GROUP BY W.WorkCenterID;
 /* END Problem 26 */
 
 /* BEGIN Problem 27 */
