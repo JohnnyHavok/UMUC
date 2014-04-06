@@ -38,3 +38,16 @@ WHERE IC.PATIENTID = P.PERSONID
   AND IC.ITEMNO = IT.ITEMNO
 ORDER BY P.PersonName;
 -- End Problem 3
+
+-- Begin Problem 4
+PROMPT ==== Problem 4 ====
+
+SELECT V.VendorName, I.Total_Supplied
+FROM VENDOR_T V JOIN 
+(
+  SELECT VendorID, COUNT(VendorID) AS Total_Supplied
+  FROM INVENTORY_T
+  GROUP BY VendorID
+) I ON V.VendorID = I.VendorID;
+
+-- End Problem 4
