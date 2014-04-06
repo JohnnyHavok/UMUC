@@ -54,3 +54,18 @@ VALUES (1235, 'Sarah', 'Johnson', '07021', TO_DATE('28-AUG-2005', 'DD-MON-YYYY')
 
 INSERT INTO TEMP_STUDENT (STUD_ID, FIRST_NAME, LAST_NAME, ZIP, REGISTRATION_DATE)
 VALUES (1236, 'Steven', 'Edwards', '07021', TO_DATE('28-AUG-2005', 'DD-MON-YYYY'));
+
+-- Problem 3
+SELECT Employer, COUNT(Employer) AS Num_Students_Employed
+FROM STUDENT
+HAVING COUNT(Employer) > 4
+GROUP BY Employer
+ORDER BY COUNT(Employer) DESC;
+
+-- Problem 4
+SELECT Section_ID, MAX(Numeric_Grade)
+FROM GRADE 
+  WHERE Grade_Type_Code = 'MT'
+GROUP BY Section_ID;
+
+-- Problem 5
