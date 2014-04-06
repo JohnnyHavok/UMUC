@@ -5,8 +5,7 @@
 **  Project 1 - Part 1
 */
 
-
--- Problem 1
+-- BEGIN Problem 1
 CREATE VIEW BUSY_STUDENT
 AS SELECT (First_Name || ' ' || Last_Name) AS FULL_NAME, S.Student_ID, E.ENROLL_NUM 
   FROM STUDENT S JOIN 
@@ -16,9 +15,10 @@ AS SELECT (First_Name || ' ' || Last_Name) AS FULL_NAME, S.Student_ID, E.ENROLL_
       HAVING COUNT(Student_ID) > 2
       GROUP BY Student_ID
   ) E ON S.Student_ID = E.Student_ID;
+-- END Problem 1
 
 
--- Problem 2
+-- BEGIN Problem 2
 -- Create Table with Constraints
 CREATE TABLE TEMP_STUDENT
 ( 
@@ -33,15 +33,15 @@ CREATE TABLE TEMP_STUDENT
     (REGISTRATION_DATE > TO_DATE('26-AUG-2005','DD-MON-YYYY'))
 );
 
--- Violates REGISTRATION_DATE NOT NULL
+-- Violates REGISTRATION_DATE NOT NULL CONSTRAINT
 INSERT INTO TEMP_STUDENT (STUD_ID, FIRST_NAME, LAST_NAME, ZIP)
 VALUES (1234, 'Justin', 'Smith', '22485');
 
--- Violates REGISTRATION_DATE BEFORE 26-AUG-2005
+-- Violates REGISTRATION_DATE BEFORE 26-AUG-2005 CONSTRAINT
 INSERT INTO TEMP_STUDENT (STUD_ID, FIRST_NAME, LAST_NAME, ZIP, REGISTRATION_DATE)
-VALUES (1234, 'Justin', 'Smith', '22485', TO_DATE('12-AUG-2005', 'DD-MON-YYYY'));
+VALUES (1234, 'Justin', 'Smith', '07021', TO_DATE('12-AUG-2005', 'DD-MON-YYYY'));
 
--- Violates ZIPCODE.ZIP FK Reference
+-- Violates ZIPCODE.ZIP FK Reference CONSTRAINT
 INSERT INTO TEMP_STUDENT (STUD_ID, FIRST_NAME, LAST_NAME, ZIP, REGISTRATION_DATE)
 VALUES (1234, 'Justin', 'Smith', '22485', TO_DATE('27-AUG-2005', 'DD-MON-YYYY'));
 
@@ -54,18 +54,34 @@ VALUES (1235, 'Sarah', 'Johnson', '07021', TO_DATE('28-AUG-2005', 'DD-MON-YYYY')
 
 INSERT INTO TEMP_STUDENT (STUD_ID, FIRST_NAME, LAST_NAME, ZIP, REGISTRATION_DATE)
 VALUES (1236, 'Steven', 'Edwards', '07021', TO_DATE('28-AUG-2005', 'DD-MON-YYYY'));
+-- END Problem 2
 
--- Problem 3
+-- BEGIN Problem 3
 SELECT Employer, COUNT(Employer) AS Num_Students_Employed
 FROM STUDENT
 HAVING COUNT(Employer) > 4
 GROUP BY Employer
 ORDER BY COUNT(Employer) DESC;
+-- END Problem 3
 
--- Problem 4
+-- BEGIN Problem 4
 SELECT Section_ID, MAX(Numeric_Grade)
 FROM GRADE 
   WHERE Grade_Type_Code = 'MT'
 GROUP BY Section_ID;
+-- END Problem 4
 
--- Problem 5
+-- BEGIN Problem 5
+SELECT SECTION_ID, TO_CHAR(START_DATE_TIME, 'HH24:MI') AS Start_Time
+FROM SECTION
+  WHERE TO_CHAR(START_DATE_TIME, 'HH24MI') = '1030'
+ORDER BY SECTION_ID;
+-- END Problem 5
+
+-- BEGIN Problem 6
+SELECT TO_CHAR(Start_Date_Time, 'DY') AS DAY, Section_ID
+FROM SECTION
+  WHERE Section_ID IN (83, 86, 107)
+ORDER BY DAY;
+-- END Problem 6
+
