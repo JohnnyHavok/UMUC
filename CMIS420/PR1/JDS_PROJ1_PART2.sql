@@ -51,3 +51,125 @@ FROM VENDOR_T V JOIN
 ) I ON V.VendorID = I.VendorID;
 
 -- End Problem 4
+
+-- Begin Problem 5
+PROMPT ==== Problem 5 ====
+
+SELECT P.PersonName, A.Total_Admissions
+FROM PERSON_T P JOIN 
+(
+  SELECT AdmitPhys, COUNT(AdmitPhys) AS Total_Admissions
+  FROM PATIENT_T
+  GROUP BY AdmitPhys
+) A ON A.AdmitPhys = P.PersonID;
+
+-- End Problem 5
+
+/**  Results of running above SQL
+
+SQL> @jds_proj1_part2
+==== Problem 1 ====
+
+CCUNITNAME           NURSE
+-------------------- -----
+ER                   101
+ICU                  102
+Surgery              103
+
+==== Problem 2 ====
+
+DIAGNOSISNAME                                                NUM_DIAGNOSIS
+------------------------------------------------------------ -------------
+Back Pain                                                                4
+Cardiogenic Pulmonary Edema                                              3
+Bacterial Arhritris                                                      3
+Labor and Delivery                                                       3
+Lactose Intolerance                                                      2
+
+==== Problem 3 ====
+
+PERSONNAME                          ITEMN
+----------------------------------- -----
+ITEMDESC
+----------------------------------------
+Drew                                5
+150cc Injector
+
+Drew                                1
+18ga Needle
+
+Drew                                7
+10 PK EKG Pads
+
+
+PERSONNAME                          ITEMN
+----------------------------------- -----
+ITEMDESC
+----------------------------------------
+Jeff                                2
+Bed Pan
+
+Jeff                                10
+Aloe Cream
+
+Stacy                               3
+1lb Cast Plaster
+
+
+PERSONNAME                          ITEMN
+----------------------------------- -----
+ITEMDESC
+----------------------------------------
+Stacy                               10
+Aloe Cream
+
+Stacy                               9
+ACE Bandage
+
+Stacy                               8
+Splint
+
+
+PERSONNAME                          ITEMN
+----------------------------------- -----
+ITEMDESC
+----------------------------------------
+Steve                               6
+5FT IV Tube
+
+Steve                               1
+18ga Needle
+
+Steve                               4
+1L Saline Solution
+
+
+PERSONNAME                          ITEMN
+----------------------------------- -----
+ITEMDESC
+----------------------------------------
+Steve                               5
+150cc Injector
+
+
+13 rows selected.
+
+==== Problem 4 ====
+
+VENDORNAME                               TOTAL_SUPPLIED
+---------------------------------------- --------------
+Bobs Medical Supply                                   4
+MegaCorp Supply                                       3
+Action Tech Medical                                   3
+
+==== Problem 5 ====
+
+PERSONNAME                          TOTAL_ADMISSIONS
+----------------------------------- ----------------
+Greg                                               3
+John                                               3
+Mark                                               3
+
+SQL>
+
+**/
