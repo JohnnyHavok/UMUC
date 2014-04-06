@@ -16,4 +16,15 @@ FROM CCASSIGNMENT_T;
 -- Begin Problem 2
 PROMPT ==== Problem 2 ====
 
+SELECT D.DiagnosisName, C.NUM_DIAGNOSIS
+FROM DIAGNOSIS_T D JOIN
+(
+  -- Need Additional nested SELECT statements to make ROWNUM work correctly.
+  SELECT DiagnosisCode, NUM_DIAGNOSIS
+  FROM ( SELECT DiagnosisCode, COUNT(DiagnosisCode) AS NUM_DIAGNOSIS
+         FROM PHYSICIANDX_T
+         GROUP BY DiagnosisCode
+         ORDER BY COUNT(DiagnosisCode) DESC )
+  WHERE ROWNUM <= 5
+) C ON D.DiagnosisCode = C.DiagnosisCode;
 -- End Problem 2
