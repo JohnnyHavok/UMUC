@@ -28,3 +28,13 @@ FROM DIAGNOSIS_T D JOIN
   WHERE ROWNUM <= 5
 ) C ON D.DiagnosisCode = C.DiagnosisCode;
 -- End Problem 2
+
+-- Begin Problem 3
+PROMPT ==== Problem 3 ====
+
+SELECT P.PersonName, IC.ItemNo, IT.ItemDesc
+FROM PERSON_T P, ITEMCONSUMPTION_T IC, ITEM_T IT
+WHERE IC.PATIENTID = P.PERSONID
+  AND IC.ITEMNO = IT.ITEMNO
+ORDER BY P.PersonName;
+-- End Problem 3
