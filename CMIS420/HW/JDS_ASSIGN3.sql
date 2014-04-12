@@ -27,6 +27,7 @@ BEGIN
     RETURN false;
   END IF;
 
+  CLOSE get_zipcode;
 END;
 -- END NAMED FUNCTION --
 
@@ -55,3 +56,43 @@ BEGIN
 END;
 -- END TEST BLOCK --
 -- END PROBLEM 1 --
+
+-- BEGIN PROBLEM 2 --
+-- CREATE NAMED FUNCTION --
+CREATE OR REPLACE FUNCTION SECTIONS_COUNT(p_instructorID IN INSTRUCTOR.INSTRUCTOR_ID%TYPE)
+RETURN VARCHAR IS
+
+  v_count       NUMBER;
+
+  CURSOR get_section_count (p_ID SECTION.INSTRUCTOR_ID%TYPE) IS
+    SELECT COUNT(INSTRUCTOR_ID) AS NUM_CLASSES
+    FROM SECTION
+    WHERE INSTRUCTOR_ID = p_ID;
+
+BEGIN
+  OPEN get_section_count(p_instructorID);
+  FETCH get_section_count INTO v_count;
+
+  IF v_count >= 3 THEN
+    RETURN 'Instructor Needs a Vacation';
+  ELSE 
+    RETURN 'The Instructor is Teaching '|| v_count ||' Sections.';
+  END IF;
+
+  CLOSE get_section_count;
+
+END;
+-- END NAMED FUNCTION --
+
+-- BEGIN TEST BLOCK --
+BEGIN
+  DBMS_OUTPUT.PUT_LINE('Testing Problem 2');
+  DBMS_OUTPUT.PUT_LINE('Looking up Instructor: 101');
+  DBMS_OUTPUT.PUT_LINE(SECTIONS_COUNT(101));
+
+  -- Instructor 110 does not exist.  Is teaching 0 courses. --
+  -- In test data, all instructors had more than 3 courses. --
+  DBMS_OUTPUT.PUT_LINE('Looking up Instructor: 110');
+  DBMS_OUTPUT.PUT_LINE(SECTIONS_COUNT(110));
+END;
+-- END TEST BLOCK --
