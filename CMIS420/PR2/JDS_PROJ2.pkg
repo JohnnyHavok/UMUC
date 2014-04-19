@@ -5,3 +5,36 @@
 **  Project 2
 */
 
+/*
+**  Package: Process_Orders
+**  Defined By: Project 2 Specificaions
+**  Purpose: Order Procedures for creating, updating, and deleting orders
+**           as well as a function for getting total employee sales.
+*/
+CREATE OR REPLACE PACKAGE BODY Process_Orders AS
+
+  PROCEDURE ADD_ORDER AS
+
+  END ADD_ORDER;
+
+  PROCEDURE ADD_ORDER_DETAILS AS
+
+  END ADD_ORDER_DETAILS;
+
+  PROCEDURE SHIP_ORDER AS
+
+  END SHIP_ORDER;
+
+  PROCEDURE DELETE_ORDER AS
+
+  END DELETE_ORDER;
+
+  FUNCTION TOTAL_EMP_SALES AS
+
+  END TOTAL_EMP_SALES;
+
+END Process_Orders;
+/
+
+SHOW errors;
+
