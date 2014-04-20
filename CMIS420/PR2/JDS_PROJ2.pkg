@@ -255,7 +255,7 @@ CREATE OR REPLACE PACKAGE BODY Process_Orders AS
       INSERT INTO ORDER_ERRORS
       (ONO, TRANSACTION_DATE, MESSAGE)
       VALUES
-      (p_ONO, SYSDATE, 'Invalid Order Number (ONO): '|| p_ONO);
+      (p_ONO, SYSDATE, 'Cannot Ship! Invalid Order Number (ONO): '|| p_ONO);
     WHEN OTHERS THEN
       INSERT INTO ORDER_ERRORS
       (ONO, TRANSACTION_DATE, MESSAGE)
@@ -294,7 +294,7 @@ CREATE OR REPLACE PACKAGE BODY Process_Orders AS
       INSERT INTO ORDER_ERRORS
       (ONO, TRANSACTION_DATE, MESSAGE)
       VALUES
-      (p_ONO, SYSDATE, 'Invalid Order Number (ONO): '|| p_ONO);
+      (p_ONO, SYSDATE, 'Cannot Delete! Invalid Order Number (ONO): '|| p_ONO);
     WHEN OTHERS THEN
       INSERT INTO ORDER_ERRORS
       (ONO, TRANSACTION_DATE, MESSAGE)
