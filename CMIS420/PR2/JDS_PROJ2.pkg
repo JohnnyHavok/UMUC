@@ -94,9 +94,9 @@ CREATE OR REPLACE PACKAGE BODY Process_Orders AS
     DBMS_OUTPUT.PUT_LINE('Adding Order: '||v_ONO);
 
     INSERT INTO ORDERS
-    (ONO, CNO, ENO, RECIEVED, SHIPPED, CREATION_DATE, CREATED_BY, LAST_UPDATE_DATE, LAST_UPDATE_BY)
+    (ONO, CNO, ENO, RECIEVED)
     VALUES
-    (v_ONO, p_CNO, p_ENO, v_Recieved, NULL, SYSDATE, 'PKG_PROC', SYSDATE, 'PKG_PROC');
+    (v_ONO, p_CNO, p_ENO, v_Recieved);
 
     -- CATCH ANY EXCEPTIONS --
     EXCEPTION
@@ -170,9 +170,9 @@ CREATE OR REPLACE PACKAGE BODY Process_Orders AS
       DBMS_OUTPUT.PUT_LINE('Adding Order Line: ' || p_ONO || ' ' || p_PNO || ' ' || p_QTY);
 
       INSERT INTO ODETAILS
-      (ONO, PNO, QTY, CREATION_DATE, CREATED_BY, LAST_UPDATE_DATE, LAST_UPDATE_BY)
+      (ONO, PNO, QTY)
       VALUES
-      (p_ONO, p_PNO, p_QTY, SYSDATE, 'PKG_PROC', SYSDATE, 'PKG_PROC');
+      (p_ONO, p_PNO, p_QTY);
 
       -- Check to see if we need reorder --
       SELECT REORDER_LEVEL INTO v_REORDER FROM PARTS WHERE PNO = p_PNO;
