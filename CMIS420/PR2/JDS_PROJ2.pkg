@@ -105,13 +105,13 @@ CREATE OR REPLACE PACKAGE BODY Process_Orders AS
       (ONO, TRANSACTION_DATE, MESSAGE)
       VALUES
       (v_ONO, SYSDATE, 'Invalid Customer Number (CNO): ' || p_CNO);
-      DBMS_OUTPUT.PUT_LINE('An error occured while adding this order, check ORDER_ERRORS for details');
+      DBMS_OUTPUT.PUT_LINE('Bad Customer Number (CNO), check ORDER_ERRORS for details');
     WHEN E_INVALID_ENO THEN
       INSERT INTO ORDER_ERRORS
       (ONO, TRANSACTION_DATE, MESSAGE)
       VALUES
       (v_ONO, SYSDATE, 'Invalid Employee Number (ENO): ' || p_ENO);
-      DBMS_OUTPUT.PUT_LINE('An error occured while adding this order, check ORDER_ERRORS for details');
+      DBMS_OUTPUT.PUT_LINE('Bad Employee Number (ENO), check ORDER_ERRORS for details');
     WHEN OTHERS THEN
       INSERT INTO ORDER_ERRORS
       (ONO, TRANSACTION_DATE, MESSAGE)
