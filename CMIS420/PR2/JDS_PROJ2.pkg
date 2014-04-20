@@ -28,6 +28,10 @@ CREATE OR REPLACE PACKAGE Process_Orders AS
   PROCEDURE DELETE_ORDER(p_ONO IN ORDERS.ONO%TYPE);
   
   FUNCTION TOTAL_EMP_SALES(p_ENO IN EMPLOYEE.ENO%TYPE) RETURN NUMBER;
+
+  E_INVALID_ENO     EXCEPTION;
+  E_INVALID_CNO     EXCEPTION;
+
 END Process_Orders;
 /
 SHOW errors;
@@ -42,17 +46,43 @@ CREATE OR REPLACE PACKAGE BODY Process_Orders AS
                       p_ENO IN ORDERS.ENO%TYPE,
                       p_Recieved IN ORDERS.RECIEVED%TYPE)
   AS
+    v_CNO             CUSTOMERS.CNO%TYPE;
+    v_ENO             EMPLOYEE.ENO%TYPE;
     v_ONO             ORDERS.ONO%TYPE;
     v_Recieved        ORDERS.RECIEVED%TYPE;
     
+    CURSOR cno_check(v_ID CUSTOMERS.CNO%TYPE) IS
+      SELECT CNO FROM CUSTOMERS WHERE CNO = v_ID;
+
+    CURSOR eno_check(v_ID EMPLOYEE.ENO%TYPE) IS
+      SELECT ENO FROM EMPLOYEE WHERE ENO = v_ID;
+
   BEGIN
+
+    v_ONO := ORDER_NUMBER_SEQ.NEXTVAL;
+
+    -- Check CNO --
+    OPEN cno_check(p_CNO);
+    FETCH cno_check INTO v_CNO;
+
+    IF cno_check%ROWCOUNT = 0 THEN
+      RAISE E_INVALID_CNO;
+    END IF;
+
+    -- Check ENO -- 
+    OPEN eno_check(p_ENO);
+    FETCH eno_check INTO v_ENO;
+
+    IF eno_check%ROWCOUNT = 0 THEN
+      RAISE E_INVALID_ENO;
+    END IF;
+
+
     IF p_Recieved IS NULL THEN
       v_Recieved := SYSDATE;
     ELSE
       v_Recieved := p_Recieved;
     END IF;
-
-    v_ONO := ORDER_NUMBER_SEQ.NEXTVAL;
       
     DBMS_OUTPUT.PUT_LINE('Adding Order: '||v_ONO);
 
@@ -60,7 +90,27 @@ CREATE OR REPLACE PACKAGE BODY Process_Orders AS
     (ONO, CNO, ENO, RECIEVED, SHIPPED, CREATION_DATE, CREATED_BY, LAST_UPDATE_DATE, LAST_UPDATE_BY)
     VALUES
     (v_ONO, p_CNO, p_ENO, v_Recieved, NULL, SYSDATE, 'PKG_PROC', SYSDATE, 'PKG_PROC');
-  
+
+    -- CATCH ANY EXCEPTIONS --
+    EXCEPTION
+    WHEN E_INVALID_CNO THEN
+      INSERT INTO ORDER_ERRORS
+      (ONO, TRANSACTION_DATE, MESSAGE)
+      VALUES
+      (v_ONO, SYSDATE, 'Invalid Customer Number (CNO): ' || p_CNO);
+      DBMS_OUTPUT.PUT_LINE('An error occured while adding this order, check ORDER_ERRORS for details');
+    WHEN E_INVALID_ENO THEN
+      INSERT INTO ORDER_ERRORS
+      (ONO, TRANSACTION_DATE, MESSAGE)
+      VALUES
+      (v_ONO, SYSDATE, 'Invalid Employee Number (ENO): ' || p_ENO);
+      DBMS_OUTPUT.PUT_LINE('An error occured while adding this order, check ORDER_ERRORS for details');
+    WHEN OTHERS THEN
+      INSERT INTO ORDER_ERRORS
+      (ONO, TRANSACTION_DATE, MESSAGE)
+      VALUES
+      (v_ONO, SYSDATE, 'An unknown error occurred while adding order: ' || v_ONO);
+      DBMS_OUTPUT.PUT_LINE('An error occured while adding this order, check ORDER_ERRORS for details');
   END ADD_ORDER;
   -- END PROCEDURE ADD_ORDER --
 
