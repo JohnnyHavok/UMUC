@@ -16,7 +16,7 @@ SET SERVEROUTPUT ON
 CREATE OR REPLACE PACKAGE Process_Orders AS
   PROCEDURE ADD_ORDER(p_CNO IN ORDERS.CNO%TYPE,
                       p_ENO IN ORDERS.ENO%TYPE,
-                      p_Recieved IN ORDERS.RECIEVED%TYPE);
+                      p_Received IN ORDERS.RECEIVED%TYPE);
   
   PROCEDURE ADD_ORDER_DETAILS(p_ONO IN ODETAILS.ONO%TYPE,
                               p_PNO IN ODETAILS.PNO%TYPE,
@@ -47,12 +47,12 @@ CREATE OR REPLACE PACKAGE BODY Process_Orders AS
   -- BEGIN PROCEDURE ADD_ORDER --
   PROCEDURE ADD_ORDER(p_CNO IN ORDERS.CNO%TYPE,
                       p_ENO IN ORDERS.ENO%TYPE,
-                      p_Recieved IN ORDERS.RECIEVED%TYPE)
+                      p_Received IN ORDERS.RECEIVED%TYPE)
   AS
     v_CNO             CUSTOMERS.CNO%TYPE;
     v_ENO             EMPLOYEE.ENO%TYPE;
     v_ONO             ORDERS.ONO%TYPE;
-    v_Recieved        ORDERS.RECIEVED%TYPE;
+    v_Received        ORDERS.RECEIVED%TYPE;
     
     CURSOR cno_check(v_ID CUSTOMERS.CNO%TYPE) IS
       SELECT CNO FROM CUSTOMERS WHERE CNO = v_ID;
@@ -85,18 +85,18 @@ CREATE OR REPLACE PACKAGE BODY Process_Orders AS
     CLOSE eno_check;
 
     -- NULL CHECK DATE --
-    IF p_Recieved IS NULL THEN
-      v_Recieved := SYSDATE;
+    IF p_Received IS NULL THEN
+      v_Received := SYSDATE;
     ELSE
-      v_Recieved := p_Recieved;
+      v_Received := p_Received;
     END IF;
       
     DBMS_OUTPUT.PUT_LINE('Adding Order: '||v_ONO);
 
     INSERT INTO ORDERS
-    (ONO, CNO, ENO, RECIEVED)
+    (ONO, CNO, ENO, RECEIVED)
     VALUES
-    (v_ONO, p_CNO, p_ENO, v_Recieved);
+    (v_ONO, p_CNO, p_ENO, v_Received);
 
     -- CATCH ANY EXCEPTIONS --
     EXCEPTION
