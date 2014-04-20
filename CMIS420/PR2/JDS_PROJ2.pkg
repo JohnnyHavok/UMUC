@@ -29,8 +29,11 @@ CREATE OR REPLACE PACKAGE Process_Orders AS
   
   FUNCTION TOTAL_EMP_SALES(p_ENO IN EMPLOYEE.ENO%TYPE) RETURN NUMBER;
 
-  E_INVALID_ENO     EXCEPTION;
-  E_INVALID_CNO     EXCEPTION;
+  E_INVALID_ENO       EXCEPTION;
+  E_INVALID_CNO       EXCEPTION;
+  E_INVLAID_ONO       EXCEPTION;
+  E_INVLAID_PNO       EXCEPTION;
+  E_INSUFFICIENT_QTY  EXCEPTION;
 
 END Process_Orders;
 /
@@ -69,6 +72,8 @@ CREATE OR REPLACE PACKAGE BODY Process_Orders AS
       RAISE E_INVALID_CNO;
     END IF;
 
+    CLOSE cno_check;
+
     -- Check ENO -- 
     OPEN eno_check(p_ENO);
     FETCH eno_check INTO v_ENO;
@@ -76,6 +81,8 @@ CREATE OR REPLACE PACKAGE BODY Process_Orders AS
     IF eno_check%ROWCOUNT = 0 THEN
       RAISE E_INVALID_ENO;
     END IF;
+
+    CLOSE eno_check;
 
 
     IF p_Recieved IS NULL THEN
@@ -120,12 +127,40 @@ CREATE OR REPLACE PACKAGE BODY Process_Orders AS
                               p_QTY IN ODETAILS.QTY%TYPE)
   AS
 
+    v_ONO       ORDERS.ONO%TYPE;
+    v_PNO       PARTS.PNO%TYPE;
     v_QOH       PARTS.QOH%TYPE;
     v_NEW_QTY   PARTS.QOH%TYPE;
     v_REORDER   PARTS.REORDER_LEVEL%TYPE;
 
+    CURSOR ono_check(v_ID ORDERS.ONO%TYPE) IS
+      SELECT ONO FROM ORDERS WHERE ONO = v_ID;
+
+    CURSOR pno_check(v_ID PARTS.PNO%TYPE) IS
+      SELECT PNO FROM PARTS WHERE PNO = v_ID;
+
   BEGIN
-    -- Check QOH First --
+    -- Check ONO --
+    OPEN ono_check(p_ONO);
+    FETCH ono_check INTO v_ONO;
+
+    IF ono_check%ROWCOUNT = 0 THEN
+      RAISE E_INVLAID_ONO;
+    END IF;
+
+    CLOSE ono_check;
+
+    -- Check PNO --
+    OPEN pno_check(p_PNO);
+    FETCH pno_check INTO v_PNO;
+
+    IF pno_check%ROWCOUNT = 0 THEN
+      RAISE E_INVLAID_PNO;
+    END IF;
+
+    CLOSE pno_check;
+
+    -- Check QOH --
     SELECT QOH INTO v_QOH FROM PARTS WHERE PNO = p_PNO;
 
     IF v_QOH > p_QTY THEN
@@ -148,14 +183,36 @@ CREATE OR REPLACE PACKAGE BODY Process_Orders AS
         VALUES
         (p_PNO, SYSDATE);
       END IF;
-    ELSE
-      DBMS_OUTPUT.PUT_LINE('Not Enough QOH, Check ODETAILS_ERRORS');
 
+    ELSE
+      RAISE E_INSUFFICIENT_QTY;
+    END IF;
+
+    EXCEPTION
+    WHEN E_INSUFFICIENT_QTY THEN
+      DBMS_OUTPUT.PUT_LINE('Not Enough QOH, Check ODETAILS_ERRORS');
       INSERT INTO ODETAILS_ERRORS
       (ONO, TRANSACTION_DATE, PNO, MESSAGE)
       VALUES
       (p_ONO, SYSDATE, p_PNO, 'Not enough material, Asked for: ' || p_QTY || ' Only have: ' || v_QOH);
-    END IF;
+    WHEN E_INVLAID_ONO THEN
+      DBMS_OUTPUT.PUT_LINE('Invalid Order Number, Check ODETAILS_ERRORS for more Information');
+      INSERT INTO ODETAILS_ERRORS
+      (ONO, TRANSACTION_DATE, PNO, MESSAGE)
+      VALUES
+      (p_ONO, SYSDATE, p_PNO, 'Invalid Order Number (ONO): '|| p_ONO);
+    WHEN E_INVLAID_PNO THEN
+      DBMS_OUTPUT.PUT_LINE('Invalid Part Number, Check ODETAILS_ERRORS for more Information');
+      INSERT INTO ODETAILS_ERRORS
+      (ONO, TRANSACTION_DATE, PNO, MESSAGE)
+      VALUES
+      (p_ONO, SYSDATE, p_PNO, 'Invalid Part Number (PNO): '|| p_PNO);
+    WHEN OTHERS THEN
+      INSERT INTO ORDER_ERRORS
+      (ONO, TRANSACTION_DATE, MESSAGE)
+      VALUES
+      (v_ONO, SYSDATE, 'An unknown error occurred while adding order details: ' || p_ONO);
+      DBMS_OUTPUT.PUT_LINE('An error occured while adding this order, check ODETAILS_ERRORS for details');
   END ADD_ORDER_DETAILS;
   -- END PROCEDURE ADD_ORDER_DETAILS --
 
