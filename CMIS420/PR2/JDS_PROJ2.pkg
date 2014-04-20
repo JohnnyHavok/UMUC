@@ -208,11 +208,11 @@ CREATE OR REPLACE PACKAGE BODY Process_Orders AS
       VALUES
       (p_ONO, SYSDATE, p_PNO, 'Invalid Part Number (PNO): '|| p_PNO);
     WHEN OTHERS THEN
-      INSERT INTO ORDER_ERRORS
-      (ONO, TRANSACTION_DATE, MESSAGE)
+      INSERT INTO ODETAILS_ERRORS
+      (ONO, TRANSACTION_DATE, PNO, MESSAGE)
       VALUES
-      (v_ONO, SYSDATE, 'An unknown error occurred while adding order details: ' || p_ONO);
-      DBMS_OUTPUT.PUT_LINE('An error occured while adding this order, check ODETAILS_ERRORS for details');
+      (p_ONO, SYSDATE, p_PNO, 'An unknown error occurred while adding order details: ' || p_ONO);
+      DBMS_OUTPUT.PUT_LINE('An error occured while adding to this order, check ODETAILS_ERRORS for details');
   END ADD_ORDER_DETAILS;
   -- END PROCEDURE ADD_ORDER_DETAILS --
 
@@ -221,8 +221,22 @@ CREATE OR REPLACE PACKAGE BODY Process_Orders AS
                        p_SHIPDATE IN ORDERS.SHIPPED%TYPE)
   AS
     v_SHIPDATE        ORDERS.SHIPPED%TYPE;
+    v_ONO             ORDERS.ONO%TYPE;
+
+    CURSOR ono_check(v_ID ORDERS.ONO%TYPE) IS
+      SELECT ONO FROM ORDERS WHERE ONO = v_ID;
 
   BEGIN
+    -- Check ONO --
+    OPEN ono_check(p_ONO);
+    FETCH ono_check INTO v_ONO;
+
+    IF ono_check%ROWCOUNT = 0 THEN
+      RAISE E_INVLAID_ONO;
+    END IF;
+
+    CLOSE ono_check;
+
     -- NULL CHECK ON SHIPDATE --
     IF p_SHIPDATE IS NULL THEN
       v_SHIPDATE := SYSDATE;
@@ -235,16 +249,58 @@ CREATE OR REPLACE PACKAGE BODY Process_Orders AS
     UPDATE ORDERS SET SHIPPED = v_SHIPDATE
       WHERE ONO = p_ONO;
 
+    EXCEPTION
+    WHEN E_INVLAID_ONO THEN
+      DBMS_OUTPUT.PUT_LINE('Invalid Order Number, Check ORDER_ERRORS for more Information');
+      INSERT INTO ORDER_ERRORS
+      (ONO, TRANSACTION_DATE, MESSAGE)
+      VALUES
+      (p_ONO, SYSDATE, 'Invalid Order Number (ONO): '|| p_ONO);
+    WHEN OTHERS THEN
+      INSERT INTO ORDER_ERRORS
+      (ONO, TRANSACTION_DATE, MESSAGE)
+      VALUES
+      (v_ONO, SYSDATE, 'An unknown error occurred while shipping order: ' || p_ONO);
+      DBMS_OUTPUT.PUT_LINE('An error occured while shipping this order, check ORDER_ERRORS for details');
+
   END SHIP_ORDER;
   -- END PROCEDURE SHIP_ORDER --
 
   -- BEGIN PROCEDURE DELETE_ORDER --
   PROCEDURE DELETE_ORDER(p_ONO IN ORDERS.ONO%TYPE)
   AS
+    v_ONO             ORDERS.ONO%TYPE;
+
+    CURSOR ono_check(v_ID ORDERS.ONO%TYPE) IS
+      SELECT ONO FROM ORDERS WHERE ONO = v_ID;
 
   BEGIN
+    -- Check ONO --
+    OPEN ono_check(p_ONO);
+    FETCH ono_check INTO v_ONO;
+
+    IF ono_check%ROWCOUNT = 0 THEN
+      RAISE E_INVLAID_ONO;
+    END IF;
+
+    CLOSE ono_check;
+
     DBMS_OUTPUT.PUT_LINE('Deleting Order: ' || p_ONO);
     DELETE FROM ORDERS WHERE ONO = p_ONO;
+
+    EXCEPTION
+    WHEN E_INVLAID_ONO THEN
+      DBMS_OUTPUT.PUT_LINE('Invalid Order Number, Check ORDER_ERRORS for more Information');
+      INSERT INTO ORDER_ERRORS
+      (ONO, TRANSACTION_DATE, MESSAGE)
+      VALUES
+      (p_ONO, SYSDATE, 'Invalid Order Number (ONO): '|| p_ONO);
+    WHEN OTHERS THEN
+      INSERT INTO ORDER_ERRORS
+      (ONO, TRANSACTION_DATE, MESSAGE)
+      VALUES
+      (v_ONO, SYSDATE, 'An unknown error occurred while deleting order: ' || p_ONO);
+      DBMS_OUTPUT.PUT_LINE('An error occured while deleting this order, check ORDER_ERRORS for details');
 
   END DELETE_ORDER;
   -- END PROCEDURE DELETE_ORDER --
