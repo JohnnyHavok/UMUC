@@ -22,8 +22,8 @@ CREATE OR REPLACE PACKAGE Process_Orders AS
                               p_PNO IN ODETAILS.PNO%TYPE,
                               p_QTY IN ODETAILS.QTY%TYPE);
                               
-  -- PROCEDURE SHIP_ORDER(p_ONO IN ORDERS.ONO%TYPE,
-  --                      p_SHIPDATE IN ORDERS.SHIPPED%TYPE);
+  PROCEDURE SHIP_ORDER(p_ONO IN ORDERS.ONO%TYPE,
+                       p_SHIPDATE IN ORDERS.SHIPPED%TYPE);
                        
   -- PROCEDURE DELETE_ORDER(p_ONO IN ORDERS.ONO%TYPE);
   
@@ -32,7 +32,12 @@ END Process_Orders;
 /
 SHOW errors;
 
+/*
+** Package: Process_Orders Body Statements
+** Defined By: Process_Orders Specification Above
+*/
 CREATE OR REPLACE PACKAGE BODY Process_Orders AS
+  -- BEGIN PROCEDURE ADD_ORDER --
   PROCEDURE ADD_ORDER(p_CNO IN ORDERS.CNO%TYPE,
                       p_ENO IN ORDERS.ENO%TYPE,
                       p_Recieved IN ORDERS.RECIEVED%TYPE)
@@ -57,7 +62,9 @@ CREATE OR REPLACE PACKAGE BODY Process_Orders AS
     (v_ONO, p_CNO, p_ENO, v_Recieved, NULL, SYSDATE, 'PKG_PROC', SYSDATE, 'PKG_PROC');
   
   END ADD_ORDER;
+  -- END PROCEDURE ADD_ORDER --
 
+  -- BEGIN PROCEDURE ADD_ORDER_DETAILS --
   PROCEDURE ADD_ORDER_DETAILS(p_ONO IN ODETAILS.ONO%TYPE,
                               p_PNO IN ODETAILS.PNO%TYPE,
                               p_QTY IN ODETAILS.QTY%TYPE)
@@ -100,6 +107,27 @@ CREATE OR REPLACE PACKAGE BODY Process_Orders AS
       (p_ONO, SYSDATE, p_PNO, 'Not enough material, Asked for: ' || p_QTY || ' Only have: ' || v_QOH);
     END IF;
   END ADD_ORDER_DETAILS;
+  -- END PROCEDURE ADD_ORDER_DETAILS --
+
+  -- BEGIN PROCEDURE SHIP_ORDER --
+  PROCEDURE SHIP_ORDER(p_ONO IN ORDERS.ONO%TYPE,
+                       p_SHIPDATE IN ORDERS.SHIPPED%TYPE)
+  AS
+    v_SHIPDATE        ORDERS.SHIPPED%TYPE;
+
+  BEGIN
+    -- NULL CHECK ON SHIPDATE --
+    IF p_SHIPDATE IS NULL THEN
+      v_SHIPDATE := SYSDATE;
+    ELSE
+      v_SHIPDATE := p_SHIPDATE;
+    END IF;
+
+    UPDATE ORDERS SET SHIPPED = v_SHIPDATE
+      WHERE ONO = p_ONO;
+
+  END SHIP_ORDER;
+  -- END PROCEDURE SHIP_ORDER --
 
 END Process_Orders;
 /
