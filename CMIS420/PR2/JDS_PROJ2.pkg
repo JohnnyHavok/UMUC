@@ -106,18 +106,23 @@ CREATE OR REPLACE PACKAGE BODY Process_Orders AS
       VALUES
       (v_ONO, SYSDATE, 'Invalid Customer Number (CNO): ' || p_CNO);
       DBMS_OUTPUT.PUT_LINE('Bad Customer Number (CNO), check ORDER_ERRORS for details');
+      COMMIT;
     WHEN E_INVALID_ENO THEN
       INSERT INTO ORDER_ERRORS
       (ONO, TRANSACTION_DATE, MESSAGE)
       VALUES
       (v_ONO, SYSDATE, 'Invalid Employee Number (ENO): ' || p_ENO);
       DBMS_OUTPUT.PUT_LINE('Bad Employee Number (ENO), check ORDER_ERRORS for details');
+      COMMIT;
     WHEN OTHERS THEN
       INSERT INTO ORDER_ERRORS
       (ONO, TRANSACTION_DATE, MESSAGE)
       VALUES
       (v_ONO, SYSDATE, 'An unknown error occurred while adding order: ' || v_ONO);
       DBMS_OUTPUT.PUT_LINE('An error occured while adding this order, check ORDER_ERRORS for details');
+      COMMIT;
+  
+  COMMIT;
   END ADD_ORDER;
   -- END PROCEDURE ADD_ORDER --
 
@@ -195,24 +200,30 @@ CREATE OR REPLACE PACKAGE BODY Process_Orders AS
       (ONO, TRANSACTION_DATE, PNO, MESSAGE)
       VALUES
       (p_ONO, SYSDATE, p_PNO, 'Not enough material, Asked for: ' || p_QTY || ' Only have: ' || v_QOH);
+      COMMIT;
     WHEN E_INVLAID_ONO THEN
       DBMS_OUTPUT.PUT_LINE('Invalid Order Number, Check ODETAILS_ERRORS for more Information');
       INSERT INTO ODETAILS_ERRORS
       (ONO, TRANSACTION_DATE, PNO, MESSAGE)
       VALUES
       (p_ONO, SYSDATE, p_PNO, 'Invalid Order Number (ONO): '|| p_ONO);
+      COMMIT;
     WHEN E_INVLAID_PNO THEN
       DBMS_OUTPUT.PUT_LINE('Invalid Part Number, Check ODETAILS_ERRORS for more Information');
       INSERT INTO ODETAILS_ERRORS
       (ONO, TRANSACTION_DATE, PNO, MESSAGE)
       VALUES
       (p_ONO, SYSDATE, p_PNO, 'Invalid Part Number (PNO): '|| p_PNO);
+      COMMIT;
     WHEN OTHERS THEN
       INSERT INTO ODETAILS_ERRORS
       (ONO, TRANSACTION_DATE, PNO, MESSAGE)
       VALUES
       (p_ONO, SYSDATE, p_PNO, 'An unknown error occurred while adding order details: ' || p_ONO);
       DBMS_OUTPUT.PUT_LINE('An error occured while adding to this order, check ODETAILS_ERRORS for details');
+      COMMIT;
+
+  COMMIT;
   END ADD_ORDER_DETAILS;
   -- END PROCEDURE ADD_ORDER_DETAILS --
 
@@ -256,13 +267,16 @@ CREATE OR REPLACE PACKAGE BODY Process_Orders AS
       (ONO, TRANSACTION_DATE, MESSAGE)
       VALUES
       (p_ONO, SYSDATE, 'Cannot Ship! Invalid Order Number (ONO): '|| p_ONO);
+      COMMIT;
     WHEN OTHERS THEN
       INSERT INTO ORDER_ERRORS
       (ONO, TRANSACTION_DATE, MESSAGE)
       VALUES
       (v_ONO, SYSDATE, 'An unknown error occurred while shipping order: ' || p_ONO);
       DBMS_OUTPUT.PUT_LINE('An error occured while shipping this order, check ORDER_ERRORS for details');
+      COMMIT;
 
+  COMMIT;
   END SHIP_ORDER;
   -- END PROCEDURE SHIP_ORDER --
 
@@ -295,13 +309,16 @@ CREATE OR REPLACE PACKAGE BODY Process_Orders AS
       (ONO, TRANSACTION_DATE, MESSAGE)
       VALUES
       (p_ONO, SYSDATE, 'Cannot Delete! Invalid Order Number (ONO): '|| p_ONO);
+      COMMIT;
     WHEN OTHERS THEN
       INSERT INTO ORDER_ERRORS
       (ONO, TRANSACTION_DATE, MESSAGE)
       VALUES
       (v_ONO, SYSDATE, 'An unknown error occurred while deleting order: ' || p_ONO);
       DBMS_OUTPUT.PUT_LINE('An error occured while deleting this order, check ORDER_ERRORS for details');
+      COMMIT;
 
+  COMMIT;
   END DELETE_ORDER;
   -- END PROCEDURE DELETE_ORDER --
 
