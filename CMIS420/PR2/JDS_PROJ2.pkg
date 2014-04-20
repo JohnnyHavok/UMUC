@@ -27,7 +27,7 @@ CREATE OR REPLACE PACKAGE Process_Orders AS
                        
   PROCEDURE DELETE_ORDER(p_ONO IN ORDERS.ONO%TYPE);
   
-  -- FUNCTION TOTAL_EMP_SALES(p_ENO IN EMPLOYEE.ENO%TYPE) RETURN NUMBER;
+  FUNCTION TOTAL_EMP_SALES(p_ENO IN EMPLOYEE.ENO%TYPE) RETURN NUMBER;
 END Process_Orders;
 /
 SHOW errors;
@@ -123,7 +123,7 @@ CREATE OR REPLACE PACKAGE BODY Process_Orders AS
       v_SHIPDATE := p_SHIPDATE;
     END IF;
 
-    DBMS_OUTPUT.PUT_LINE('Updating Order Ship Date.  Order: ' || p_ONO || 'Date: ' || v_SHIPDATE);
+    DBMS_OUTPUT.PUT_LINE('Updating Order Ship Date.  Order: ' || p_ONO || ' Date: ' || v_SHIPDATE);
 
     UPDATE ORDERS SET SHIPPED = v_SHIPDATE
       WHERE ONO = p_ONO;
@@ -142,20 +142,34 @@ CREATE OR REPLACE PACKAGE BODY Process_Orders AS
   END DELETE_ORDER;
   -- END PROCEDURE DELETE_ORDER --
 
+  -- BEGIN FUNCTION TOTAL_EMP_SALES --
+  FUNCTION TOTAL_EMP_SALES(p_ENO IN EMPLOYEE.ENO%TYPE) RETURN NUMBER
+  AS
 
+    CURSOR get_count(p_ENO EMPLOYEE.ENO%TYPE) IS
+      SELECT COUNT(ENO) AS TOTAL_SALES FROM ORDERS WHERE ENO = p_ENO;
 
+    v_ENO_Temp          EMPLOYEE.ENO%TYPE;
+    v_SALES_COUNT       NUMBER;
 
+  BEGIN 
+    -- Check to see if Employee Exist --
+    SELECT ENO INTO v_ENO_Temp FROM EMPLOYEE
+    WHERE ENO = p_ENO;
+    -- Throws NO_DATA_FOUND EXCEPTION --
 
+    OPEN get_count(p_ENO);
+    FETCH get_count INTO v_SALES_COUNT;
 
+    DBMS_OUTPUT.PUT_LINE('Employee ID: '|| p_ENO || ' Sales Total: ' || v_SALES_COUNT);
+    RETURN v_SALES_COUNT;
 
-
-
-
-
-
-
-
-
+    EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+      DBMS_OUTPUT.PUT_LINE('Employee ID: ' || p_ENO || ' does not exist');
+      RETURN NULL; -- Only sensible option, can be used as a flag?
+  END TOTAL_EMP_SALES;
+  -- END FUNCTION TOTAL_EMP_SALES --
 
 END Process_Orders;
 /
