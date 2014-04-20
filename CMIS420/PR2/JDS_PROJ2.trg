@@ -5,3 +5,98 @@
 **  Project 2
 */
 
+-- Fires when INSERT on PARTS DML --
+CREATE OR REPLACE TRIGGER PARTS_INSERT
+  BEFORE INSERT 
+    ON PARTS
+    FOR EACH ROW
+DECLARE
+  v_user    VARCHAR2(10);
+BEGIN
+  SELECT user INTO v_user FROM DUAL;
+ 
+  :new.CREATION_DATE      := SYSDATE;
+  :new.CREATED_BY         := v_user;
+  :new.LAST_UPDATE_DATE   := SYSDATE;
+  :new.LAST_UPDATE_BY     := v_user;  
+END;
+/
+
+-- Fires when UPDATE on PARTS DML -- 
+CREATE OR REPLACE TRIGGER PARTS_UPDATE
+BEFORE UPDATE 
+    ON PARTS
+    FOR EACH ROW
+DECLARE
+  v_user    VARCHAR2(10);
+BEGIN
+  SELECT user INTO v_user FROM DUAL;
+
+  :new.LAST_UPDATE_DATE   := SYSDATE;
+  :new.LAST_UPDATE_BY     := v_user;  
+END;
+/
+
+-- Fires when INSERT on ORDERS DML --
+CREATE OR REPLACE TRIGGER ORDERS_INSERT
+  BEFORE INSERT 
+    ON ORDERS
+    FOR EACH ROW
+DECLARE
+  v_user    VARCHAR2(10);
+BEGIN
+  SELECT user INTO v_user FROM DUAL;
+ 
+  :new.CREATION_DATE      := SYSDATE;
+  :new.CREATED_BY         := v_user;
+  :new.LAST_UPDATE_DATE   := SYSDATE;
+  :new.LAST_UPDATE_BY     := v_user;  
+END;
+/
+
+-- Fires when UPDATE on ORDERS DML -- 
+CREATE OR REPLACE TRIGGER ORDERS_UPDATE
+BEFORE UPDATE 
+    ON ORDERS
+    FOR EACH ROW
+DECLARE
+  v_user    VARCHAR2(10);
+BEGIN
+  SELECT user INTO v_user FROM DUAL;
+
+  :new.LAST_UPDATE_DATE   := SYSDATE;
+  :new.LAST_UPDATE_BY     := v_user;  
+END;
+/
+
+-- Fires when INSERT on ODETAILS DML --
+CREATE OR REPLACE TRIGGER ODETAILS_INSERT
+  BEFORE INSERT 
+    ON ODETAILS
+    FOR EACH ROW
+DECLARE
+  v_user    VARCHAR2(10);
+BEGIN
+  SELECT user INTO v_user FROM DUAL;
+ 
+  :new.CREATION_DATE      := SYSDATE;
+  :new.CREATED_BY         := v_user;
+  :new.LAST_UPDATE_DATE   := SYSDATE;
+  :new.LAST_UPDATE_BY     := v_user;  
+END;
+/
+
+-- Fires when UPDATE on ODETAILS DML -- 
+CREATE OR REPLACE TRIGGER ODETAILS_UPDATE
+BEFORE UPDATE 
+    ON ODETAILS
+    FOR EACH ROW
+DECLARE
+  v_user    VARCHAR2(10);
+BEGIN
+  SELECT user INTO v_user FROM DUAL;
+
+  :new.LAST_UPDATE_DATE   := SYSDATE;
+  :new.LAST_UPDATE_BY     := v_user;  
+END;
+/
