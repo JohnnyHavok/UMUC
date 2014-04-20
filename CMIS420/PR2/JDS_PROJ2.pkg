@@ -123,6 +123,8 @@ CREATE OR REPLACE PACKAGE BODY Process_Orders AS
       v_SHIPDATE := p_SHIPDATE;
     END IF;
 
+    DBMS_OUTPUT.PUT_LINE('Updating Order Ship Date.  Order: ' || p_ONO || 'Date: ' || v_SHIPDATE);
+
     UPDATE ORDERS SET SHIPPED = v_SHIPDATE
       WHERE ONO = p_ONO;
 
@@ -134,6 +136,7 @@ CREATE OR REPLACE PACKAGE BODY Process_Orders AS
   AS
 
   BEGIN
+    DBMS_OUTPUT.PUT_LINE('Deleting Order: ' || p_ONO);
     DELETE FROM ORDERS WHERE ONO = p_ONO;
 
   END DELETE_ORDER;
