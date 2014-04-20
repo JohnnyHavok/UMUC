@@ -100,3 +100,21 @@ BEGIN
   :new.LAST_UPDATE_BY     := v_user;  
 END;
 /
+
+-- Fires when DELETE or UPDATE on ORDERS DML --
+-- The project directions say on UPDATE as well --
+CREATE OR REPLACE TRIGGER ORDERS_DELETE 
+BEFORE DELETE OR UPDATE 
+    ON ORDERS
+    FOR EACH ROW
+DECLARE
+  v_user    VARCHAR2(10);
+BEGIN
+  SELECT user INTO v_user FROM DUAL;
+
+  INSERT INTO DELETED_ORDERS
+  (ONO, CNO, ENO, RECEIVED, SHIPPED, ACTION_DATE, ACTION_USER)
+  VALUES
+  (:old.ONO, :old.CNO, :old.ENO, :old.RECEIVED, :old.SHIPPED, SYSDATE, v_user); 
+END;
+/

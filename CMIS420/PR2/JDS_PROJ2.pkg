@@ -84,7 +84,7 @@ CREATE OR REPLACE PACKAGE BODY Process_Orders AS
 
     CLOSE eno_check;
 
-
+    -- NULL CHECK DATE --
     IF p_Recieved IS NULL THEN
       v_Recieved := SYSDATE;
     ELSE
