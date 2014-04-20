@@ -38,10 +38,13 @@ CREATE OR REPLACE PACKAGE BODY Process_Orders AS
                       p_Recieved IN ORDERS.RECIEVED%TYPE)
   AS
     v_ONO             ORDERS.ONO%TYPE;
+    v_Recieved        ORDERS.RECIEVED%TYPE;
     
   BEGIN
     IF p_Recieved IS NULL THEN
-      p_Recieved := SYSDATE;
+      v_Recieved := SYSDATE;
+    ELSE
+      v_Recieved := p_Recieved;
     END IF;
 
     v_ONO := ORDER_NUMBER_SEQ.NEXTVAL;
@@ -51,13 +54,13 @@ CREATE OR REPLACE PACKAGE BODY Process_Orders AS
     INSERT INTO ORDERS
     (ONO, CNO, ENO, RECIEVED, SHIPPED, CREATION_DATE, CREATED_BY, LAST_UPDATE_DATE, LAST_UPDATE_BY)
     VALUES
-    (v_ONO, p_CNO, p_ENO, p_Recieved, NULL, SYSDATE, 'PKG_PROC', SYSDATE, 'PKG_PROC');
+    (v_ONO, p_CNO, p_ENO, v_Recieved, NULL, SYSDATE, 'PKG_PROC', SYSDATE, 'PKG_PROC');
   
   END ADD_ORDER;
 
   PROCEDURE ADD_ORDER_DETAILS(p_ONO IN ODETAILS.ONO%TYPE,
                               p_PNO IN ODETAILS.PNO%TYPE,
-                              p_QTY IN ODETAILS.QTY%TYPE);
+                              p_QTY IN ODETAILS.QTY%TYPE)
   AS
 
     v_QOH       PARTS.QOH%TYPE;
@@ -96,6 +99,7 @@ CREATE OR REPLACE PACKAGE BODY Process_Orders AS
       VALUES
       (p_ONO, SYSDATE, p_PNO, 'Not enough material, Asked for: ' || p_QTY || ' Only have: ' || v_QOH);
     END IF;
+  END ADD_ORDER_DETAILS;
 
 END Process_Orders;
 /
