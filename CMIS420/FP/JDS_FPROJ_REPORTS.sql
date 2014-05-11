@@ -25,3 +25,13 @@ FROM Sales S, Policy PY, Territory T, Period PD
 GROUP BY PY.Type, T.ZipCode, PD.Quarter
 ORDER BY PY.Type DESC, PD.Quarter;
 -- END REPORT 2
+
+-- BEGIN REPORT 3
+SELECT TO_CHAR(TO_DATE(PD.Month, 'MM'), 'Month') AS Month, A.AgentName, PY.Type, SUM (S.FaceValue) AS TotalSales
+FROM Sales S, Policy PY, Agent A, Period PD
+  WHERE S.PolicyCode = PY.PolicyCode
+    AND S.AgentCode = A.AgentCode
+    AND S.PeriodCode = PD.PeriodCode
+GROUP BY PY.Type, A.AgentName, PD.Month
+ORDER BY PD.Month;
+-- END REPORT 3
