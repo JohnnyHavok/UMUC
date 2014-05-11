@@ -36,3 +36,4 @@ conf/
 /CMIS445/derby.log
 /CMIS445/BankDB/
 /CMIS445/orb.db
+*.~vsd
