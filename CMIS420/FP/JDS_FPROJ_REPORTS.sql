@@ -46,3 +46,12 @@ FROM (
 GROUP BY EffectiveMonth, AgentName
 ORDER BY AgentName, TO_DATE(EffectiveMonth, 'Month');
 -- END REPORT 4
+
+-- BEGIN REPORT 5
+SELECT A.AgentName, COUNT (S.InForce) AS NumPoliciesInForce
+FROM AGENT A, 
+  ( SELECT AgentCode, InForce FROM SALES
+    WHERE InForce = 'Y') S
+WHERE S.AgentCode = A.AgentCode
+GROUP BY A.AgentName;
+-- END REPORT 5
