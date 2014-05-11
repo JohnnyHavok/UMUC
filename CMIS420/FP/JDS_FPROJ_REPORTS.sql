@@ -6,24 +6,24 @@
 */
 
 -- BEGIN REPORT 1
-SELECT PY.Type, T.ZipCode AS Territory, TO_CHAR(TO_DATE(PD.Month, 'MM'), 'Month') AS Month, SUM (S.FaceValue) AS TotalSales
+SELECT TO_CHAR(TO_DATE(PD.Month, 'MM'), 'Month') AS Month, T.ZipCode AS Territory, PY.Type, SUM (S.FaceValue) AS TotalSales
 FROM Sales S, Policy PY, Territory T, Period PD
   WHERE S.PolicyCode = PY.PolicyCode
     AND S.TerritoryCode = T.TerritoryCode
     AND S.PeriodCode = PD.PeriodCode
 GROUP BY PY.Type, T.ZipCode, PD.Month
-ORDER BY PY.Type DESC, PD.Month;
+ORDER BY PD.Month;
 -- END REPORT 1
 
 -- BEGIN REPORT 2
-SELECT PY.Type, T.ZipCode AS Territory, PD.Quarter, SUM(S.FaceValue) AS TotalSales
+SELECT PD.Quarter, T.ZipCode AS Territory, PY.Type, SUM(S.FaceValue) AS TotalSales
 FROM Sales S, Policy PY, Territory T, Period PD
   WHERE S.PolicyCode = PY.PolicyCode 
     AND S.TerritoryCode = T.TerritoryCode
     AND S.PeriodCode = PD.PeriodCode
     AND PD.Year = 2013 -- For previous year's quarters or else they might collide in reporting
 GROUP BY PY.Type, T.ZipCode, PD.Quarter
-ORDER BY PY.Type DESC, PD.Quarter;
+ORDER BY PD.Quarter;
 -- END REPORT 2
 
 -- BEGIN REPORT 3
