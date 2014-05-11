@@ -7,7 +7,7 @@
 
 -- BEGIN REPORT 1
 SELECT TO_CHAR(TO_DATE(PD.Month, 'MM'), 'Month') AS Month, T.ZipCode AS Territory, PY.Type, SUM (S.FaceValue) AS TotalSales
-FROM Sales S, Policy PY, Territory T, Period PD
+FROM SALES S, POLICY PY, TERRITORY T, PERIOD PD
   WHERE S.PolicyCode = PY.PolicyCode
     AND S.TerritoryCode = T.TerritoryCode
     AND S.PeriodCode = PD.PeriodCode
@@ -17,7 +17,7 @@ ORDER BY PD.Month;
 
 -- BEGIN REPORT 2
 SELECT PD.Quarter, T.ZipCode AS Territory, PY.Type, SUM(S.FaceValue) AS TotalSales
-FROM Sales S, Policy PY, Territory T, Period PD
+FROM SALES S, POLICY PY, TERRITORY T, PERIOD PD
   WHERE S.PolicyCode = PY.PolicyCode 
     AND S.TerritoryCode = T.TerritoryCode
     AND S.PeriodCode = PD.PeriodCode
@@ -28,7 +28,7 @@ ORDER BY PD.Quarter;
 
 -- BEGIN REPORT 3
 SELECT TO_CHAR(TO_DATE(PD.Month, 'MM'), 'Month') AS Month, A.AgentName, PY.Type, SUM (S.FaceValue) AS TotalSales
-FROM Sales S, Policy PY, Agent A, Period PD
+FROM SALES S, POLICY PY, AGENT A, PERIOD PD
   WHERE S.PolicyCode = PY.PolicyCode
     AND S.AgentCode = A.AgentCode
     AND S.PeriodCode = PD.PeriodCode
@@ -38,9 +38,9 @@ ORDER BY PD.Month;
 
 -- BEGIN REPORT 4
 SELECT AgentName, EffectiveMonth, SUM (TotalSales) AS TotalSales
-FROM (
-  SELECT TO_CHAR(S.EffectiveDate, 'Month') AS EffectiveMonth, A.AgentName, SUM (S.FaceValue) AS TotalSales
-    FROM Sales S, Agent A
+FROM 
+  ( SELECT TO_CHAR(S.EffectiveDate, 'Month') AS EffectiveMonth, A.AgentName, SUM (S.FaceValue) AS TotalSales
+    FROM SALES S, AGENT A
   WHERE S.AgentCode = A.AgentCode
   GROUP BY S.EffectiveDate, A.AgentName )
 GROUP BY EffectiveMonth, AgentName
