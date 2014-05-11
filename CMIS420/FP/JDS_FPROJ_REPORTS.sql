@@ -76,7 +76,21 @@ ORDER BY PD.Month, A.AgentName;
 -- END REPORT 7
 
 -- BEGIN REPORT 8
+SELECT Territory, Month,AgentName, TotalSales
+FROM 
 
+  ( SELECT T.ZipCode as Territory, TO_CHAR(TO_DATE(PD.Month, 'MM'), 'Month') AS Month, 
+      A.AgentName, S.TotalSales, RANK() OVER (PARTITION BY S.TerritoryCode, S.PeriodCode ORDER BY S.TotalSales DESC) SalesRank 
+    FROM AGENT A, TERRITORY T, PERIOD PD,
+      ( SELECT AgentCode, PeriodCode, TerritoryCode, SUM(FaceValue) AS TotalSales
+        FROM SALES
+        GROUP BY AgentCode, PeriodCode, TerritoryCode ) S
+    WHERE S.AgentCode = A.AgentCode
+      AND S.TerritoryCode = T.TerritoryCode
+      AND S.PeriodCode = PD.PeriodCode
+    ORDER BY T.ZipCode, S.PeriodCode )
+    
+WHERE SalesRank = 1;
 -- END REPORT 8
 
 -- BEGIN REPORT 9
