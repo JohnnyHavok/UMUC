@@ -65,3 +65,13 @@ FROM AGENT A,
 WHERE A.AgentCode = S.AgentCode;
 -- END REPORT 6
 
+-- BEGIN REPORT 7
+SELECT TO_CHAR(TO_DATE(PD.Month, 'MM'), 'Month') AS Month, A.AgentName,
+  SUM (S.Commission * S.FaceValue) AS CommissionedEarned
+FROM SALES S, AGENT A, PERIOD PD
+WHERE S.AgentCode = A.AgentCode
+  AND S.PeriodCode = PD.PeriodCode
+GROUP BY A.AgentName, PD.Month
+ORDER BY PD.Month, A.AgentName;
+-- END REPORT 7
+
