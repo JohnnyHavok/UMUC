@@ -55,3 +55,13 @@ FROM AGENT A,
 WHERE S.AgentCode = A.AgentCode
 GROUP BY A.AgentName;
 -- END REPORT 5
+
+-- BEGIN REPORT 6
+SELECT A.AgentName, S.TotalSales
+FROM AGENT A,
+  ( SELECT AgentCode, SUM(FaceValue) AS TotalSales 
+      FROM SALES
+      GROUP BY AgentCode ) S
+WHERE A.AgentCode = S.AgentCode;
+-- END REPORT 6
+
