@@ -75,3 +75,15 @@ GROUP BY A.AgentName, PD.Month
 ORDER BY PD.Month, A.AgentName;
 -- END REPORT 7
 
+-- BEGIN REPORT 8
+
+-- END REPORT 8
+
+-- BEGIN REPORT 9
+SELECT A.AgentName, COUNT (S.InForce) AS NumPoliciesNotInForce
+FROM AGENT A, 
+  ( SELECT AgentCode, InForce FROM SALES
+    WHERE InForce = 'N') S
+WHERE S.AgentCode = A.AgentCode
+GROUP BY A.AgentName;
+-- END REPORT 9
