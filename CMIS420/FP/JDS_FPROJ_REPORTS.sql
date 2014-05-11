@@ -35,3 +35,14 @@ FROM Sales S, Policy PY, Agent A, Period PD
 GROUP BY PY.Type, A.AgentName, PD.Month
 ORDER BY PD.Month;
 -- END REPORT 3
+
+-- BEGIN REPORT 4
+SELECT AgentName, EffectiveMonth, SUM (TotalSales) AS TotalSales
+FROM (
+  SELECT TO_CHAR(S.EffectiveDate, 'Month') AS EffectiveMonth, A.AgentName, SUM (S.FaceValue) AS TotalSales
+    FROM Sales S, Agent A
+  WHERE S.AgentCode = A.AgentCode
+  GROUP BY S.EffectiveDate, A.AgentName )
+GROUP BY EffectiveMonth, AgentName
+ORDER BY AgentName, TO_DATE(EffectiveMonth, 'Month');
+-- END REPORT 4
