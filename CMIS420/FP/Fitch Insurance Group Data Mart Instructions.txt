@@ -1,0 +1,12 @@
+Step 1:  Change working directory to location where JDS_FPROJ_BUILD.sql and JDS_FPROJ_REPORTS.sql are stored.
+
+Step 2:  From working directory, start SQL*PLUS and log into your Oracle Database
+
+Step 3:  From the command prompt issue the following statement which will build the data mart and populate it with basic demonstration data.
+
+SQL> @JDS_FPROJ_BUILD
+
+Step 4: From here you may run any SQL statements against the database, by running the reports SQL file included you will see reports based on the project requirements.  To see reports, issue the next statement which will generate them.
+
+SQL> @JDS_FPROJ_REPORTS
+
