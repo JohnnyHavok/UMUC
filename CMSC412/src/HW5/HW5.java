@@ -113,11 +113,12 @@ public class HW5 {
           break;
 
         case 6:
-          Path file, dest;
-          byte[] ptxt = null;
-          byte[] password;
-
           if (dir != null) {
+
+            Path file, dest;
+            byte[] ptxt = null;
+            byte[] password;
+
             System.out.print("Please enter a target file to encrypt > ");
             file = dir.resolve(getNextString(input));
             if (Files.isRegularFile(file)) {
@@ -130,7 +131,7 @@ public class HW5 {
 
               System.out.print("Please enter a destination file > ");
               dest = dir.resolve(getNextString(input));
-              Set<PosixFilePermission> perms = PosixFilePermissions.fromString("rw-------");
+              Set<PosixFilePermission> perms = PosixFilePermissions.fromString("rw-r--r--");
               FileAttribute<Set<PosixFilePermission>> attr = PosixFilePermissions.asFileAttribute(perms);
               try {
                 Files.createFile(dest, attr);
@@ -145,7 +146,7 @@ public class HW5 {
                 System.out.println("Encrypting...");
                 byte[] ctxt = new byte[ptxt.length];
 
-                for (int i = 0; i < ptxt.length; ++i)
+                for(int i = 0; i < ptxt.length; ++i)
                   ctxt[i] = (byte) (ptxt[i] ^ password[i % password.length]);
 
                 try {
@@ -167,6 +168,57 @@ public class HW5 {
           break;
 
         case 7:
+          if(dir!= null) {
+
+            Path file, dest;
+            byte[] ctxt = null;
+            byte[] password;
+
+            System.out.print("Please enter a cyphertext file > ");
+            file = dir.resolve(getNextString(input));
+            if(Files.isRegularFile(file)) {
+              try {
+                System.out.println("Reading file into memory...");
+                ctxt = Files.readAllBytes(file);
+              } catch (IOException e) {
+                System.out.println("Error occurred reading all bytes: " + e.getMessage());
+              }
+
+              System.out.print("Please enter a destination file > ");
+              dest = dir.resolve(getNextString(input));
+              Set<PosixFilePermission> perms = PosixFilePermissions.fromString("rw-r--r--");
+              FileAttribute<Set<PosixFilePermission>> attr = PosixFilePermissions.asFileAttribute(perms);
+              try {
+                Files.createFile(dest, attr);
+              } catch (IOException e) {
+                System.out.println("Error occurred creating destination file: " + e.getMessage());
+              }
+
+              System.out.print("Please enter a password to use > ");
+              password = getNextString(input).getBytes();
+
+              if(ctxt != null) {
+                System.out.println("Decrypting...");
+                byte[] ptxt = new byte[ctxt.length];
+
+                for(int i = 0; i < ctxt.length; ++i)
+                  ptxt[i] = (byte) (ctxt[i] ^ password[i % password.length]);
+
+                try {
+                  Files.write(dest, ptxt, StandardOpenOption.WRITE);
+                } catch (IOException e) {
+                  System.out.println("There was a problem writing the PTXT to the file: " + dest.toString());
+                }
+
+              } else {
+                System.out.println("There was an unknown error accessing the file: " + file.toString());
+              }
+            } else {
+              System.out.println("File: " + file.toString() + " does not exist!");
+            }
+          } else {
+            System.out.println("You must select a directory first!");
+          }
           break;
 
         default:
@@ -204,7 +256,7 @@ public class HW5 {
       s = r.readLine();
       if (s.length() == 0) return null;
     } catch (IOException e) {
-      System.out.println("Thrown from getNextString() on user input");
+      System.out.println("Thrown from readLine() on user input");
       e.printStackTrace();
     }
     return s;
