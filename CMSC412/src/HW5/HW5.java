@@ -43,7 +43,12 @@ public class HW5 {
         case 1:
           System.out.print("Please enter absolute path to directory > ");
           dir = Paths.get(getNextString(input));
-          System.out.println("The working directory is now: " + dir.toString());
+          if(Files.isDirectory(dir)) {
+            System.out.println("The working directory is now: " + dir.toString());
+          } else {
+            System.out.println("Error: " + dir.toString() + " is not a directory!");
+            dir = null;
+          }
           break;
         case 2:
           if(dir != null) {
