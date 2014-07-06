@@ -18,6 +18,10 @@ import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.util.Set;
 
+
+// Program relies on Java NIO.2 from JDK 7+.
+// Importantly the new File and Path classes there.
+
 public class HW5 {
 
   public static void main(String[] args) {
@@ -46,6 +50,7 @@ public class HW5 {
           quit = true;
           break;
 
+        // -- Begin Select Directory Command --
         case 1:
           System.out.print("Please enter absolute path to directory > ");
           dir = Paths.get(getNextString(input));
@@ -56,7 +61,9 @@ public class HW5 {
             dir = null;
           }
           break;
+        // -- End Select Directory Command --
 
+        // -- Begin List Directory Content Command --
         case 2:
           if (dir != null) {
             try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {
@@ -69,10 +76,14 @@ public class HW5 {
             System.out.println("You must select a directory first!");
           }
           break;
+        // -- End List Directory Content Command --
 
+        // -- Begin List all Directory Content Command --
         case 3:
           if (dir != null) {
             try {
+              // Based on NIO.2 in JDK 7+
+              // Implemented RecursiveDirWalk() class found at bottom
               Files.walkFileTree(dir, new RecursiveDirWalk());
             } catch (IOException e) {
               System.out.println(e.getMessage());
@@ -81,7 +92,9 @@ public class HW5 {
             System.out.println("You must select a directory first!");
           }
           break;
+        // -- End List all Directory Content Command --
 
+        // -- Begin Delete File Command --
         case 4:
           if (dir != null) {
             try {
@@ -95,7 +108,9 @@ public class HW5 {
             System.out.println("You must select a directory first!");
           }
           break;
+        // -- End Delete File Command --
 
+        // -- Begin Display File Command --
         case 5:
           if (dir != null) {
             System.out.print("Please enter a target file to display > ");
@@ -111,7 +126,9 @@ public class HW5 {
             System.out.println("You must select a directory first!");
           }
           break;
+        // -- End Display File Command --
 
+        // -- Begin XOR Encrypt Command --
         case 6:
           if (dir != null) {
 
@@ -146,7 +163,7 @@ public class HW5 {
                 System.out.println("Encrypting...");
                 byte[] ctxt = new byte[ptxt.length];
 
-                for(int i = 0; i < ptxt.length; ++i)
+                for (int i = 0; i < ptxt.length; ++i)
                   ctxt[i] = (byte) (ptxt[i] ^ password[i % password.length]);
 
                 try {
@@ -166,9 +183,11 @@ public class HW5 {
             System.out.println("You must select a directory first!");
           }
           break;
+        // -- End XOR Encrypt Command --
 
+        // -- Begin XOR Decrypt Command --
         case 7:
-          if(dir!= null) {
+          if (dir != null) {
 
             Path file, dest;
             byte[] ctxt = null;
@@ -176,7 +195,7 @@ public class HW5 {
 
             System.out.print("Please enter a cyphertext file > ");
             file = dir.resolve(getNextString(input));
-            if(Files.isRegularFile(file)) {
+            if (Files.isRegularFile(file)) {
               try {
                 System.out.println("Reading file into memory...");
                 ctxt = Files.readAllBytes(file);
@@ -197,11 +216,11 @@ public class HW5 {
               System.out.print("Please enter a password to use > ");
               password = getNextString(input).getBytes();
 
-              if(ctxt != null) {
+              if (ctxt != null) {
                 System.out.println("Decrypting...");
                 byte[] ptxt = new byte[ctxt.length];
 
-                for(int i = 0; i < ctxt.length; ++i)
+                for (int i = 0; i < ctxt.length; ++i)
                   ptxt[i] = (byte) (ctxt[i] ^ password[i % password.length]);
 
                 try {
@@ -220,6 +239,7 @@ public class HW5 {
             System.out.println("You must select a directory first!");
           }
           break;
+        // -- End XOR Decrypt Command --
 
         default:
           System.out.println("Invalid option, try again");
@@ -227,14 +247,6 @@ public class HW5 {
     }
 
 
-  }
-
-  private static class RecursiveDirWalk extends SimpleFileVisitor<Path> {
-    @Override
-    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
-      System.out.println(file.getFileName());
-      return FileVisitResult.CONTINUE;
-    }
   }
 
   private static int getNextInt(BufferedReader r) {
@@ -260,6 +272,14 @@ public class HW5 {
       e.printStackTrace();
     }
     return s;
+  }
+
+  private static class RecursiveDirWalk extends SimpleFileVisitor<Path> {
+    @Override
+    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
+      System.out.println(file.getFileName());
+      return FileVisitResult.CONTINUE;
+    }
   }
 
 }
