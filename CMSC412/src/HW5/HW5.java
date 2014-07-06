@@ -4,22 +4,22 @@ package HW5;
  * Created by Justin Smith
  * 7/5/14
  * CMSC 412
+ * Requires Java JDK 7+
  */
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
 
 public class HW5 {
 
   public static void main(String[] args) {
 
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-    Path dir, file;
+    Path dir = null;
     int response;
-    boolean hasDir = false;
     boolean quit = false;
 
     while(!quit) {
@@ -43,12 +43,64 @@ public class HW5 {
         case 1:
           System.out.print("Please enter absolute path to directory > ");
           dir = Paths.get(getNextString(input));
-          hasDir = true;
           System.out.println("The working directory is now: " + dir.toString());
+          break;
+        case 2:
+          if(dir != null) {
+            try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {
+              for (Path entry : stream)
+                System.out.println(entry.getFileName());
+            } catch (IOException e) {
+              System.out.println(e.getMessage());
+            }
+          } else {
+            System.out.println("You must select a directory first!");
+          }
+          break;
+        case 3:
+          if(dir != null) {
+            try {
+              Files.walkFileTree(dir, new RecursiveDirWalk());
+            } catch (IOException e) {
+              System.out.println(e.getMessage());
+            }
+          } else {
+            System.out.println("You must select a directory first!");
+          }
+          break;
+        case 4:
+          if(dir != null) {
+            System.out.print("Please enter a target file to delete > ");
+            try {
+              Files.delete(dir.resolve(getNextString(input)));
+              System.out.println("File deleted!");
+            } catch (IOException e) {
+              System.out.println("The file: " + e.getMessage() + " does not exist!");
+            }
+          } else {
+            System.out.println("You must select a directory first!");
+          }
+          break;
+        case 5:
+          break;
+        case 6:
+          break;
+        case 7:
+          break;
+        default:
+          System.out.println("Invalid option, try again");
       }
     }
 
 
+  }
+
+  private static class RecursiveDirWalk extends SimpleFileVisitor<Path> {
+    @Override
+    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
+      System.out.println(file.getFileName());
+      return FileVisitResult.CONTINUE;
+    }
   }
 
   private static int getNextInt(BufferedReader r) {
