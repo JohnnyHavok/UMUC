@@ -10,6 +10,7 @@ package HW5;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 
@@ -40,6 +41,7 @@ public class HW5 {
         case 0:
           quit = true;
           break;
+
         case 1:
           System.out.print("Please enter absolute path to directory > ");
           dir = Paths.get(getNextString(input));
@@ -50,6 +52,7 @@ public class HW5 {
             dir = null;
           }
           break;
+
         case 2:
           if(dir != null) {
             try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {
@@ -62,6 +65,7 @@ public class HW5 {
             System.out.println("You must select a directory first!");
           }
           break;
+
         case 3:
           if(dir != null) {
             try {
@@ -73,10 +77,11 @@ public class HW5 {
             System.out.println("You must select a directory first!");
           }
           break;
+
         case 4:
           if(dir != null) {
-            System.out.print("Please enter a target file to delete > ");
             try {
+              System.out.print("Please enter a target file to delete > ");
               Files.delete(dir.resolve(getNextString(input)));
               System.out.println("File deleted!");
             } catch (IOException e) {
@@ -86,12 +91,29 @@ public class HW5 {
             System.out.println("You must select a directory first!");
           }
           break;
+
         case 5:
+          if(dir != null) {
+            System.out.print("Please enter a target file to display > ");
+            try(BufferedReader reader =
+                    Files.newBufferedReader(dir.resolve(getNextString(input)), StandardCharsets.UTF_8)) {
+              String line;
+              while((line = reader.readLine()) != null)
+                System.out.println(line);
+            } catch (IOException e) {
+              System.out.println("The file: " + e.getMessage() + " does not exist!");
+            }
+          } else {
+            System.out.println("You must select a directory first!");
+          }
           break;
+
         case 6:
           break;
+
         case 7:
           break;
+        
         default:
           System.out.println("Invalid option, try again");
       }
