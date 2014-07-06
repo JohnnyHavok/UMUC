@@ -13,6 +13,10 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileAttribute;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
+import java.util.Set;
 
 public class HW5 {
 
@@ -23,7 +27,7 @@ public class HW5 {
     int response;
     boolean quit = false;
 
-    while(!quit) {
+    while (!quit) {
       System.out.println("\nSelect Option:\n" +
           "\t(0) Exit\n" +
           "\t(1) Select Directory\n" +
@@ -45,7 +49,7 @@ public class HW5 {
         case 1:
           System.out.print("Please enter absolute path to directory > ");
           dir = Paths.get(getNextString(input));
-          if(Files.isDirectory(dir)) {
+          if (Files.isDirectory(dir)) {
             System.out.println("The working directory is now: " + dir.toString());
           } else {
             System.out.println("Error: " + dir.toString() + " is not a directory!");
@@ -54,7 +58,7 @@ public class HW5 {
           break;
 
         case 2:
-          if(dir != null) {
+          if (dir != null) {
             try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {
               for (Path entry : stream)
                 System.out.println(entry.getFileName());
@@ -67,7 +71,7 @@ public class HW5 {
           break;
 
         case 3:
-          if(dir != null) {
+          if (dir != null) {
             try {
               Files.walkFileTree(dir, new RecursiveDirWalk());
             } catch (IOException e) {
@@ -79,7 +83,7 @@ public class HW5 {
           break;
 
         case 4:
-          if(dir != null) {
+          if (dir != null) {
             try {
               System.out.print("Please enter a target file to delete > ");
               Files.delete(dir.resolve(getNextString(input)));
@@ -93,12 +97,12 @@ public class HW5 {
           break;
 
         case 5:
-          if(dir != null) {
+          if (dir != null) {
             System.out.print("Please enter a target file to display > ");
-            try(BufferedReader reader =
-                    Files.newBufferedReader(dir.resolve(getNextString(input)), StandardCharsets.UTF_8)) {
+            try (BufferedReader reader =
+                     Files.newBufferedReader(dir.resolve(getNextString(input)), StandardCharsets.UTF_8)) {
               String line;
-              while((line = reader.readLine()) != null)
+              while ((line = reader.readLine()) != null)
                 System.out.println(line);
             } catch (IOException e) {
               System.out.println("The file: " + e.getMessage() + " does not exist!");
@@ -109,11 +113,62 @@ public class HW5 {
           break;
 
         case 6:
+          Path file, dest;
+          byte[] ptxt = null;
+          byte[] password;
+
+          if (dir != null) {
+            System.out.print("Please enter a target file to encrypt > ");
+            file = dir.resolve(getNextString(input));
+            if (Files.isRegularFile(file)) {
+              try {
+                System.out.println("Reading file into memory...");
+                ptxt = Files.readAllBytes(file);
+              } catch (IOException e) {
+                System.out.println("Error occurred reading all bytes: " + e.getMessage());
+              }
+
+              System.out.print("Please enter a destination file > ");
+              dest = dir.resolve(getNextString(input));
+              Set<PosixFilePermission> perms = PosixFilePermissions.fromString("rw-------");
+              FileAttribute<Set<PosixFilePermission>> attr = PosixFilePermissions.asFileAttribute(perms);
+              try {
+                Files.createFile(dest, attr);
+              } catch (IOException e) {
+                System.out.println("Error occurred creating destination file: " + e.getMessage());
+              }
+
+              System.out.print("Please enter a password to use > ");
+              password = getNextString(input).getBytes();
+
+              if (ptxt != null) {
+                System.out.println("Encrypting...");
+                byte[] ctxt = new byte[ptxt.length];
+
+                for (int i = 0; i < ptxt.length; ++i)
+                  ctxt[i] = (byte) (ptxt[i] ^ password[i % password.length]);
+
+                try {
+                  Files.write(dest, ctxt, StandardOpenOption.WRITE);
+                } catch (IOException e) {
+                  System.out.println("There was a problem writing the CTXT to the file: " + dest.toString());
+                }
+
+                System.out.println("Finished Encrypting: " + file.toString() + " -> into -> " + dest.toString());
+              } else {
+                System.out.println("There was an unknown error accessing the file: " + file.toString());
+              }
+            } else {
+              System.out.println("File: " + file.toString() + " does not exist!");
+            }
+          } else {
+            System.out.println("You must select a directory first!");
+          }
           break;
 
         case 7:
           break;
-        
+
         default:
           System.out.println("Invalid option, try again");
       }
