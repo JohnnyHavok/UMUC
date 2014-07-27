@@ -250,7 +250,96 @@ public class FP {
 
   // -- Method simulates OPT Demand Paging when provided a reference string
   private static void runOPT(int[] refString, int phyFrames) {
+    ArrayList<Integer> memory = new ArrayList<>(phyFrames);
+    ArrayList<Integer> refList = new ArrayList<>();
 
+    for (int i : refString)
+      refList.add(i);
+
+    String[][] table = genTable(refString, phyFrames);
+
+    int victim = -1;
+    boolean fault = false;
+    int currentFrame = 0;
+    int faultCount = 0;
+    int max = -1;
+    int index;
+
+    System.out.println("Beginning FIFO Simulation");
+
+    System.out.println("Current Table\n");
+    printTable(table);
+
+    System.out.print("\nPress Enter to Continue > ");
+    try {
+      System.in.read();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    for (int i = 0; i < refString.length; ++i) {
+      if (!memory.contains(refString[i])) {
+        if (memory.size() < phyFrames) {
+          memory.add(currentFrame, refString[i]);
+          refList.remove((Integer) refString[i]);  // Remove first occurrence of ref from list don't care about past
+          ++currentFrame;
+          fault = true;
+          faultCount++;
+          victim = -1;
+        } else { // Page fault on full memory, swap
+          fault = true;
+          faultCount++;
+          // Step 1 remove current item.
+          int temp = refList.get(0);
+          refList.remove(0);
+
+          // Step 2 find ref that will not be used for longest period
+          for (int m : memory) {
+            index = refList.indexOf(m);
+
+            // Simplest case, ref is never seen again
+            if (index == -1) {
+              victim = m;
+              break;
+            }
+
+            if (index > max) { // Find max index into reference string
+              victim = m;      // that will be the victim unless an index
+              max = index;     // of -1 comes by.
+            }
+          }
+
+          memory.set(memory.indexOf(victim), temp); // Swap
+          max = -1;  // Reset max
+        }
+      } else { // Memory contains reference
+        fault = false;
+        refList.remove(0);
+      }
+
+      for (int j = 0; j < memory.size(); ++j) {
+        table[j + 1][i + 1] = String.valueOf(memory.get(j));
+      }
+
+      if (fault) {
+        table[phyFrames + 1][i + 1] = "F";
+        if (victim != -1)
+          table[phyFrames + 2][i + 1] = String.valueOf(victim);
+      }
+
+      System.out.println("Current Table\n");
+      printTable(table);
+
+      System.out.print("\nPress Enter to Continue > ");
+      try {
+        System.in.read();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+
+    System.out.println("\nOPT Simulation is now complete");
+    System.out.println("There were " + faultCount + " faults in this run");
   }
 
   // -- Method simulates LRU Demand Paging when provided a reference string
