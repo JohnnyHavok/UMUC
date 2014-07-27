@@ -10,8 +10,7 @@ package FP;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class FP {
@@ -148,11 +147,72 @@ public class FP {
 
   // -- Method simulates FIFO Demand Paging when provided a reference string
   private static void runFIFO(int[] refString, int phyFrames) {
-    Queue<Integer> q = new LinkedList<>();
+    ArrayList<Integer> memory = new ArrayList<>(phyFrames);
     String[][] table = genTable(refString, phyFrames);
 
+    int victim = -1;
+    boolean fault = false;
+    int currentFrame = 0;
+    int faultCount = 0;
 
+
+    System.out.println("Beginning FIFO Simulation");
+
+    System.out.println("Current Table\n");
     printTable(table);
+
+    System.out.print("\nPress Enter to Continue > ");
+    try {
+      System.in.read();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    for (int i = 0; i < refString.length; ++i) {
+      if (!memory.contains(refString[i])) {
+        if (memory.size() < phyFrames) {
+          memory.add(currentFrame, refString[i]);
+          ++currentFrame;
+          fault = true;
+          faultCount++;
+          victim = -1;
+        } else { // Memory is full, does not contain reference, page fault replacement
+          if (currentFrame >= phyFrames)
+            currentFrame = 0;
+
+          fault = true;
+          faultCount++;
+          victim = memory.get(currentFrame);
+          memory.set(currentFrame, refString[i]);
+          ++currentFrame;
+        }
+      } else { // Memory contains current reference, no fault
+        fault = false;
+      }
+
+      for (int j = 0; j < memory.size(); ++j) {
+        table[j + 1][i + 1] = String.valueOf(memory.get(j));
+      }
+
+      if (fault) {
+        table[phyFrames + 1][i + 1] = "F";
+        if (victim != -1)
+          table[phyFrames + 2][i + 1] = String.valueOf(victim);
+      }
+
+      System.out.println("Current Table\n");
+      printTable(table);
+
+      System.out.print("\nPress Enter to Continue > ");
+      try {
+        System.in.read();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+
+    System.out.println("\nFIFO Simulation is now complete");
+    System.out.println("There were " + faultCount + " faults in this run");
   }
 
   // -- Method simulates OPT Demand Paging when provided a reference string
