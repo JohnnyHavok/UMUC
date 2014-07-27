@@ -351,7 +351,7 @@ public class FP {
     boolean fault;
     int currentFrame = 0;
     int faultCount = 0;
-    int victim, max, index;
+    int max, index;
 
     System.out.println("Beginning LRU Simulation");
 
