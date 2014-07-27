@@ -10,12 +10,12 @@ package FP;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
-
-// Program relies on Java NIO.2 from JDK 7+.
-// Importantly the new File and Path classes there.
+import java.util.Random;
 
 public class FP {
+
+  static final int MIN_VFRAME = 0;
+  static final int MAX_VFRAME = 9;
 
   public static void main(String[] args) {
 
@@ -52,6 +52,15 @@ public class FP {
 
         // -- Begin Generate Reference String --
         case 2:
+          System.out.print("Please enter a number of Virtual Memory Page calls you want to generate > ");
+
+          int c = getNextInt(input);
+          refString = new int[c];
+          Random rand = new Random();
+
+          for (int i = 0; i < refString.length; ++i)
+            refString[i] = rand.nextInt((MAX_VFRAME - MIN_VFRAME) + 1) + MIN_VFRAME;
+
           break;
         // -- End Generate Reference String --
 
@@ -124,14 +133,14 @@ public class FP {
     String[] input = getNextString(r).split("\\s+");
     int[] refString = new int[input.length];
     int t; // temp holder
-    for (int i = 0; i < input.length; i++) {
+    for (int i = 0; i < input.length; ++i) {
       try {
         t = Integer.parseInt(input[i]);
       } catch (NumberFormatException e) {
         System.out.println("Some of your input did not include numbers!");
         return null;
       }
-      if (t > 9 || t < 0) {
+      if (t > MAX_VFRAME || t < MIN_VFRAME) {
         System.out.println("You input a value out of range with [0-9], it was " + t);
         System.out.println("Please try again");
         return getReferenceString(r);
