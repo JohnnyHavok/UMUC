@@ -10,12 +10,16 @@ package FP;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Random;
 
 public class FP {
 
   static final int MIN_VFRAME = 0;
   static final int MAX_VFRAME = 9;
+  static final int MIN_PFRAME = 1;
+  static final int MAX_PFRAME = 8;
 
   public static void main(String[] args) {
 
@@ -61,6 +65,8 @@ public class FP {
           for (int i = 0; i < refString.length; ++i)
             refString[i] = rand.nextInt((MAX_VFRAME - MIN_VFRAME) + 1) + MIN_VFRAME;
 
+          System.out.println("Completed generating random reference string");
+
           break;
         // -- End Generate Reference String --
 
@@ -83,9 +89,20 @@ public class FP {
 
         // -- Begin Simulate FIFO Paging --
         case 4:
-          if (refString != null)
-            runFIFO(refString);
-          else
+          if (refString != null) {
+            System.out.println("Running FIFO Demand Paging Strategy");
+            System.out.print("Please enter a number of physical frames [" + MIN_PFRAME + "-" + MAX_PFRAME + "] > ");
+            int phyFrames = getNextInt(input);
+
+            if (phyFrames > MAX_PFRAME || phyFrames < MIN_PFRAME) {
+              System.out.println("Your number of physical frames is outside of the limit " +
+                  "[" + MIN_PFRAME + "-" + MAX_PFRAME + "]");
+              break;
+            }
+
+            runFIFO(refString, phyFrames);
+
+          } else
             System.out.println("You must first create a reference string!");
           break;
         // -- End Simulate FIFO Paging--
@@ -130,8 +147,12 @@ public class FP {
   }
 
   // -- Method simulates FIFO Demand Paging when provided a reference string
-  private static void runFIFO(int[] refString) {
+  private static void runFIFO(int[] refString, int phyFrames) {
+    Queue<Integer> q = new LinkedList<>();
+    String[][] table = genTable(refString, phyFrames);
 
+
+    printTable(table);
   }
 
   // -- Method simulates OPT Demand Paging when provided a reference string
@@ -147,6 +168,36 @@ public class FP {
   // -- Method simulates LFU Demand Paging when provided a reference String
   private static void runLFU(int[] refString) {
 
+  }
+
+  private static String[][] genTable(int[] refString, int phyFrames) {
+    String[][] table = new String[phyFrames + 3][refString.length + 1]; // Row x Column
+    table[0][0] = "Reference String";
+    for (int i = 1; i <= phyFrames; ++i)
+      table[i][0] = "Physical Frame " + (i - 1);
+    table[phyFrames + 1][0] = "Page Faults";
+    table[phyFrames + 2][0] = "Victim Frames";
+
+    for (int i = 0; i < refString.length; ++i)
+      table[0][i + 1] = String.valueOf(refString[i]);
+
+    return table;
+  }
+
+  private static void printTable(String[][] table) {
+    for (String[] row : table) {
+      for (int column = 0; column < row.length; ++column) {
+        if (column == 0) {
+          System.out.printf("%-18s", row[0]);
+        } else {
+          if (row[column] == null)
+            System.out.printf("%4s", " ");
+          else
+            System.out.printf("%4s", row[column]);
+        }
+      }
+      System.out.println();
+    }
   }
 
   private static int getNextInt(BufferedReader r) {
@@ -175,7 +226,8 @@ public class FP {
   }
 
   private static int[] getReferenceString(BufferedReader r) {
-    System.out.print("Please enter a reference string of numbers [0-9] separated by a space > ");
+    System.out.print("Please enter a reference string of numbers [" + MIN_VFRAME + "-" + MAX_VFRAME + "] " +
+        "separated by a space > ");
     String[] input = getNextString(r).split("\\s+");
     int[] refString = new int[input.length];
     int t; // temp holder
