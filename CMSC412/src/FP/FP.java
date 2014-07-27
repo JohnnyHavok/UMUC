@@ -27,13 +27,13 @@ public class FP {
     while (!quit) {
       System.out.println("\nSelect Option:\n" +
           "\t(0) Exit\n" +
-          "\t(1) Select Directory\n" +
-          "\t(2) List Directory Content\n" +
-          "\t(3) List Directory Content (Recursive)\n" +
-          "\t(4) Delete File\n" +
-          "\t(5) Display File\n" +
-          "\t(6) Encrypt File\n" +
-          "\t(7) Decrypt File");
+          "\t(1) Read Reference String\n" +
+          "\t(2) Generate Reference String\n" +
+          "\t(3) Display Current Reference String\n" +
+          "\t(4) Simulate FIFO Demand Paging\n" +
+          "\t(5) Simulate OPT Demand Paging\n" +
+          "\t(6) Simulate LRU Demand Paging\n" +
+          "\t(7) Simulate LFU Demand Paging");
       System.out.print("Choose > ");
 
       response = getNextInt(input);
