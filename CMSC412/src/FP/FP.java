@@ -109,8 +109,19 @@ public class FP {
 
         // -- Begin Simulate OPT Paging --
         case 5:
-          if (refString != null)
-            runOPT(refString);
+          if (refString != null) {
+            System.out.println("Running OPT Demand Paging Strategy");
+            System.out.print("Please enter a number of physical frames [" + MIN_PFRAME + "-" + MAX_PFRAME + "] > ");
+            int phyFrames = getNextInt(input);
+
+            if (phyFrames > MAX_PFRAME || phyFrames < MIN_PFRAME) {
+              System.out.println("Your number of physical frames is outside of the limit " +
+                  "[" + MIN_PFRAME + "-" + MAX_PFRAME + "]");
+              break;
+            }
+
+            runOPT(refString, phyFrames);
+          }
           else
             System.out.println("You must first create a reference string!");
           break;
@@ -119,8 +130,19 @@ public class FP {
 
         // -- Begin Simulate LRU Paging --
         case 6:
-          if (refString != null)
-            runLRU(refString);
+          if (refString != null) {
+            System.out.println("Running LRU Demand Paging Strategy");
+            System.out.print("Please enter a number of physical frames [" + MIN_PFRAME + "-" + MAX_PFRAME + "] > ");
+            int phyFrames = getNextInt(input);
+
+            if (phyFrames > MAX_PFRAME || phyFrames < MIN_PFRAME) {
+              System.out.println("Your number of physical frames is outside of the limit " +
+                  "[" + MIN_PFRAME + "-" + MAX_PFRAME + "]");
+              break;
+            }
+
+            runLRU(refString, phyFrames);
+          }
           else
             System.out.println("You must first create a reference string!");
           break;
@@ -129,8 +151,19 @@ public class FP {
 
         // -- Begin Simulate LFU Paging --
         case 7:
-          if (refString != null)
-            runLFU(refString);
+          if (refString != null) {
+            System.out.println("Running LFU Demand Paging Strategy");
+            System.out.print("Please enter a number of physical frames [" + MIN_PFRAME + "-" + MAX_PFRAME + "] > ");
+            int phyFrames = getNextInt(input);
+
+            if (phyFrames > MAX_PFRAME || phyFrames < MIN_PFRAME) {
+              System.out.println("Your number of physical frames is outside of the limit " +
+                  "[" + MIN_PFRAME + "-" + MAX_PFRAME + "]");
+              break;
+            }
+
+            runLFU(refString, phyFrames);
+          }
           else
             System.out.println("You must first create a reference string!");
           break;
@@ -216,17 +249,17 @@ public class FP {
   }
 
   // -- Method simulates OPT Demand Paging when provided a reference string
-  private static void runOPT(int[] refString) {
+  private static void runOPT(int[] refString, int phyFrames) {
 
   }
 
   // -- Method simulates LRU Demand Paging when provided a reference string
-  private static void runLRU(int[] refString) {
+  private static void runLRU(int[] refString, int phyFrames) {
 
   }
 
   // -- Method simulates LFU Demand Paging when provided a reference String
-  private static void runLFU(int[] refString) {
+  private static void runLFU(int[] refString, int phyFrames) {
 
   }
 
