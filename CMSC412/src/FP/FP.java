@@ -83,24 +83,40 @@ public class FP {
 
         // -- Begin Simulate FIFO Paging --
         case 4:
+          if (refString != null)
+            runFIFO(refString);
+          else
+            System.out.println("You must first create a reference string!");
           break;
         // -- End Simulate FIFO Paging--
 
 
         // -- Begin Simulate OPT Paging --
         case 5:
+          if (refString != null)
+            runOPT(refString);
+          else
+            System.out.println("You must first create a reference string!");
           break;
         // -- End Simulate OPT Paging --
 
 
         // -- Begin Simulate LRU Paging --
         case 6:
+          if (refString != null)
+            runLRU(refString);
+          else
+            System.out.println("You must first create a reference string!");
           break;
         // -- End Simulate LRU Paging --
 
 
         // -- Begin Simulate LFU Paging --
         case 7:
+          if (refString != null)
+            runLFU(refString);
+          else
+            System.out.println("You must first create a reference string!");
           break;
         // -- End Simulate LFU Paging --
 
@@ -110,6 +126,26 @@ public class FP {
       }
     }
 
+
+  }
+
+  // -- Method simulates FIFO Demand Paging when provided a reference string
+  private static void runFIFO(int[] refString) {
+
+  }
+
+  // -- Method simulates OPT Demand Paging when provided a reference string
+  private static void runOPT(int[] refString) {
+
+  }
+
+  // -- Method simulates LRU Demand Paging when provided a reference string
+  private static void runLRU(int[] refString) {
+
+  }
+
+  // -- Method simulates LFU Demand Paging when provided a reference String
+  private static void runLFU(int[] refString) {
 
   }
 
