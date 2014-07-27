@@ -67,6 +67,16 @@ public class FP {
 
         // -- Begin Display Current Reference String --
         case 3:
+          if (refString != null) {
+            System.out.println("The current reference string is >");
+
+            for (int i = 0; i < refString.length; i++)
+              System.out.print(refString[i] + " ");
+
+            System.out.print("\n");
+          } else {
+            System.out.println("There is no current reference string!");
+          }
           break;
         // -- End Display Current Reference String --
 
