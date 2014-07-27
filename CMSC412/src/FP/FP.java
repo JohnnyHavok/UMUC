@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 public class FP {
@@ -75,8 +76,8 @@ public class FP {
           if (refString != null) {
             System.out.println("The current reference string is >");
 
-            for (int i = 0; i < refString.length; i++)
-              System.out.print(refString[i] + " ");
+            for (int refValue : refString)
+              System.out.print(refValue + " ");
 
             System.out.print("\n");
           } else {
@@ -418,9 +419,6 @@ public class FP {
       System.out.println("Current Table\n");
       printTable(table);
 
-      for (int l : lruCount)
-        System.out.print(l + " ");
-
       System.out.print("\nPress Enter to Continue > ");
       try {
         System.in.read();
@@ -436,7 +434,92 @@ public class FP {
 
   // -- Method simulates LFU Demand Paging when provided a reference String
   private static void runLFU(int[] refString, int phyFrames) {
+    ArrayList<Integer> memory = new ArrayList<>(phyFrames);
+    HashMap<Integer, Integer> lfuCount = new HashMap<>();
 
+    String[][] table = genTable(refString, phyFrames);
+
+    int victim = -1;
+    boolean fault;
+    int currentFrame = 0;
+    int faultCount = 0;
+    int min, index, count;
+
+    System.out.println("Beginning LFU Simulation");
+
+    System.out.println("Current Table\n");
+    printTable(table);
+
+    System.out.print("\nPress Enter to Continue > ");
+    try {
+      System.in.read();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    for (int i = 0; i < refString.length; ++i) {
+      if (!memory.contains(refString[i])) {
+        if (memory.size() < phyFrames) {
+          memory.add(currentFrame, refString[i]);
+          lfuCount.put(refString[i], 1);
+          ++currentFrame;
+          fault = true;
+          faultCount++;
+        } else { // Page fault on full memory, swap
+          min = lfuCount.get(memory.get(0)); // Set lowest to first PHY frame
+          index = 0;
+          fault = true;
+          faultCount++;
+
+          // Find lowest freq frame in phy memory
+          for (int j = 0; j < memory.size(); ++j) {
+            if (lfuCount.get(memory.get(j)) < min) {
+              min = lfuCount.get(memory.get(j));
+              index = j;
+            }
+          }
+
+          victim = memory.get(index);
+          memory.set(index, refString[i]);
+
+          // Update LFU Freq map on new entry.
+          if (lfuCount.containsKey(refString[i])) {
+            count = lfuCount.get(refString[i]);
+            count++;
+            lfuCount.put(refString[i], count);
+          } else {
+            lfuCount.put(refString[i], 1);
+          }
+        }
+      } else { // Memory contains reference
+        fault = false;
+        count = lfuCount.get(refString[i]);
+        count++;
+        lfuCount.put(refString[i], count); // Update frequency map
+      }
+
+      for (int j = 0; j < memory.size(); ++j) {
+        table[j + 1][i + 1] = String.valueOf(memory.get(j));
+      }
+
+      if (fault) {
+        table[phyFrames + 1][i + 1] = "F";
+        if (victim != -1)
+          table[phyFrames + 2][i + 1] = String.valueOf(victim);
+      }
+
+      System.out.println("Current Table\n");
+      printTable(table);
+
+      System.out.print("\nPress Enter to Continue > ");
+      try {
+        System.in.read();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+    System.out.println("\nLRU Simulation is now complete");
+    System.out.println("There were " + faultCount + " faults in this run");
   }
 
   private static String[][] genTable(int[] refString, int phyFrames) {
