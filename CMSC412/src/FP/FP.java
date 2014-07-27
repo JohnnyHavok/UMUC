@@ -184,7 +184,7 @@ public class FP {
     String[][] table = genTable(refString, phyFrames);
 
     int victim = -1;
-    boolean fault = false;
+    boolean fault;
     int currentFrame = 0;
     int faultCount = 0;
 
@@ -208,7 +208,6 @@ public class FP {
           ++currentFrame;
           fault = true;
           faultCount++;
-          victim = -1;
         } else { // Memory is full, does not contain reference, page fault replacement
           if (currentFrame >= phyFrames)
             currentFrame = 0;
@@ -253,19 +252,19 @@ public class FP {
     ArrayList<Integer> memory = new ArrayList<>(phyFrames);
     ArrayList<Integer> refList = new ArrayList<>();
 
-    for (int i : refString)
-      refList.add(i);
+    for (int i : refString)  // Create a reference list to
+      refList.add(i);        // to search future
 
     String[][] table = genTable(refString, phyFrames);
 
     int victim = -1;
-    boolean fault = false;
+    boolean fault;
     int currentFrame = 0;
     int faultCount = 0;
     int max = -1;
     int index;
 
-    System.out.println("Beginning FIFO Simulation");
+    System.out.println("Beginning OPT Simulation");
 
     System.out.println("Current Table\n");
     printTable(table);
@@ -285,7 +284,6 @@ public class FP {
           ++currentFrame;
           fault = true;
           faultCount++;
-          victim = -1;
         } else { // Page fault on full memory, swap
           fault = true;
           faultCount++;
@@ -344,6 +342,95 @@ public class FP {
 
   // -- Method simulates LRU Demand Paging when provided a reference string
   private static void runLRU(int[] refString, int phyFrames) {
+    ArrayList<Integer> memory = new ArrayList<>(phyFrames);
+    int[] lruCount = new int[phyFrames];
+
+    String[][] table = genTable(refString, phyFrames);
+
+    int victim = -1;
+    boolean fault;
+    int currentFrame = 0;
+    int faultCount = 0;
+    int victim, max, index;
+
+    System.out.println("Beginning LRU Simulation");
+
+    System.out.println("Current Table\n");
+    printTable(table);
+
+    System.out.print("\nPress Enter to Continue > ");
+    try {
+      System.in.read();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    for (int i = 0; i < refString.length; ++i) {
+      if (!memory.contains(refString[i])) {
+        if (memory.size() < phyFrames) {
+          memory.add(currentFrame, refString[i]);
+          for (int j = 0; j < lruCount.length; ++j)
+            lruCount[j]++; // Increment every frames count
+          lruCount[currentFrame] = 1; // Reset current back to 1
+          ++currentFrame;
+          fault = true;
+          faultCount++;
+        } else { // Page fault on full memory, swap
+          max = -1;
+          index = 0;
+          fault = true;
+          faultCount++;
+
+          // Find max lruCount
+          for (int j = 0; j < lruCount.length; ++j) {
+            if (lruCount[j] > max) {
+              max = lruCount[j];
+              index = j;
+            }
+          }
+
+          // Swap victim out
+          victim = memory.get(index);
+          memory.set(index, refString[i]);
+
+          for (int j = 0; j < lruCount.length; ++j)
+            lruCount[j]++; // Increment every frames count
+          lruCount[memory.indexOf(refString[i])] = 1; // Reset LRU Counter for new ref.
+
+        }
+      } else { // Memory contains reference
+        fault = false;
+        for (int j = 0; j < lruCount.length; ++j)
+          lruCount[j]++; // Increment every frames count
+        lruCount[memory.indexOf(refString[i])] = 1; // Reset LRU counter for this reference
+      }
+
+      for (int j = 0; j < memory.size(); ++j) {
+        table[j + 1][i + 1] = String.valueOf(memory.get(j));
+      }
+
+      if (fault) {
+        table[phyFrames + 1][i + 1] = "F";
+        if (victim != -1)
+          table[phyFrames + 2][i + 1] = String.valueOf(victim);
+      }
+
+      System.out.println("Current Table\n");
+      printTable(table);
+
+      for (int l : lruCount)
+        System.out.print(l + " ");
+
+      System.out.print("\nPress Enter to Continue > ");
+      try {
+        System.in.read();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+
+    System.out.println("\nLRU Simulation is now complete");
+    System.out.println("There were " + faultCount + " faults in this run");
 
   }
 
