@@ -10,7 +10,6 @@ package FP;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 
 
 // Program relies on Java NIO.2 from JDK 7+.
@@ -23,6 +22,7 @@ public class FP {
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
     int response;
     boolean quit = false;
+    int[] refString = null;
 
     while (!quit) {
       System.out.println("\nSelect Option:\n" +
@@ -45,6 +45,7 @@ public class FP {
 
         // -- Begin Read Reference String --
         case 1:
+          refString = getReferenceString(input);
           break;
         // -- End Read Reference String --
 
@@ -54,30 +55,36 @@ public class FP {
           break;
         // -- End Generate Reference String --
 
+
         // -- Begin Display Current Reference String --
         case 3:
           break;
         // -- End Display Current Reference String --
+
 
         // -- Begin Simulate FIFO Paging --
         case 4:
           break;
         // -- End Simulate FIFO Paging--
 
+
         // -- Begin Simulate OPT Paging --
         case 5:
           break;
         // -- End Simulate OPT Paging --
+
 
         // -- Begin Simulate LRU Paging --
         case 6:
           break;
         // -- End Simulate LRU Paging --
 
+
         // -- Begin Simulate LFU Paging --
         case 7:
           break;
         // -- End Simulate LFU Paging --
+
 
         default:
           System.out.println("Invalid option, try again");
@@ -112,10 +119,25 @@ public class FP {
     return s;
   }
 
-  private static ArrayList<Integer> getReferenceString(BufferedReader r) {
-    ArrayList<Integer> list = new ArrayList<>();
-
-
-    return list;
+  private static int[] getReferenceString(BufferedReader r) {
+    System.out.print("Please enter a reference string of numbers [0-9] separated by a space > ");
+    String[] input = getNextString(r).split("\\s+");
+    int[] refString = new int[input.length];
+    int t; // temp holder
+    for (int i = 0; i < input.length; i++) {
+      try {
+        t = Integer.parseInt(input[i]);
+      } catch (NumberFormatException e) {
+        System.out.println("Some of your input did not include numbers!");
+        return null;
+      }
+      if (t > 9 || t < 0) {
+        System.out.println("You input a value out of range with [0-9], it was " + t);
+        System.out.println("Please try again");
+        return getReferenceString(r);
+      }
+      refString[i] = t;
+    }
+    return refString;
   }
 }
