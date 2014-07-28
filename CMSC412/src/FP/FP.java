@@ -518,7 +518,7 @@ public class FP {
         e.printStackTrace();
       }
     }
-    System.out.println("\nLRU Simulation is now complete");
+    System.out.println("\nLFU Simulation is now complete");
     System.out.println("There were " + faultCount + " faults in this run");
   }
 
